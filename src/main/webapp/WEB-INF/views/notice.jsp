@@ -13,7 +13,7 @@
     
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="${pageContext.request.contextPath}/resources/checkmateimg/checkmate_logo.png">
-    <title>Check&Mate - </title>
+    <title>Check&Mate - 공지사항</title>
     
     <!-- Custom CSS -->
     <link href="${pageContext.request.contextPath}/resources/template/assets/libs/flot/css/float-chart.css" rel="stylesheet">
@@ -55,11 +55,24 @@
             <!-- Container fluid  본문 내용 부분 -->
             <!-- ============================================================== -->
             <div class="container-fluid">
-
-
-				<!-- 본문을 여기에 넣기 -->
-
-
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title m-b-0">공지사항</h5>
+                            </div>
+                            <table class="table" id="listTable">
+                                  <thead class="thead-light">
+                                    <tr>
+                                      <th>No.</th>
+                                      <th>제목</th>
+                                      <th>작성일</th>
+                                      <th>작성자</th>
+                                    </tr>
+                                  </thead>
+                            </table>
+                        </div>
+                        </div>
+                        
 			</div>
             <!-- footer -->
             <!-- ============================================================== -->
@@ -80,6 +93,46 @@
     <!-- ============================================================== -->
     <!-- All Jquery -->
     <!-- ============================================================== -->
+    
+    <script type="text/javascript">
+    $(document).ready(function() {
+    	listtable();
+    });
+    
+    function listtable(){
+    	if ( $.fn.DataTable.isDataTable('#listTable') ) {
+    		  $('#listTable').DataTable().destroy();
+    		}
+   	 $('#listTable').dataTable({
+         pageLength: 10,
+         bPaginate: true,
+         bLengthChange: true,
+         lengthMenu : [ [ 10, 25, 50, -1 ], [ 10, 25, 50, "All" ] ],
+         bAutoWidth: false,
+         processing: true,
+         ordering: true,
+         serverSide: false,
+         searching: true,
+         ajax : {
+             "url":"notice",
+             "type":"POST",
+             "data": function (d) {
+             }
+         },
+         columns : [
+             {data: "n_no"},
+             {data: "n_title"},
+             {data: "n_date"},
+             {data: "n_writer"}
+         ]
+     });
+    	
+    }
+    
+    </script>
+    
+    
+    
     <script src="${pageContext.request.contextPath}/resources/template/assets/libs/jquery/dist/jquery.min.js"></script>
     <!-- Bootstrap tether Core JavaScript -->
     <script src="${pageContext.request.contextPath}/resources/template/assets/libs/popper.js/dist/umd/popper.min.js"></script>
