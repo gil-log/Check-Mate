@@ -11,8 +11,8 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <!-- Favicon icon -->
-    <link rel="icon" type="image/png" sizes="16x16" href="${pageContext.request.contextPath}/resources/template/assets/images/favicon.png">
-    <title>Matrix Template - The Ultimate Multipurpose admin template</title>
+    <link rel="icon" type="image/png" sizes="16x16" href="${pageContext.request.contextPath}/resources/checkmateimg/checkmate_logo.png">
+    <title>Check&Mate - Main</title>
     <!-- Custom CSS -->
     <link href="${pageContext.request.contextPath}/resources/template/assets/libs/flot/css/float-chart.css" rel="stylesheet">
     <!-- Custom CSS -->

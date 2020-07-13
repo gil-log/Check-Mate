@@ -20,14 +20,14 @@
                         <b class="logo-icon p-l-10">
                             <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
                             <!-- Dark Logo icon -->
-                            <img src="${pageContext.request.contextPath}/resources/template/assets/images/logo-icon.png" alt="homepage" class="light-logo" />
+                            <img src="${pageContext.request.contextPath}/resources/checkmateimg/checkmate_logo.png" alt="homepage" class="light-logo" />
                            
                         </b>
                         <!--End Logo icon -->
                          <!-- Logo text -->
                         <span class="logo-text">
                              <!-- dark Logo text -->
-                             <img src="${pageContext.request.contextPath}/resources/template/assets/images/logo-text.png" alt="homepage" class="light-logo" />
+                             <img src="${pageContext.request.contextPath}/resources/checkmateimg/checkmate_logo_text.png" alt="homepage" class="light-logo" />
                             
                         </span>
                         <!-- Logo icon -->
@@ -163,7 +163,9 @@
                         <!-- User profile and search -->
                         <!-- ============================================================== -->
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark pro-pic" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="../../assets/images/users/1.jpg" alt="user" class="rounded-circle" width="31"></a>
+                            <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark pro-pic" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="${pageContext.request.contextPath}/resources/checkmateimg/checkmate_logo.png" alt="user" class="rounded-circle" width="31">
+                            test
+                            </a>
                             <div class="dropdown-menu dropdown-menu-right user-dd animated">
                                 <a class="dropdown-item" href="javascript:void(0)"><i class="ti-user m-r-5 m-l-5"></i> My Profile</a>
                                 <a class="dropdown-item" href="javascript:void(0)"><i class="ti-wallet m-r-5 m-l-5"></i> My Balance</a>

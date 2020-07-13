@@ -10,11 +10,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
+    
     <!-- Favicon icon -->
-    <link rel="icon" type="image/png" sizes="16x16" href="${pageContext.request.contextPath}/resources/template/assets/images/favicon.png">
-    <title>Matrix Template - The Ultimate Multipurpose admin template</title>
+    <link rel="icon" type="image/png" sizes="16x16" href="${pageContext.request.contextPath}/resources/checkmateimg/checkmate_logo.png">
+    <title>exampleform</title>
+    
     <!-- Custom CSS -->
     <link href="${pageContext.request.contextPath}/resources/template/assets/libs/flot/css/float-chart.css" rel="stylesheet">
+    
     <!-- Custom CSS -->
     <link href="${pageContext.request.contextPath}/resources/template/dist/css/style.min.css" rel="stylesheet">
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
