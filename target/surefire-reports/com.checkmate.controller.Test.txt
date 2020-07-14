@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: com.checkmate.controller.Test
 -------------------------------------------------------------------------------
-Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.233 sec
+Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.549 sec

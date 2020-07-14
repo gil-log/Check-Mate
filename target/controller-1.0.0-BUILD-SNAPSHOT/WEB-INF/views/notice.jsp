@@ -11,6 +11,10 @@
     <meta name="description" content="">
     <meta name="author" content="">
     
+    <link rel="stylesheet"
+	href="http://netdna.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    
+    
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="${pageContext.request.contextPath}/resources/checkmateimg/checkmate_logo.png">
     <title>Check&Mate - 공지사항</title>
@@ -114,6 +118,8 @@
     <script src="${pageContext.request.contextPath}/resources/template/assets/extra-libs/multicheck/datatable-checkbox-init.js"></script>
     <script src="${pageContext.request.contextPath}/resources/template/assets/extra-libs/multicheck/jquery.multicheck.js"></script>
     <script src="${pageContext.request.contextPath}/resources/template/assets/extra-libs/DataTables/datatables.min.js"></script>
+
+    
     <!-- Charts js Files -->
     <script src="${pageContext.request.contextPath}/resources/template/assets/libs/flot/excanvas.js"></script>
     <script src="${pageContext.request.contextPath}/resources/template/assets/libs/flot/jquery.flot.js"></script>
@@ -124,7 +130,7 @@
     <script src="${pageContext.request.contextPath}/resources/template/assets/libs/flot.tooltip/js/jquery.flot.tooltip.min.js"></script>
     <script src="${pageContext.request.contextPath}/resources/template/dist/js/pages/chart/chart-page-init.js"></script>
 
-    <script type="text/javascript">
+	    <script type="text/javascript">
     $(document).ready(function() {
     	listtable();
     });
@@ -146,7 +152,9 @@
          ajax : {
              "url":"notice",
              "type":"POST",
+             "dataType" : "JSON",
              "data": function (d) {
+            	 d.u_id = "plz";
              }
          },
          columns : [
@@ -160,6 +168,7 @@
     }
     
     </script>
+	
 </body>
 
 </html>

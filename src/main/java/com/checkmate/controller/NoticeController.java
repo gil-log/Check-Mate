@@ -32,26 +32,14 @@ public class NoticeController {
 	public String noticeget(HttpServletRequest request) throws Exception {
 		logger.info("information_get");
 		
-		//로그인 처리 부분의 세션으로 대체 할 예정
-		GroupVO groupVO = new GroupVO();
-		groupVO.setG_no(1);
-		groupVO.setG_name("테스트그룹");
-		groupVO.setU_id("test");
-		groupVO.setG_flag(1);
-		
-		HttpSession session = request.getSession();
-		
-		session.setAttribute("group", groupVO);
-		//로그인 후의 세션 처리로 대체 예정
-		
 		return "notice";
 	}
 	
-	@RequestMapping(value = "/notice", method = RequestMethod.POST)
+	@RequestMapping(value = "/notice", method = RequestMethod.GET)
 	@ResponseBody
 	public Object noticeajaxget(HttpServletRequest request) throws Exception {
 	        
-		logger.info("/notice_post");
+		logger.info("/notice_get");
 
 		HttpSession session = request.getSession();
 		
@@ -63,14 +51,13 @@ public class NoticeController {
 		int noticeListCount = noticeService.noticeListCount(groupVO);
 		List<NoticeVO> noticeList = noticeService.noticeList(groupVO);
 		
-		/*
+		
 		for(int i = 0 ; i<noticeList.size(); i++) {
 			System.out.println(i+"번째"+"N_no : " +noticeList.get(i).getN_no());
-			System.out.println(i+"번째"+"N_no : " +noticeList.get(i).getN_title());
-			System.out.println(i+"번째"+"N_no : " +noticeList.get(i).getN_date());
-			System.out.println(i+"번째"+"N_no : " +noticeList.get(i).getU_id());
+			System.out.println(i+"번째"+"N_title : " +noticeList.get(i).getN_title());
+			System.out.println(i+"번째"+"N_date : " +noticeList.get(i).getN_date());
+			System.out.println(i+"번째"+"U_id : " +noticeList.get(i).getU_id());
 		}
-		*/
 		
 		WrapperVO rtnVO = new WrapperVO();
 		rtnVO.setAaData(noticeList);
@@ -78,5 +65,51 @@ public class NoticeController {
 		rtnVO.setiTotalRecords(noticeListCount);
 		
 		return rtnVO;
+	}
+	
+	@RequestMapping(value = "/notice", method = RequestMethod.POST, produces = "application/text; charset=utf8")
+	@ResponseBody
+	public Object noticeajaxpost(HttpServletRequest request) throws Exception {
+	        
+		logger.info("/notice_post");
+
+		String[] notice = request.getParameterValues("notice");
+		
+		NoticeVO noticeVO = new NoticeVO();
+		
+		noticeVO.setN_title(notice[0]);
+		noticeVO.setN_content(notice[1]);
+
+		logger.info("제목 : " + notice[0] + ", 내용 : " + notice[1]);
+		
+		HttpSession session = request.getSession();
+		
+		GroupVO groupVO = (GroupVO) session.getAttribute("group");
+
+		String msg = "";
+		
+		if(groupVO.getG_flag()!=1) {
+			msg = "관리자만 공지사항을 작성 할 수 있습니다.";
+		} else {
+			noticeVO.setN_writer(groupVO.getU_id());
+			noticeVO.setG_no(groupVO.getG_no());
+			noticeVO.setU_id(groupVO.getU_id());
+			noticeService.noticeWrite(noticeVO);
+			msg = "공지사항이 생성 되었습니다!";
+		}
+		return msg;
+	}
+	
+	@RequestMapping(value = "/test", method = RequestMethod.POST, produces = "application/text; charset=utf8")
+	@ResponseBody
+	public Object testpost(HttpServletRequest request) throws Exception {
+	        
+		logger.info("/test_post");
+
+		String test = request.getParameter("test");
+		logger.info(test);
+
+		String msg = "컨트롤러에서 뷰로";
+		return msg;
 	}
 }

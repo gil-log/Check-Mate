@@ -26,4 +26,14 @@ public class NoticeServiceImpl implements NoticeService {
 		return dao.noticeListCount(groupVO);
 	}
 
+	@Override
+	public void noticeWrite(NoticeVO noticeVO) throws Exception {
+		dao.noticeWrite(noticeVO);
+	}
+
+	@Override
+	public List<NoticeVO> noticeListMini(GroupVO groupVO) throws Exception {
+		return dao.noticeListMini(groupVO);
+	}
+
 }

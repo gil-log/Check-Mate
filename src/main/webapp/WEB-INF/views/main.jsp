@@ -1,6 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page language="java" pageEncoding="UTF-8" contentType="text/html; charset=UTF-8" %>
-<!DOCTYPE html>
+
 <html dir="ltr">
 
 <head>
@@ -71,71 +71,38 @@
                                 </div>
                             </div>
                             <ul class="list-style-none">
+                            
+							<c:set var="isNull" value="${isNull}"/>
+                            <c:if test="${isNull == 1}">
                                 <li class="d-flex no-block card-body">
-                                    <i class="fa fa-check-circle w-30px m-t-5"></i>
+                                    <i class="fa fa-chess-queen w-30px m-t-5"></i>
                                     <div>
-                                        <a href="#" class="m-b-0 font-medium p-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</a>
-                                        <span class="text-muted">dolor sit amet, consectetur adipiscing</span>
+                                        <a class="m-b-0 font-medium p-0">등록된 공지사항이 없습니다.</a>
                                     </div>
                                     <div class="ml-auto">
                                         <div class="tetx-right">
-                                            <h5 class="text-muted m-b-0">20</h5>
-                                            <span class="text-muted font-16">Jan</span>
+                                            <h5 class="text-muted m-b-0"></h5>
+                                            <span class="text-muted font-16"></span>
                                         </div>
                                     </div>
                                 </li>
-                                <li class="d-flex no-block card-body border-top">
-                                    <i class="fa fa-gift w-30px m-t-5"></i>
+							</c:if>
+                            <c:if test="${isNull == 0}">
+								<c:forEach items="${noticeList}" var="noticeList">
+                                <li class="d-flex no-block card-body">
+                                    <i class="fa fa-bullhorn w-30px m-t-5"></i>
                                     <div>
-                                        <a href="#" class="m-b-0 font-medium p-0">Congratulation Maruti, Happy Birthday</a>
-                                        <span class="text-muted">many many happy returns of the day</span>
+                                        <a class="m-b-0 font-medium p-0"><c:out value="${noticeList.n_title}"/></a>
                                     </div>
                                     <div class="ml-auto">
                                         <div class="tetx-right">
-                                            <h5 class="text-muted m-b-0">11</h5>
-                                            <span class="text-muted font-16">Jan</span>
+                                            <h5 class="text-muted m-b-0"><c:out value="${noticeList.u_id}"/></h5>
+                                            <span class="text-muted font-16"><c:out value="${noticeList.n_date}"/></span>
                                         </div>
                                     </div>
-                                </li>
-                                <li class="d-flex no-block card-body border-top">
-                                    <i class="fa fa-plus w-30px m-t-5"></i>
-                                    <div>
-                                        <a href="#" class="m-b-0 font-medium p-0">Maruti is a Responsive Admin theme</a>
-                                        <span class="text-muted">But already everything was solved. It will ...</span>
-                                    </div>
-                                    <div class="ml-auto">
-                                        <div class="tetx-right">
-                                            <h5 class="text-muted m-b-0">19</h5>
-                                            <span class="text-muted font-16">Jan</span>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="d-flex no-block card-body border-top">
-                                    <i class="fa fa-leaf w-30px m-t-5"></i>
-                                    <div>
-                                        <a href="#" class="m-b-0 font-medium p-0">Envato approved Maruti Admin template</a>
-                                        <span class="text-muted">i am very happy to approved by TF</span>
-                                    </div>
-                                    <div class="ml-auto">
-                                        <div class="tetx-right">
-                                            <h5 class="text-muted m-b-0">20</h5>
-                                            <span class="text-muted font-16">Jan</span>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="d-flex no-block card-body border-top">
-                                    <i class="fa fa-question-circle w-30px m-t-5"></i>
-                                    <div>
-                                        <a href="#" class="m-b-0 font-medium p-0"> I am alwayse here if you have any question</a>
-                                        <span class="text-muted">we glad that you choose our template</span>
-                                    </div>
-                                    <div class="ml-auto">
-                                        <div class="tetx-right">
-                                            <h5 class="text-muted m-b-0">15</h5>
-                                            <span class="text-muted font-16">Jan</span>
-                                        </div>
-                                    </div>
-                                </li>
+                                </li>   
+                            	</c:forEach>
+                            </c:if>
                             </ul>
                         </div>
                         

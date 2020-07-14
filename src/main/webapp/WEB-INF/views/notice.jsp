@@ -11,6 +11,10 @@
     <meta name="description" content="">
     <meta name="author" content="">
     
+    <link rel="stylesheet"
+	href="http://netdna.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    
+    
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="${pageContext.request.contextPath}/resources/checkmateimg/checkmate_logo.png">
     <title>Check&Mate - 공지사항</title>
@@ -20,6 +24,7 @@
     
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/template/assets/extra-libs/multicheck/multicheck.css">
     <link href="${pageContext.request.contextPath}/resources/template/assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.css" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/template/assets/libs/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
     <!-- Custom CSS -->
     <link href="${pageContext.request.contextPath}/resources/template/dist/css/style.min.css" rel="stylesheet">
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -57,6 +62,7 @@
             <!-- Container fluid  본문 내용 부분 -->
             <!-- ============================================================== -->
             <div class="container-fluid">
+            	<div id="listForm">
                     <div class="col-12">
                         <div class="card">
                             <div class="card-body">
@@ -74,7 +80,74 @@
                             </table>
                         </div>
                         </div>
-                        
+                 </div>
+                 
+                 <div id="plusForm">
+                 
+                        <div class="card">
+                            <form class="form-horizontal">
+                                <div class="card-body">
+                                    <h4 class="card-title">공지사항 작성</h4>
+                                    <div class="form-group row">
+                                        <label for="n_title" class="col-sm-3 text-right control-label col-form-label">공지 제목</label>
+                                        <div class="col-sm-6">
+                                            <input type="text" class="form-control" id="n_title" placeholder="제목">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="cono1" class="col-sm-3 text-right control-label col-form-label">공지 내용</label>
+                                        <div class="col-sm-6">
+                                            <textarea class="form-control" id="n_content"></textarea>
+                                        </div>
+                                    </div>
+                                
+                                </div>
+                                <div class="border-top">
+                                    <div class="card-body">
+                                        <button type="button" class="btn btn-primary" id ="addNoticeBtn" onclick="addNotice();">작성</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                 
+                 </div>
+               	
+                 <div class="col-12">
+                 <div style="display:none;">
+                 	<input type="number" id="noticeToggle" value="0">
+                 </div>
+                 <a class="btn btn-success" href="#" id="noticeWriteBtn">공지 작성</a>
+                 </div>
+                 
+
+                                                        
+                <!-- Modal Add Category -->
+                <div class="modal fade none-border" id="noticeModal">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title"><strong>공지 제목</strong></h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <form>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label class="control-label">공지 내용</label>
+                                            <input class="form-control form-white" type="text" name="category-name" value="여기에 내용 들어갈겅미"/>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger waves-effect waves-light save-category" id="modalDel">삭제</button>
+                                <button type="button" class="btn btn-secondary waves-effect" data-dismiss="modal">닫기</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- END MODAL -->
+                
 			</div>
             <!-- footer -->
             <!-- ============================================================== -->
@@ -114,6 +187,8 @@
     <script src="${pageContext.request.contextPath}/resources/template/assets/extra-libs/multicheck/datatable-checkbox-init.js"></script>
     <script src="${pageContext.request.contextPath}/resources/template/assets/extra-libs/multicheck/jquery.multicheck.js"></script>
     <script src="${pageContext.request.contextPath}/resources/template/assets/extra-libs/DataTables/datatables.min.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/template/assets/libs/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+    
     <!-- Charts js Files -->
     <script src="${pageContext.request.contextPath}/resources/template/assets/libs/flot/excanvas.js"></script>
     <script src="${pageContext.request.contextPath}/resources/template/assets/libs/flot/jquery.flot.js"></script>
@@ -124,15 +199,25 @@
     <script src="${pageContext.request.contextPath}/resources/template/assets/libs/flot.tooltip/js/jquery.flot.tooltip.min.js"></script>
     <script src="${pageContext.request.contextPath}/resources/template/dist/js/pages/chart/chart-page-init.js"></script>
 
-    <script type="text/javascript">
+	<script type="text/javascript">
     $(document).ready(function() {
+
+        $("#plusForm").hide();
+		$('#noticeWriteBtn').hide();
     	listtable();
+      
+		if(${group.g_flag} == 1){
+			$('#noticeWriteBtn').show();
+		}
+
     });
     
     function listtable(){
+    	
     	if ( $.fn.DataTable.isDataTable('#listTable') ) {
     		  $('#listTable').DataTable().destroy();
     		}
+    	
    	 $('#listTable').dataTable({
          pageLength: 10,
          bPaginate: true,
@@ -140,26 +225,113 @@
          lengthMenu : [ [ 10, 25, 50, -1 ], [ 10, 25, 50, "All" ] ],
          bAutoWidth: false,
          processing: true,
+         order: [[2, 'desc']], // asc 또는 desc
          ordering: true,
          serverSide: false,
          searching: true,
          ajax : {
              "url":"notice",
-             "type":"POST",
+             "type":"GET",
+             "dataType" : "JSON",
              "data": function (d) {
+            	 d.u_id = "plz";
              }
          },
          columns : [
              {data: "n_no"},
-             {data: "n_title"},
+             {
+            	 data: "n_title",
+            	 render: function(data, type, row, meta){             
+                     data = '<a herf="" onclick="showNotice();">' + data + '</a>';
+                 return data;
+            	 }
+             },
              {data: "n_date"},
              {data: "u_id"}
          ]
      });
+   	 
+     //테이블 row 선택
+     $('#listTable tbody').on('click', 'tr', function() {
+    	$('.selected').toggleClass('selected');
+        $(this).toggleClass('selected');
+     });
+     
+    }
+
+    </script>
+    
+    <script type="text/javascript">
+    $('[data-toggle="tooltip"]').tooltip();
+    $(".preloader").fadeOut();
+    
+    $('#noticeWriteBtn').on("click", function() {
+    	if($("#noticeToggle").val() == 0){
+    		$(this).text("공지 보기");
+    		$("#noticeToggle").val(1);
+    		$("#plusForm").show();
+    		$("#listForm").slideUp();
+    		$("#plusForm").fadeIn();
+    	} else {
+    		$(this).text("공지 작성");
+        	listtable();
+    		$("#noticeToggle").val(0);
+            $("#plusForm").hide();
+            $("#listForm").fadeIn();
+    	}
+    });
+    
+
+    function addNotice() {
     	
+		if($("#n_title").val()==""){
+			alert("제목을 입력해주세요.");
+			$("#n_title").focus();
+			return false;
+		}
+		if($("#n_content").val()==""){
+			alert("내용을 입력해주세요.");
+			$("#n_content").focus();
+			return false;
+		}
+    	
+        const sendVar = new Array(2);
+        
+        sendVar[0] = $("#n_title").val();
+        sendVar[1] = $("#n_content").val();
+
+        $.ajax({
+            url : 'notice',                    // 전송 URL
+            type : 'POST',                // GET or POST 방식
+            traditional : true,
+            data : {
+                notice : sendVar        // 보내고자 하는 data 변수 설정
+            },
+            
+            //Ajax 성공시 호출 
+            success : function(msg){
+            	alert(msg);
+        		$(this).text("공지 작성");
+            	listtable();
+        		$("#noticeToggle").val(0);
+                $("#plusForm").hide();
+                $("#listForm").fadeIn();
+            },
+         
+            //Ajax 실패시 호출
+            error : function(jqXHR, textStatus, errorThrown){
+                console.log("jqXHR : " +jqXHR +"textStatus : " + textStatus + "errorThrown : " + errorThrown);
+            }
+        });
     }
     
+    function showNotice(){
+    	
+    	
+    	$('#noticeModal').modal();
+    	
+    }
     </script>
+	
 </body>
-
 </html>
