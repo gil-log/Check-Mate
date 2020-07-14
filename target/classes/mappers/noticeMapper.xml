@@ -21,7 +21,7 @@
 	
 	<!-- 메인에서 5개만 공지 뽑아오기 위해서, 이때  <=의 부등호를 인식시키기위해 <![CDATA[부등호 들어가는부분]]> 처리 해주어야함 -->
 	<select id="noticeListMini" resultType="com.checkmate.vo.NoticeVO" parameterType="com.checkmate.vo.GroupVO">
-	SELECT N_NO, G_NO, U_ID, N_TITLE, N_CONTENT, N_DATE, N_FLAG FROM(
+	  SELECT * FROM(
       SELECT N_NO, G_NO, U_ID, N_TITLE, N_CONTENT, N_DATE, N_FLAG
       FROM C_NOTICE
       WHERE G_NO = #{g_no}

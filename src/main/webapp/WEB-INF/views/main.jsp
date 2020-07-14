@@ -72,8 +72,8 @@
                             </div>
                             <ul class="list-style-none">
                             
-							<c:set var="isNull" value="${isNull}"/>
-                            <c:if test="${isNull == 1}">
+							<c:set var="noticeIsNull" value="${noticeIsNull}"/>
+                            <c:if test="${noticeIsNull == 1}">
                                 <li class="d-flex no-block card-body">
                                     <i class="fa fa-chess-queen w-30px m-t-5"></i>
                                     <div>
@@ -87,7 +87,7 @@
                                     </div>
                                 </li>
 							</c:if>
-                            <c:if test="${isNull == 0}">
+                            <c:if test="${noticeIsNull == 0}">
 								<c:forEach items="${noticeList}" var="noticeList">
                                 <li class="d-flex no-block card-body">
                                     <i class="fa fa-bullhorn w-30px m-t-5"></i>
@@ -109,76 +109,53 @@
                         <!-- card new -->
                         <div class="card">
                             <div class="card-body">
+                                <div class="row">
                                 <h4 class="card-title m-b-0">숙제</h4>
+                                     <div class="ml-auto">
+                                        <div class="tetx-right">
+                                        <a href="homework" data-toggle="tooltip" data-placement="top" title="" data-original-title="더보기">
+                                                <i class="fa fa-plus w-30px m-t-5"></i>
+                                                 </a>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <ul class="list-style-none">
+                            
+							<c:set var="homeworkIsNull" value="${homeworkIsNull}"/>
+                            <c:if test="${homeworkIsNull == 1}">
                                 <li class="d-flex no-block card-body">
-                                    <i class="fa fa-check-circle w-30px m-t-5"></i>
+                                    <i class="fa fa-chess w-30px m-t-5"></i>
                                     <div>
-                                        <a href="#" class="m-b-0 font-medium p-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</a>
-                                        <span class="text-muted">dolor sit amet, consectetur adipiscing</span>
+                                        <a class="m-b-0 font-medium p-0">등록된 숙제가 없습니다.</a>
                                     </div>
                                     <div class="ml-auto">
                                         <div class="tetx-right">
-                                            <h5 class="text-muted m-b-0">20</h5>
-                                            <span class="text-muted font-16">Jan</span>
+                                            <h5 class="text-muted m-b-0"></h5>
+                                            <span class="text-muted font-16"></span>
                                         </div>
                                     </div>
                                 </li>
-                                <li class="d-flex no-block card-body border-top">
-                                    <i class="fa fa-gift w-30px m-t-5"></i>
+							</c:if>
+                            <c:if test="${homeworkIsNull == 0}">
+								<c:forEach items="${homeworkList}" var="homeworkList">
+                                <li class="d-flex no-block card-body">
+                                    <i class="fa fa-chess-knight w-30px m-t-5"></i>
                                     <div>
-                                        <a href="#" class="m-b-0 font-medium p-0">Congratulation Maruti, Happy Birthday</a>
-                                        <span class="text-muted">many many happy returns of the day</span>
+                                        <a class="m-b-0 font-medium p-0"><c:out value="${homeworkList.h_title}"/></a>
                                     </div>
                                     <div class="ml-auto">
                                         <div class="tetx-right">
-                                            <h5 class="text-muted m-b-0">11</h5>
-                                            <span class="text-muted font-16">Jan</span>
+                                            <h5 class="text-muted m-b-0"><c:out value="${homeworkList.u_id}"/></h5>
+                                            <span class="text-muted font-16"><c:out value="${homeworkList.h_date}"/></span>
                                         </div>
                                     </div>
-                                </li>
-                                <li class="d-flex no-block card-body border-top">
-                                    <i class="fa fa-plus w-30px m-t-5"></i>
-                                    <div>
-                                        <a href="#" class="m-b-0 font-medium p-0">Maruti is a Responsive Admin theme</a>
-                                        <span class="text-muted">But already everything was solved. It will ...</span>
-                                    </div>
-                                    <div class="ml-auto">
-                                        <div class="tetx-right">
-                                            <h5 class="text-muted m-b-0">19</h5>
-                                            <span class="text-muted font-16">Jan</span>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="d-flex no-block card-body border-top">
-                                    <i class="fa fa-leaf w-30px m-t-5"></i>
-                                    <div>
-                                        <a href="#" class="m-b-0 font-medium p-0">Envato approved Maruti Admin template</a>
-                                        <span class="text-muted">i am very happy to approved by TF</span>
-                                    </div>
-                                    <div class="ml-auto">
-                                        <div class="tetx-right">
-                                            <h5 class="text-muted m-b-0">20</h5>
-                                            <span class="text-muted font-16">Jan</span>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="d-flex no-block card-body border-top">
-                                    <i class="fa fa-question-circle w-30px m-t-5"></i>
-                                    <div>
-                                        <a href="#" class="m-b-0 font-medium p-0"> I am alwayse here if you have any question</a>
-                                        <span class="text-muted">we glad that you choose our template</span>
-                                    </div>
-                                    <div class="ml-auto">
-                                        <div class="tetx-right">
-                                            <h5 class="text-muted m-b-0">15</h5>
-                                            <span class="text-muted font-16">Jan</span>
-                                        </div>
-                                    </div>
-                                </li>
+                                </li>   
+                            	</c:forEach>
+                            </c:if>
                             </ul>
                         </div>
+                        
                     </div>
                     <!-- column -->
                     <div class="col-lg-6">

@@ -43,38 +43,37 @@ public class NoticeController {
 		logger.info("/notice_get");
 		
 		int n_no = noticeVO.getN_no();
-		
-		if(n_no == 0) {
+
+		if (n_no == 0) {
 			HttpSession session = request.getSession();
-			
+
 			GroupVO groupVO = (GroupVO) session.getAttribute("group");
 
 			logger.info(groupVO.getU_id());
 
-			
 			int noticeListCount = noticeService.noticeListCount(groupVO);
 			List<NoticeVO> noticeList = noticeService.noticeList(groupVO);
-			
-			
-			for(int i = 0 ; i<noticeList.size(); i++) {
-				System.out.println(i+"번째"+"N_no : " +noticeList.get(i).getN_no());
-				System.out.println(i+"번째"+"N_title : " +noticeList.get(i).getN_title());
-				System.out.println(i+"번째"+"N_date : " +noticeList.get(i).getN_date());
-				System.out.println(i+"번째"+"U_id : " +noticeList.get(i).getU_id());
+
+			for (int i = 0; i < noticeList.size(); i++) {
+				System.out.println(i + "번째" + "N_no : " + noticeList.get(i).getN_no());
+				System.out.println(i + "번째" + "N_title : " + noticeList.get(i).getN_title());
+				System.out.println(i + "번째" + "N_date : " + noticeList.get(i).getN_date());
+				System.out.println(i + "번째" + "U_id : " + noticeList.get(i).getU_id());
 			}
-			
+
 			WrapperVO rtnVO = new WrapperVO();
 			rtnVO.setAaData(noticeList);
 			rtnVO.setiTotalDisplayRecords(noticeListCount);
 			rtnVO.setiTotalRecords(noticeListCount);
-			
+
 			return rtnVO;
 		} else {
 
 			NoticeVO notice = noticeService.noticeRead(noticeVO);
-			
+
 			return notice;
 		}
+
 	}
 	
 	@RequestMapping(value = "/notice", method = RequestMethod.POST, produces = "application/text; charset=utf8")

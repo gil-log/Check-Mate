@@ -16,8 +16,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.checkmate.service.HomeworkService;
 import com.checkmate.service.NoticeService;
 import com.checkmate.vo.GroupVO;
+import com.checkmate.vo.HomeworkVO;
 import com.checkmate.vo.NoticeVO;
 
 /**
@@ -28,6 +30,8 @@ public class MainController {
 	
 	@Inject
 	NoticeService noticeService;
+	@Inject
+	HomeworkService homeworkService;
 	
 	private static final Logger logger = LoggerFactory.getLogger(MainController.class);
 
@@ -57,12 +61,24 @@ public class MainController {
 		int noticeListCount = noticeService.noticeListCount(groupVO);
 		
 		if(noticeListCount==0) {
-			model.addAttribute("isNull", 1);
+			model.addAttribute("noticeIsNull", 1);
 		} else {
 			List<NoticeVO> noticeList = noticeService.noticeListMini(groupVO);
-			model.addAttribute("isNull", 0);
+			model.addAttribute("noticeIsNull", 0);
 			model.addAttribute("noticeList", noticeList);
-			logger.info("isNull : 0");
+			logger.info("noticeisNull : 0");
+		}
+		
+		int homeworkListCount = homeworkService.homeworkListCount(groupVO);
+		
+		logger.info(Integer.toString(homeworkListCount));
+		
+		if(homeworkListCount==0) {
+			model.addAttribute("homeworkIsNull", 1);
+		} else {
+			List<HomeworkVO> homeworkList = homeworkService.homeworkListMini(groupVO);
+			model.addAttribute("homeworkIsNull", 0);
+			model.addAttribute("homeworkList", homeworkList);
 		}
 		
 		return "main";
