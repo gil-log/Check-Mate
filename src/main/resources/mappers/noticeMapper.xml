@@ -31,10 +31,15 @@
       WHERE ROWNUM <= 5
       ]]>
 	</select>
-		
-
 	
-	<!-- 회원가입 -->
+	<!-- 선택한 notice가져오기 -->
+	<select id="noticeRead" resultType="com.checkmate.vo.NoticeVO" parameterType="com.checkmate.vo.NoticeVO">	
+      SELECT N_NO, G_NO, U_ID, N_TITLE, N_CONTENT, N_DATE, N_FLAG
+      FROM C_NOTICE
+      WHERE N_NO = #{n_no}
+	</select>
+	
+	<!-- 공지 작성 -->
 	<insert id="noticeWrite" parameterType="com.checkmate.vo.NoticeVO">
 	    INSERT INTO C_NOTICE(   N_NO 
 	   					       , G_NO 
@@ -54,7 +59,11 @@
 	                 		   )
     </insert>
     
-    
+    <!-- 공지 삭제 -->
+    <delete id="noticeDelete" parameterType="com.checkmate.vo.NoticeVO">
+    	DELETE FROM C_NOTICE
+    	WHERE N_NO = #{n_no}
+    </delete>
     
     
     

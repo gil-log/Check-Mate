@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -37,34 +38,43 @@ public class NoticeController {
 	
 	@RequestMapping(value = "/notice", method = RequestMethod.GET)
 	@ResponseBody
-	public Object noticeajaxget(HttpServletRequest request) throws Exception {
+	public Object noticeajaxget(HttpServletRequest request, @ModelAttribute NoticeVO noticeVO) throws Exception {
 	        
 		logger.info("/notice_get");
+		
+		int n_no = noticeVO.getN_no();
+		
+		if(n_no == 0) {
+			HttpSession session = request.getSession();
+			
+			GroupVO groupVO = (GroupVO) session.getAttribute("group");
 
-		HttpSession session = request.getSession();
-		
-		GroupVO groupVO = (GroupVO) session.getAttribute("group");
+			logger.info(groupVO.getU_id());
 
-		logger.info(groupVO.getU_id());
+			
+			int noticeListCount = noticeService.noticeListCount(groupVO);
+			List<NoticeVO> noticeList = noticeService.noticeList(groupVO);
+			
+			
+			for(int i = 0 ; i<noticeList.size(); i++) {
+				System.out.println(i+"번째"+"N_no : " +noticeList.get(i).getN_no());
+				System.out.println(i+"번째"+"N_title : " +noticeList.get(i).getN_title());
+				System.out.println(i+"번째"+"N_date : " +noticeList.get(i).getN_date());
+				System.out.println(i+"번째"+"U_id : " +noticeList.get(i).getU_id());
+			}
+			
+			WrapperVO rtnVO = new WrapperVO();
+			rtnVO.setAaData(noticeList);
+			rtnVO.setiTotalDisplayRecords(noticeListCount);
+			rtnVO.setiTotalRecords(noticeListCount);
+			
+			return rtnVO;
+		} else {
 
-		
-		int noticeListCount = noticeService.noticeListCount(groupVO);
-		List<NoticeVO> noticeList = noticeService.noticeList(groupVO);
-		
-		
-		for(int i = 0 ; i<noticeList.size(); i++) {
-			System.out.println(i+"번째"+"N_no : " +noticeList.get(i).getN_no());
-			System.out.println(i+"번째"+"N_title : " +noticeList.get(i).getN_title());
-			System.out.println(i+"번째"+"N_date : " +noticeList.get(i).getN_date());
-			System.out.println(i+"번째"+"U_id : " +noticeList.get(i).getU_id());
+			NoticeVO notice = noticeService.noticeRead(noticeVO);
+			
+			return notice;
 		}
-		
-		WrapperVO rtnVO = new WrapperVO();
-		rtnVO.setAaData(noticeList);
-		rtnVO.setiTotalDisplayRecords(noticeListCount);
-		rtnVO.setiTotalRecords(noticeListCount);
-		
-		return rtnVO;
 	}
 	
 	@RequestMapping(value = "/notice", method = RequestMethod.POST, produces = "application/text; charset=utf8")
@@ -97,6 +107,21 @@ public class NoticeController {
 			noticeService.noticeWrite(noticeVO);
 			msg = "공지사항이 생성 되었습니다!";
 		}
+		return msg;
+	}
+	
+	@RequestMapping(value = "/notice", method = RequestMethod.DELETE, produces = "application/text; charset=utf8")
+	@ResponseBody
+	public Object noticeajaxdelete(HttpServletRequest request, @ModelAttribute NoticeVO noticeVO) throws Exception {
+	        
+		logger.info("/notice_delete");
+		
+		int n_no = noticeVO.getN_no();
+
+		noticeService.noticeDelete(noticeVO);
+		
+		String msg = "삭제 되었습니다.";
+		
 		return msg;
 	}
 	

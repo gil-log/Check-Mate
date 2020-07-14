@@ -36,4 +36,14 @@ public class NoticeDAOImpl implements NoticeDAO {
 		return sqlSession.selectList("noticeMapper.noticeListMini", groupVO);
 	}
 
+	@Override
+	public NoticeVO noticeRead(NoticeVO noticeVO) throws Exception {
+		return sqlSession.selectOne("noticeMapper.noticeRead", noticeVO);
+	}
+
+	@Override
+	public void noticeDelete(NoticeVO noticeVO) throws Exception {
+		sqlSession.delete("noticeMapper.noticeDelete", noticeVO);
+	}
+
 }

@@ -15,4 +15,8 @@ public interface NoticeService {
 	public void noticeWrite(NoticeVO noticeVO) throws Exception;
 
 	public List<NoticeVO> noticeListMini(GroupVO groupVO) throws Exception;
+
+	public NoticeVO noticeRead(NoticeVO noticeVO) throws Exception;
+
+	public void noticeDelete(NoticeVO noticeVO) throws Exception;
 }

@@ -36,4 +36,14 @@ public class NoticeServiceImpl implements NoticeService {
 		return dao.noticeListMini(groupVO);
 	}
 
+	@Override
+	public NoticeVO noticeRead(NoticeVO noticeVO) throws Exception {
+		return dao.noticeRead(noticeVO);
+	}
+
+	@Override
+	public void noticeDelete(NoticeVO noticeVO) throws Exception {
+		dao.noticeDelete(noticeVO);
+	}
+
 }

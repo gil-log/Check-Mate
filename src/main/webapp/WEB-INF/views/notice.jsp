@@ -33,6 +33,13 @@
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+<style>
+.selected {
+	background-color: gainsboro;
+}
+
+</style>
 </head>
 
 <body>
@@ -126,21 +133,21 @@
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h4 class="modal-title"><strong>공지 제목</strong></h4>
+                                <h4 class="modal-title"><strong><a id="modal_n_no">1</a>. <a id="modal_n_title">공지 제목</a></strong></h4>
                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                             </div>
                             <div class="modal-body">
                                 <form>
                                     <div class="row">
-                                        <div class="col-md-6">
+                                        <div class="col-md-12">
                                             <label class="control-label">공지 내용</label>
-                                            <input class="form-control form-white" type="text" name="category-name" value="여기에 내용 들어갈겅미"/>
+                                            <textarea class="form-control form-white" id="modal_n_content" readonly>여기에 내용 들어갈겅미</textarea>
                                         </div>
                                     </div>
                                 </form>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-danger waves-effect waves-light save-category" id="modalDel">삭제</button>
+                                <button type="button" class="btn btn-danger waves-effect waves-light save-category" id="modalDel" onclick="noticeDelete();">삭제</button>
                                 <button type="button" class="btn btn-secondary waves-effect" data-dismiss="modal">닫기</button>
                             </div>
                         </div>
@@ -204,9 +211,12 @@
 
         $("#plusForm").hide();
 		$('#noticeWriteBtn').hide();
+		$('#modalDel').hide();
+		
     	listtable();
       
 		if(${group.g_flag} == 1){
+			$('#modalDel').show();
 			$('#noticeWriteBtn').show();
 		}
 
@@ -233,8 +243,8 @@
              "url":"notice",
              "type":"GET",
              "dataType" : "JSON",
-             "data": function (d) {
-            	 d.u_id = "plz";
+             "data": {
+            	"n_no" : 0
              }
          },
          columns : [
@@ -242,7 +252,7 @@
              {
             	 data: "n_title",
             	 render: function(data, type, row, meta){             
-                     data = '<a herf="" onclick="showNotice();">' + data + '</a>';
+                     data = data;
                  return data;
             	 }
              },
@@ -255,6 +265,34 @@
      $('#listTable tbody').on('click', 'tr', function() {
     	$('.selected').toggleClass('selected');
         $(this).toggleClass('selected');
+
+        var n_no = $(this).find("td").eq(0).text();
+
+        $("#modal_n_no").text(n_no);
+        
+        $.ajax({
+            url : 'notice',                    // 전송 URL
+            type : 'GET',                // GET or POST 방식
+            traditional : true,
+            data : {
+                n_no : n_no        // 보내고자 하는 data 변수 설정
+            },
+            
+            //Ajax 성공시 호출 
+            success : function(d){
+                
+        		$("#modal_n_no").text(d.n_no);
+        		$("#modal_n_title").text(d.n_title);
+        		$("#modal_n_content").text(d.n_content);
+
+                $('#noticeModal').modal();
+            },
+         
+            //Ajax 실패시 호출
+            error : function(jqXHR, textStatus, errorThrown){
+                console.log("jqXHR : " +jqXHR +"textStatus : " + textStatus + "errorThrown : " + errorThrown);
+            }
+        });
      });
      
     }
@@ -311,9 +349,11 @@
             //Ajax 성공시 호출 
             success : function(msg){
             	alert(msg);
-        		$(this).text("공지 작성");
+        		$('#noticeWriteBtn').text("공지 작성");
             	listtable();
         		$("#noticeToggle").val(0);
+        		$("#n_title").val("");
+        		$("#n_content").val("");
                 $("#plusForm").hide();
                 $("#listForm").fadeIn();
             },
@@ -324,14 +364,34 @@
             }
         });
     }
-    
-    function showNotice(){
+
+    function noticeDelete() {
+		var n_no = $("#modal_n_no").text();
+
+        $.ajax({
+            url : 'notice',                    // 전송 URL
+            type : 'DELETE',                // GET or POST 방식
+            traditional : true,
+            data : {
+                n_no : n_no        // 보내고자 하는 data 변수 설정
+            },
+            
+            //Ajax 성공시 호출 
+            success : function(msg){
+            	alert(msg);
+            	listtable();
+            	$('#noticeModal').modal("hide"); //닫기 
+            },
+         
+            //Ajax 실패시 호출
+            error : function(jqXHR, textStatus, errorThrown){
+                console.log("jqXHR : " +jqXHR +"textStatus : " + textStatus + "errorThrown : " + errorThrown);
+            }
+        });
     	
-    	
-    	$('#noticeModal').modal();
-    	
+		
     }
     </script>
-	
+
 </body>
 </html>
