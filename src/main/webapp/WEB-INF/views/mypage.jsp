@@ -247,9 +247,11 @@
     <script src="${pageContext.request.contextPath}/resources/template/dist/js/jquery.ui.touch-punch-improved.js"></script>
     <script src="${pageContext.request.contextPath}/resources/template/dist/js/jquery-ui.min.js"></script>
 
-    <script type="text/javascript">
+    <script>
 
     $(document).ready(function() {
+    	
+    	calendarEventsList();
     	
         var defaultEvents = [
             {
@@ -280,6 +282,30 @@
        
         calendarCreate(defaultEvents);
     });
+    
+    function calendarEventsList() {
+    	var u_id = '${group.u_id}';
+    	var g_no = ${group.g_no};
+        $.ajax({
+            url : 'caltest',                    // 전송 URL
+            type : 'GET',                // GET or POST 방식
+            traditional : true,
+            data : {
+                u_id : u_id,        // 보내고자 하는 data 변수 설정
+                g_no : g_no
+            },
+            
+            //Ajax 성공시 호출 
+            success : function(d){
+                alert(d);
+            },
+         
+            //Ajax 실패시 호출
+            error : function(jqXHR, textStatus, errorThrown){
+                console.log("jqXHR : " +jqXHR +"textStatus : " + textStatus + "errorThrown : " + errorThrown);
+            }
+        });
+    }
     
     
     function calendarCreate(defaultEvents) {

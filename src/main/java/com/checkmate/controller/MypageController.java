@@ -20,6 +20,7 @@ import com.checkmate.vo.GroupVO;
 import com.checkmate.vo.NoticeVO;
 import com.checkmate.vo.WrapperVO;
 
+import net.sf.json.JSONArray;
 import oracle.sql.DATE;
 
 @Controller
@@ -39,14 +40,22 @@ public class MypageController {
 	
 	@RequestMapping(value = "/caltest", method = RequestMethod.GET)
 	@ResponseBody
-	public Object noticeajaxget(@ModelAttribute CalendarVO calendarVO) throws Exception {
+	public Object noticeajaxget(@ModelAttribute GroupVO groupVO) throws Exception {
 	        
 		logger.info("/caltest_get");
+
+		logger.info(Integer.toString(groupVO.getG_no()));
+		logger.info(groupVO.getU_id());
 		
-		System.out.println("start : "+calendarVO.getStart());
-		System.out.println("end : "+calendarVO.getEnd());
 		
+		
+		
+		
+		/*
 		List<CalendarVO> calendarList = new ArrayList<>
-		return 
+		JSONArray jsonArray = JSONArray.fromObject(calendarList);
+		*/
+		String r = "ss";
+		return r;
 	}
 }
