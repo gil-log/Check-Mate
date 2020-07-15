@@ -8,6 +8,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
 import com.checkmate.vo.AttendVO;
+import com.checkmate.vo.GroupVO;
 
 @Repository
 public class AttendDAOImpl implements AttendDAO {
@@ -29,6 +30,16 @@ public class AttendDAOImpl implements AttendDAO {
 	@Override
 	public List<AttendVO> attendListCalendar(AttendVO attendVO) throws Exception {
 		return sqlSession.selectList("attendMapper.attendListCalendar", attendVO);
+	}
+
+	@Override
+	public int attendGnoUidCount(AttendVO attendVO) throws Exception {
+		return sqlSession.selectOne("attendMapper.attendGnoUidCount", attendVO);
+	}
+
+	@Override
+	public int attendMasterCount(GroupVO groupVO) throws Exception {
+		return sqlSession.selectOne("attendMapper.attendMasterCount", groupVO);
 	}
 
 }

@@ -16,9 +16,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.checkmate.service.AttendService;
 import com.checkmate.vo.AttendVO;
 
-/**
- * Handles requests for the application home page.
- */
 @Controller
 public class AttendController {
 	

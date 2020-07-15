@@ -25,4 +25,25 @@
 		AND    G_NO = #{g_no}
 		AND    A_FLAG = #{a_flag}
 	</select>
+	
+	<!-- calendar용 관리자가 만든 attend가 몇개인지를 받아온다. -->
+	<select id="attendMasterCount" resultType="int" parameterType="com.checkmate.vo.GroupVO">
+		SELECT COUNT(*)
+		FROM(
+		SELECT A_DATE, G_NO, U_ID, A_FLAG
+		FROM   C_ATTEND
+		WHERE  U_id = #{u_id}
+		AND    G_NO = #{g_no})
+	</select>
+	
+	<!-- calendar용 해당 그룹에 입력한 id에 해당하는 attend가 몇개인지를 받아온다. -->
+	<select id="attendGnoUidCount" resultType="int" parameterType="com.checkmate.vo.AttendVO">
+		SELECT COUNT(*)
+		FROM(
+		SELECT A_DATE, G_NO, U_ID, A_FLAG
+		FROM   C_ATTEND
+		WHERE  U_id = #{u_id}
+		AND    G_NO = #{g_no}
+		AND    A_FLAG = #{a_flag})
+	</select>
 </mapper>

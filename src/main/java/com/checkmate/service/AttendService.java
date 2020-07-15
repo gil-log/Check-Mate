@@ -3,6 +3,7 @@ package com.checkmate.service;
 import java.util.List;
 
 import com.checkmate.vo.AttendVO;
+import com.checkmate.vo.GroupVO;
 
 
 public interface AttendService {
@@ -15,4 +16,10 @@ public interface AttendService {
 
 	//calendar용 출석 리스트
 	public List<AttendVO> attendListCalendar(AttendVO attendVO) throws Exception;
+
+	// attend에 gno uid로 개수 카운트
+	public int attendGnoUidCount(AttendVO attendVO) throws Exception;
+
+	// attend에 그 관리자가 만든 개수 카운트
+	public int attendMasterCount(GroupVO groupVO) throws Exception;
 }

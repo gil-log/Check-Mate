@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="groupMapper">
+
+
+
+	<select id="findMaster" resultType="com.checkmate.vo.GroupVO" parameterType="com.checkmate.vo.GroupVO">
+		SELECT G_NO, U_ID, G_FLAG, G_NAME
+		FROM C_GROUP
+		WHERE G_NO = #{g_no} AND G_FLAG = 1
+	</select>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	<select id="attendList" resultType="com.checkmate.vo.AttendVO" parameterType="com.checkmate.vo.AttendVO">
+		SELECT A_DATE, G_NO, U_ID, A_FLAG
+		FROM   C_ATTEND
+		WHERE  U_id = #{u_id}
+		AND    G_NO = #{g_no}
+	</select>
+	
+	<!-- 관리자가 아닌 인원들이 출석체크를 눌렀을 경우 동작 -->
+	<insert id="attendInsert" parameterType="com.checkmate.vo.AttendVO">
+		INSERT INTO C_ATTEND (A_DATE, U_ID, G_NO, A_FLAG)
+		VALUES(SYSDATE + #{a_date}/24/60, #{u_id}, #{g_no}, 0)	
+	</insert>
+	
+	<!-- calendar 용 attend flag 별로 list 뽑기 -->
+	<select id="attendListCalendar" resultType="com.checkmate.vo.AttendVO" parameterType="com.checkmate.vo.AttendVO">
+		SELECT A_DATE, G_NO, U_ID, A_FLAG
+		FROM   C_ATTEND
+		WHERE  U_id = #{u_id}
+		AND    G_NO = #{g_no}
+		AND    A_FLAG = #{a_flag}
+	</select>
+	
+	<!-- calendar용 해당 그룹에 입력한 id에 해당하는 attend가 몇개인지를 받아온다. -->
+	<select id="attendGnoUidCount" resultType="com.checkmate.vo.AttendVO" parameterType="com.checkmate.vo.GroupVO">
+		SELECT COUNT(*)
+		FROM(
+		SELECT A_DATE, G_NO, U_ID, A_FLAG
+		FROM   C_ATTEND
+		WHERE  U_id = #{u_id}
+		AND    G_NO = #{g_no})
+	</select>
+</mapper>

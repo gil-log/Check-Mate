@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.checkmate.dao.AttendDAO;
 import com.checkmate.vo.AttendVO;
+import com.checkmate.vo.GroupVO;
 
 @Service
 public class AttendServiceImpl implements AttendService {
@@ -30,6 +31,16 @@ public class AttendServiceImpl implements AttendService {
 	@Override
 	public List<AttendVO> attendListCalendar(AttendVO attendVO) throws Exception {
 		return dao.attendListCalendar(attendVO);
+	}
+
+	@Override
+	public int attendGnoUidCount(AttendVO attendVO) throws Exception {
+		return dao.attendGnoUidCount(attendVO);
+	}
+
+	@Override
+	public int attendMasterCount(GroupVO groupVO) throws Exception {
+		return dao.attendMasterCount(groupVO);
 	}
 
 }

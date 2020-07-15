@@ -120,9 +120,9 @@ public class InformationController {
 		return msg;
 	}
 	
-	@RequestMapping(value = "/test", method = RequestMethod.POST, produces = "application/text; charset=utf8")
+	@RequestMapping(value = "/ttttest", method = RequestMethod.POST, produces = "application/text; charset=utf8")
 	@ResponseBody
-	public Object testpost(HttpServletRequest request) throws Exception {
+	public Object ttttestpost(HttpServletRequest request) throws Exception {
 	        
 		logger.info("/test_post");
 

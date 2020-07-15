@@ -1,16 +1,14 @@
 package com.checkmate.vo;
 
-import java.sql.Date;
+import java.util.Date;
 
 public class CalendarVO {
 
+
 	private String title;
-	private Date start;
-	private Date end;
-	private String url;
+	private String start;
+	private String end;
 	private String color;
-	private String textColor;
-	private boolean allDay = false;
 	
 	public String getTitle() {
 		return title;
@@ -18,45 +16,28 @@ public class CalendarVO {
 	public void setTitle(String title) {
 		this.title = title;
 	}
-	public Date getStart() {
+	public String getStart() {
 		return start;
 	}
-	public void setStart(Date start) {
+	public void setStart(String start) {
 		this.start = start;
 	}
-	public Date getEnd() {
+	public String getEnd() {
 		return end;
 	}
-	public void setEnd(Date end) {
+	public void setEnd(String end) {
 		this.end = end;
 	}
-	public String getUrl() {
-		return url;
-	}
-	public void setUrl(String url) {
-		this.url = url;
-	}
+
 	public String getColor() {
 		return color;
 	}
 	public void setColor(String color) {
 		this.color = color;
 	}
-	public String getTextColor() {
-		return textColor;
-	}
-	public void setTextColor(String textColor) {
-		this.textColor = textColor;
-	}
-	public boolean isAllDay() {
-		return allDay;
-	}
-	public void setAllDay(boolean allDay) {
-		this.allDay = allDay;
-	}
 	@Override
 	public String toString() {
-		return "CalendarVO [title=" + title + ", start=" + start + ", end=" + end + ", url=" + url + ", color=" + color
-				+ ", textColor=" + textColor + ", allDay=" + allDay + "]";
+		return "CalendarVO [title=" + title + ", start=" + start + ", end=" + end + ", color=" + color + "]";
 	}
+
 }

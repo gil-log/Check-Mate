@@ -27,6 +27,7 @@
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 <![endif]-->
+
 </head>
 
 <body>
@@ -79,7 +80,7 @@
                                 
                                 <div class="col-lg-10" style="margin:auto;">
                                 <div class="progress m-t-15" style="height:30px;">
-                                    <div class="progress-bar" style="width:100%; height:30px;">100%</div>
+                                    <div class="progress-bar" style="width:100%; height:30px;" id="attendProgress">100%</div>
                                 </div>
                                 </div>
                                 
@@ -91,16 +92,16 @@
 														<div class="calendar-events m-b-20"
 															data-class="bg-success">
 															<i class="fa fa-circle text-success m-r-10"></i>출석 완료 <a
-																style="float: right;">+5</a>
+																style="float: right;" id="attendOk">+5</a>
 														</div>
 														<div class="calendar-events m-b-20" data-class="bg-danger">
 															<i class="fa fa-circle text-danger m-r-10"></i>결석 <a
-																style="float: right;">-5</a>
+																style="float: right;" id="attendNo">-5</a>
 														</div>
 														<div class="calendar-events m-b-20"
 															data-class="bg-warning">
 															<i class="fa fa-circle text-warning m-r-10"></i>지각 <a
-																style="float: right;">-3</a>
+																style="float: right;" id="attendLate">-3</a>
 														</div>
 														<hr>
 														
@@ -108,7 +109,7 @@
 														
 														<div class="col-lg-10" style="margin:auto;">
 														<div class="progress m-t-15" style="height:30px;">
-														<div class="progress-bar bg-secondary" style="width:100%; height:30px;">100%</div>
+														<div class="progress-bar bg-secondary" style="width:100%; height:30px;" id="hwProgress">100%</div>
 														</div>
 														</div>
                                 
@@ -247,57 +248,23 @@
     <script src="${pageContext.request.contextPath}/resources/template/dist/js/jquery.ui.touch-punch-improved.js"></script>
     <script src="${pageContext.request.contextPath}/resources/template/dist/js/jquery-ui.min.js"></script>
 
-    <script>
-
+    <script type="text/javascript">
     $(document).ready(function() {
-    	
     	calendarEventsList();
-    	
-        var defaultEvents = [
-            {
-            	id : 1
-            	, title : "All Day Event"
-               , start : "2020-07-01"
-          },
-          {
-        	  	id : 1,
-                title : "Long Event"
-              , start : "2020-07-02"
-              , end : "2020-07-04"
-          },
-          {
-                id : 2
-              , title : "출석진행중"
-              , color : "#7460ee"
-
-              , start : "2020-07-13T16:00:00"
-          },
-          {
-                id : 2
-              , title : "zzzz"
-              , color : "#0000FF"
-              , start : "2020-07-20T16:00:00"
-          }
-            ];
-       
-        calendarCreate(defaultEvents);
+    	calendarPoint();
     });
-    
+
     function calendarEventsList() {
-    	var u_id = '${group.u_id}';
-    	var g_no = ${group.g_no};
+
         $.ajax({
-            url : 'caltest',                    // 전송 URL
+            url : 'calendarinfo',                    // 전송 URL
             type : 'GET',                // GET or POST 방식
             traditional : true,
             data : {
-                u_id : u_id,        // 보내고자 하는 data 변수 설정
-                g_no : g_no
             },
-            
             //Ajax 성공시 호출 
             success : function(d){
-                alert(d);
+                $('#calendar').fullCalendar( 'addEventSource', d )
             },
          
             //Ajax 실패시 호출
@@ -306,34 +273,33 @@
             }
         });
     }
-    
-    
-    function calendarCreate(defaultEvents) {
-  	  $('#calendar').fullCalendar({
-          slotDuration: '00:15:00',
-          /* If we want to split day time each 15minutes */
-          minTime: '08:00:00',
-          maxTime: '19:00:00',
-          defaultView: 'month',
-          handleWindowResize: true,
 
-          header: {
-              left: 'prev,next today',
-              center: 'title',
-              right: 'month,agendaWeek,agendaDay'
-          },
-          events: defaultEvents,
-          editable: false,
-          droppable: false, // this allows things to be dropped onto the calendar !!!
-          eventLimit: true, // allow "more" link when too many events
-          selectable: true,
-          locale: 'ko'
-      });
-    	
-    }
-    
+    function calendarPoint() {
+        
+        $.ajax({
+            url : 'calendarpoint',                    // 전송 URL
+            type : 'GET',                // GET or POST 방식
+            traditional : true,
+            data : {
+            },
+            //Ajax 성공시 호출 
+            success : function(d){
+                document.getElementById('attendProgress').style.width = d.attendPercent+"%";
+                $('#attendProgress').text(d.attendPercent+"%");
+                $('#attendOk').text("+ " + d.attendOne * 5);
+                $('#attendLate').text("- " + d.attendTwo * 3);
+                $('#attendNo').text("- " + d.attendThree * 5);
+            },
+         
+            //Ajax 실패시 호출
+            error : function(jqXHR, textStatus, errorThrown){
+                console.log("jqXHR : " +jqXHR +"textStatus : " + textStatus + "errorThrown : " + errorThrown);
+            }
+        });
+
+        }
     </script>
-    
+ 
 </body>
 
 </html>
