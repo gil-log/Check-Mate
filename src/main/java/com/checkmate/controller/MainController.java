@@ -1,9 +1,6 @@
 package com.checkmate.controller;
 
-import java.text.DateFormat;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -22,9 +19,6 @@ import com.checkmate.vo.GroupVO;
 import com.checkmate.vo.HomeworkVO;
 import com.checkmate.vo.NoticeVO;
 
-/**
- * Handles requests for the application home page.
- */
 @Controller
 public class MainController {
 	
@@ -41,6 +35,7 @@ public class MainController {
 		
 		return "checkmate";
 	}
+	
 	@RequestMapping(value = "/main", method = RequestMethod.GET)
 	public String mainget(HttpServletRequest request, Model model) throws Exception {
 		logger.info("main_get");

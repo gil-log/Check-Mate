@@ -1,6 +1,5 @@
 package com.checkmate.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -10,7 +9,6 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -22,18 +20,18 @@ import com.checkmate.vo.NoticeVO;
 import com.checkmate.vo.WrapperVO;
 
 @Controller
-public class NoticeController {
+public class InformationController {
 	
 	@Inject
 	NoticeService noticeService;
 	
-	private static final Logger logger = LoggerFactory.getLogger(NoticeController.class);
+	private static final Logger logger = LoggerFactory.getLogger(InformationController.class);
 
 	@RequestMapping(value = "/information", method = RequestMethod.GET)
 	public String noticeget(HttpServletRequest request) throws Exception {
 		logger.info("information_get");
 		
-		return "notice";
+		return "information";
 	}
 	
 	@RequestMapping(value = "/notice", method = RequestMethod.GET)
@@ -114,8 +112,6 @@ public class NoticeController {
 	public Object noticeajaxdelete(HttpServletRequest request, @ModelAttribute NoticeVO noticeVO) throws Exception {
 	        
 		logger.info("/notice_delete");
-		
-		int n_no = noticeVO.getN_no();
 
 		noticeService.noticeDelete(noticeVO);
 		
