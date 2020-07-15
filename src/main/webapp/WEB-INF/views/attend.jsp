@@ -74,7 +74,7 @@
 									<div class="ml-auto">
 										<div class="tetx-right">
 
-							
+											
 											<!-- dropdown 추가 시작 -->
 											<a class="nav-link dropdown-toggle text-muted waves-effect waves-dark pro-pic"
 												href="" data-toggle="dropdown" aria-haspopup="true"
@@ -95,7 +95,7 @@
 							<div id ="makeAttend" style="display:none">
 								<h7 class="card-title m-b-0">시간 설정</h7>
 
-								<form id="attendInsert" >
+								<form id="attendMake" >
 									<select id="timer" class="dropdown-item" name = "time">
 										<option value="5">5분 후</option>
 										<option value="10">10분 후</option>
@@ -113,11 +113,11 @@
 
 
 							<!-- 출석현황 네모박스 출력 시작 -->
-							<div class="row">
+							<div class="row" id="attendBox">
 								<c:forEach items="${attendList}" var="attendList">
 									<c:choose>
 										<c:when test="${attendList.a_flag eq 0}">
-											<div class="col-md-6 col-lg-2 col-xlg-3">
+											<div class="col-md-6 col-lg-2 col-xlg-3" onclick="attend()">
 												<div class="card card-hover">
 													<div class="box bg-cyan text-center">
 														<h1 class="font-light text-white">
@@ -261,9 +261,59 @@
 	<script
 		src="${pageContext.request.contextPath}/resources/template/dist/js/pages/chart/chart-page-init.js"></script>
 	
-	<!-- ajax 사용 예제 -->
+	
+	<!-- 출석 생성(popup) -->
+	<script type="text/javascript">
+	 var toggle = false;
+	 
+	 $('#attend-switch').on("click", function() {
+		toggle = !toggle;
+		if(toggle){
+			alert("까꿍");
+ 			$("#makeAttend").slideDown();
+	 	}
+	 	else{
+	 		$("#makeAttend").slideUp();
+		}
+	 });
+	</script>
+	
+	<!-- 출석 생성 동작 -->
 	<script type="text/javascript">
 		function ajaxtest() {
+			var time= jQuery("#attendMake").serialize();
+	
+			alert(time);
+			
+			$.ajax({
+				url : 'attendMake', // 전송 URL
+				type : 'POST', // GET or POST 방식
+				traditional : true,
+				data : {
+					test : time	// 보내고자 하는 data 변수 설정
+				},
+
+				//Ajax 성공시 호출 
+				success : function(data) {
+					alert("생성이 완료되었습니다.");
+					$('#attendBox').append("<div class='col-md-6 col-lg-2 col-xlg-3'><div class='card card-hover'><div class='box bg-cyan text-center'><h1 class='font-light text-white'><i class='mdi mdi-calendar-check'></i></h1><h6 class='text-white'>"
+											 + data.a_date + "</h6><h6 class='text-white'>출석 중</h6></div></div></div>");
+				},
+
+				//Ajax 실패시 호출
+				error : function(jqXHR, textStatus, errorThrown) {
+					alert("생성이 실패하였습니다.");
+					console.log("jqXHR : " + jqXHR + "textStatus : "
+							+ textStatus + "errorThrown : " + errorThrown);
+				}
+			});
+		}
+	</script>
+	
+	
+	<!-- 출석버튼 누르는 동작 -->
+	<script type="text/javascript">
+		function attend() {
 			var time= jQuery("#attendInsert").serialize();
 	
 			alert(time);
@@ -273,18 +323,19 @@
 				type : 'POST', // GET or POST 방식
 				traditional : true,
 				data : {
-					test : time
-				// 보내고자 하는 data 변수 설정
+					test : time	// 보내고자 하는 data 변수 설정
 				},
 
 				//Ajax 성공시 호출 
-				success : function(d) {
-					alert("출석을 생성하셨습니다.");
-					
+				success : function(data) {
+					alert("생성이 완료되었습니다.");
+					$('#attendBox').append("<div class='col-md-6 col-lg-2 col-xlg-3'><div class='card card-hover'><div class='box bg-cyan text-center'><h1 class='font-light text-white'><i class='mdi mdi-calendar-check'></i></h1><h6 class='text-white'>"
+											 + data.a_date + "</h6><h6 class='text-white'>출석 중</h6></div></div></div>");
 				},
 
 				//Ajax 실패시 호출
 				error : function(jqXHR, textStatus, errorThrown) {
+					alert("생성이 실패하였습니다.");
 					console.log("jqXHR : " + jqXHR + "textStatus : "
 							+ textStatus + "errorThrown : " + errorThrown);
 				}
@@ -292,6 +343,8 @@
 		}
 	</script>
 	
+	
+	<!-- ajax 사용 예제 -->
 	<script type="text/javascript">
 	$('ajaxtest').on('click', function() {
 		var sendVar = "뷰에서 컨트롤러";
@@ -300,7 +353,7 @@
 			url : 'test', // 전송 URL
 			type : 'POST', // GET or POST 방식
 			traditional : true,
-			data : sendVar,//$('#attendInsert').serialize(),// 보내고자 하는 data 변수 설정
+			data : sendVar, // 보내고자 하는 data 변수 설정
 			
 
 			//Ajax 성공시 호출 
@@ -318,21 +371,7 @@
 	</script>
 	
 	
-	<!-- 출석 생성(popup) -->
-	<script type="text/javascript">
-	 var toggle = false;
-	 
-	 $('#attend-switch').on("click", function() {
-		toggle = !toggle;
-		if(toggle){
-			alert("까꿍");
- 			$("#makeAttend").slideDown();
-	 	}
-	 	else{
-	 		$("#makeAttend").slideUp();
-		}
-	 });
-	</script>
+
 </body>
 
 </html>
