@@ -1,5 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page language="java" pageEncoding="UTF-8" contentType="text/html; charset=UTF-8" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html dir="ltr">
 
@@ -21,6 +22,70 @@
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 <![endif]-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script type="text/javascript">
+/* 
+$(function(){
+	//아이디 중복체크
+	    $('#u_id').blur(function(){
+	        $.ajax({
+		     type:"POST",
+		     url:"/checkSignup",
+		     data:{
+		            "u_id":$('#u_id').val()
+		     },
+		     success:function(data){	//data : checkSignup에서 넘겨준 결과값
+		            if($.trim(data)=="YES"){
+		               if($('#u_id').val()!=''){ 
+		               	alert("사용가능한 아이디입니다.");
+		               }
+		           	}else{
+		               if($('#u_id').val()!=''){
+		                  alert("중복된 아이디입니다.");
+		                  $('#u_id').val('');
+		                  $('#u_id').focus();
+		               }
+		            }
+		         }
+		    }) 
+	     })
+
+	});
+ */
+
+
+$(function(){ 
+	$("#alert-success").hide(); 
+	$("#alert-danger").hide(); 
+	$("input").keyup(function(){ 
+		var pwd1=$("#upwd").val(); 
+		var pwd2=$("#pwdchk").val(); 
+		 console.log(pwd1);
+		 console.log(pwd2);
+		if(pwd1 != "" || pwd2 != ""){ 
+			if(pwd1 == pwd2){ 
+				$("#alert-success").show();
+				$("#alert-danger").hide(); 
+				$("#submit-r").removeAttr("disabled");
+			}else{
+				$("#alert-success").hide();
+				$("#alert-danger").show();
+				$("#submit-r").attr("disabled", "disabled");	
+			}
+		}
+	});
+	
+	$("#submit-r").on("click", function(){
+		window.alert("회원가입에 성공 하였습니다!");
+		    
+		window.close();
+		});
+});
+
+
+</script>
+
 </head>
 
 <body>
@@ -48,33 +113,49 @@
                         <span class="db"><img src="${pageContext.request.contextPath}/resources/checkmateimg/logo.png" height="200" width="200" alt="logo" /></span>
                     </div>
                     <!-- Form -->
-                    <form class="form-horizontal m-t-20" id="loginform" action="index.html">
+                    <form class="form-horizontal m-t-20" id="loginform" method="post" action="/login">
+                    <c:if test="${user == null}">
                         <div class="row p-b-30">
                             <div class="col-12">
                                 <div class="input-group mb-3">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text bg-success text-white" id="basic-addon1"><i class="ti-user"></i></span>
+                                        <span class="input-group-text bg-success text-white"><i class="ti-user"></i></span>
                                     </div>
-                                    <input type="text" class="form-control form-control-lg" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1" required="">
+                                    <input type="text" name="u_id" class="form-control form-control-lg" id="u_id" placeholder="아이디" required>
                                 </div>
                                 <div class="input-group mb-3">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text bg-warning text-white" id="basic-addon2"><i class="ti-pencil"></i></span>
+                                        <span class="input-group-text bg-warning text-white"><i class="ti-pencil"></i></span>
                                     </div>
-                                    <input type="text" class="form-control form-control-lg" placeholder="Password" aria-label="Password" aria-describedby="basic-addon1" required="">
+                                    <input type="password" name="u_pwd" class="form-control form-control-lg" id="u_pwd" placeholder="비밀번호" required>
                                 </div>
                             </div>
-                        </div>
+                        </div> 
                         <div class="row border-top border-secondary">
                             <div class="col-12">
                                 <div class="form-group">
                                     <div class="p-t-20">
                                         <button class="btn btn-danger" id="to-register" type="button"><i class="fa fa-user-plus m-r-5"></i> 회원가입</button>
-                                        <button class="btn btn-success float-right" type="submit">로그인</button>
+                                        <button class="btn btn-success float-right" name = "submit" id = "submit" type="submit">로그인</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                    </c:if>
+                    <c:if test="${user != null }">
+						<div>
+						<h3>${user.u_id}님 방문을 환영 합니다.</h3>
+						<button id="logoutBtn" type="button">로그아웃</button>
+						</div>
+					</c:if> 
+					
+					   <%-- <!-- 로그인에 실패할경우  -->
+                      <c:if test="${msg == false}">               
+                       <div >
+                         <p style="color: red;">가입하지 않은 아이디이거나, 잘못된 비밀번호입니다.</p>
+                       </div>
+                      </c:if> --%>
+					                   
                     </form>
                 </div>
                 <div id="registerform">
@@ -83,41 +164,48 @@
                     </div>
                     <div class="row m-t-20">
                         <!-- Form -->
-                    <form class="form-horizontal m-t-20" action="index.html">
+                    <form class="form-horizontal m-t-20" method="post" action="/register">
                         <div class="row p-b-30">
                             <div class="col-12">
-                                <div class="input-group mb-3">
+                            	<div class="input-group mb-3">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text bg-success text-white" id="basic-addon1"><i class="ti-user"></i></span>
+                                        <span class="input-group-text bg-success text-white"><i class="ti-user"></i></span>
                                     </div>
-                                    <input type="text" class="form-control form-control-lg" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1" required>
-                                </div>
-                                <!-- email -->
-                                <div class="input-group mb-3">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text bg-danger text-white" id="basic-addon1"><i class="ti-email"></i></span>
-                                    </div>
-                                    <input type="text" class="form-control form-control-lg" placeholder="Email Address" aria-label="Username" aria-describedby="basic-addon1" required>
+                                    <input type="text" name="u_id" class="form-control form-control-lg" id="u_id" placeholder="아이디" required>
                                 </div>
                                 <div class="input-group mb-3">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text bg-warning text-white" id="basic-addon2"><i class="ti-pencil"></i></span>
+                                        <span class="input-group-text bg-warning text-white" ><i class="ti-pencil"></i></span>
                                     </div>
-                                    <input type="text" class="form-control form-control-lg" placeholder="Password" aria-label="Password" aria-describedby="basic-addon1" required>
+                                    <input type="password" name="u_pwd" class="form-control form-control-lg" id="upwd" placeholder="비밀번호" required>
+                                </div>
+                                <div class="input-group mb-3" id="check">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text bg-info text-white" ><i class="ti-pencil"></i></span>
+                                    </div>
+                                    <input type="password" class="form-control form-control-lg" id="pwdchk" placeholder="비밀번호 확인" required>
+                                </div>
+                                <div class="alert alert-success" id="alert-success">비밀번호가 일치합니다.</div> 
+                                <div class="alert alert-danger" id="alert-danger">비밀번호가 일치하지 않습니다.</div>
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text bg-success text-white"><i class="ti-user"></i></span>
+                                    </div>
+                                    <input type="text" name="u_name" class="form-control form-control-lg" id="u_name" placeholder="이름" required>
                                 </div>
                                 <div class="input-group mb-3">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text bg-info text-white" id="basic-addon2"><i class="ti-pencil"></i></span>
+                                        <span class="input-group-text bg-danger text-white"><i class="ti-email"></i></span>
                                     </div>
-                                    <input type="text" class="form-control form-control-lg" placeholder=" Confirm Password" aria-label="Password" aria-describedby="basic-addon1" required>
+                                    <input type="text" name="u_email" class="form-control form-control-lg" id="u_email" placeholder="이메일 주소" required>
                                 </div>
                             </div>
                         </div>
-                            <!-- pwd -->
+                            
                             <div class="row m-t-20 p-t-20 border-top border-secondary">
                                 <div class="col-12">
                                     <a class="btn btn-success" href="#" id="to-login" name="action">돌아가기</a>
-                                    <button class="btn btn-info float-right" type="button" name="action">회원가입</button>
+                                    <button class="btn btn-info float-right" type="submit" name = "submit" id = "submit-r" >회원가입</button>
                                 </div>
                             </div>
                     </form>
@@ -170,6 +258,9 @@
         $("#registerform").hide();
         $("#loginform").fadeIn();
     });
+    $("#logoutBtn").on("click", function(){
+		location.href="/logout";
+	});
     </script>
 
 </body>

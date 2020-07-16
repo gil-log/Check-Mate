@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="userMapper">
+	<!-- 회원가입 -->
+	<insert id="register">
+	    INSERT INTO C_USER(		U_ID 
+	   					  		, U_PWD
+	   					       	, U_NAME
+	   					       	, U_EMAIL)
+	   					       
+	                  VALUES(    #{u_id} 
+	                 		   , #{u_pwd}
+	                 		   , #{u_name}
+	                 		   , #{u_email}
+	                 		   )
+    </insert>
+    
+    <!-- 유저정보 -->
+    <select id="userInfo" resultType="com.checkmate.vo.UserVO">
+    	SELECT 	U_ID 
+	   			, U_PWD
+	   			, U_NAME
+	   			, U_EMAIL
+    		FROM C_USER
+    			WHERE U_ID = #{u_id}
+      
+    </select>
+    
+     <!-- 로그인 -->
+	<select id="login" resultType="com.checkmate.vo.UserVO">
+		SELECT U_ID, U_PWD 
+		  FROM C_USER
+		 WHERE U_ID = #{u_id}
+		   AND U_PWD = #{u_pwd}   
+	</select>
+	
+</mapper>

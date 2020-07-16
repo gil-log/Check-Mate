@@ -31,12 +31,7 @@ public class MainController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(MainController.class);
 
-	@RequestMapping(value = "/checkmate", method = RequestMethod.GET)
-	public String checkmateget() {
-		logger.info("checkmate_get");
-		
-		return "checkmate";
-	}
+
 	@RequestMapping(value = "/main", method = RequestMethod.GET)
 	public String mainget(HttpServletRequest request, Model model) throws Exception {
 		logger.info("main_get");
