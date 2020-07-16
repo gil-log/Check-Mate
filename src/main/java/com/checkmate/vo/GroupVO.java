@@ -6,7 +6,14 @@ public class GroupVO {
 	private String u_id;
 	private String g_name;
 	private int g_flag;
+	private int u_point;
 	
+	public int getU_point() {
+		return u_point;
+	}
+	public void setU_point(int u_point) {
+		this.u_point = u_point;
+	}
 	public int getG_no() {
 		return g_no;
 	}
@@ -33,6 +40,7 @@ public class GroupVO {
 	}
 	@Override
 	public String toString() {
-		return "GroupVO [g_no=" + g_no + ", u_id=" + u_id + ", g_name=" + g_name + ", g_flag=" + g_flag + "]";
+		return "GroupPointVO [g_no=" + g_no + ", u_id=" + u_id + ", g_name=" + g_name + ", g_flag=" + g_flag
+				+ ", u_point=" + u_point + "]";
 	}
 }

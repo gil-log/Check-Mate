@@ -4,11 +4,32 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="homeworkMapper">
 
-
+	<insert id="write">
+	INSERT INTO C_HW ( h_no
+						, u_id
+						, g_no
+						, h_title
+						, h_content
+						, h_file
+						, h_date
+						, h_flag
+						, h_deadline)
+				VALUES ( h_no_seq.NEXTVAL
+						, #{u_id}
+						, #{g_no}
+						, #{h_title}
+						, #{h_content}
+						, #{h_file}
+						, SYSDATE
+						, 0
+						, #{h_deadline}
+						 )
+    </insert>
+    
 	<!-- 메인에서 5개만 숙제 뽑아오기 위해서, 이때  <=의 부등호를 인식시키기위해 <![CDATA[부등호 들어가는부분]]> 처리 해주어야함 -->
 	<select id="homeworkListMini" resultType="com.checkmate.vo.HomeworkVO" parameterType="com.checkmate.vo.GroupVO">
 	SELECT * FROM(
-      SELECT H_NO, U_ID, G_NO, H_TITLE, H_CONTENT, H_DATE, H_FLAG, A_DEADLINE
+      SELECT H_NO, U_ID, G_NO, H_TITLE, H_CONTENT, H_DATE, H_FLAG, H_DEADLINE
       FROM C_HW
       WHERE H_FLAG = 1 AND G_NO = #{g_no}
       ORDER BY H_DATE DESC
@@ -21,9 +42,57 @@
 	<select id="homeworkListCount" resultType="int" parameterType="com.checkmate.vo.GroupVO">
       SELECT COUNT(*)
       FROM(
-      SELECT H_NO, U_ID, G_NO, H_TITLE, H_CONTENT, H_DATE, H_FLAG, A_DEADLINE
+      SELECT H_NO, U_ID, G_NO, H_TITLE, H_CONTENT, H_DATE, H_FLAG, H_DEADLINE
       FROM C_HW
       WHERE H_FLAG = 1 AND G_NO = #{g_no})
 	</select>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+<!-- 	
+
+
+// 지난거
+SELECT H_NO, U_ID, G_NO, H_TITLE, H_CONTENT, H_FILE, H_DATE, H_FLAG, H_DEADLINE
+FROM C_HW
+WHERE G_NO = 1 AND H_FLAG = 0 AND
+H_DEADLINE < SYSDATE
+
+
+// 안한거
+SELECT PAST.H_NO AS H_NO
+FROM (
+SELECT H_NO
+FROM C_HW
+WHERE G_NO = 1 AND U_ID = 'test1' AND H_FLAG = 1) DONE,
+(SELECT H_NO
+FROM C_HW
+WHERE G_NO = 1 AND H_FLAG = 0 AND
+H_DEADLINE < SYSDATE) PAST
+WHERE DONE.H_NO != PAST.H_NO
+
+
+// 진행중
+SELECT H_NO, U_ID, G_NO, H_TITLE, H_CONTENT, H_FILE, H_DATE, H_FLAG, H_DEADLINE
+FROM C_HW
+WHERE G_NO = 1 AND H_FLAG = 0 AND
+SYSDATE BETWEEN H_DATE AND H_DEADLINE
+
+// 내가 한거
+SELECT H_NO, U_ID, G_NO, H_TITLE, H_CONTENT, H_FILE, H_DATE, H_FLAG, H_DEADLINE
+FROM C_HW
+WHERE G_NO = 1 AND U_ID = 'test1' AND H_FLAG = 1 -->
+	
+
+	
 	
 </mapper>

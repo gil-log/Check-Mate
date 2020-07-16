@@ -30,7 +30,6 @@ public class InformationController {
 	@RequestMapping(value = "/information", method = RequestMethod.GET)
 	public String noticeget(HttpServletRequest request) throws Exception {
 		logger.info("information_get");
-		
 		return "information";
 	}
 	

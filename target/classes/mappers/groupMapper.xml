@@ -4,15 +4,42 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="groupMapper">
 
-
-
+	<insert id="GroupCreate"><!-- parameterType="com.checkmate.vo.GroupVO"  -->
+	    INSERT INTO C_Group(   G_NO 
+	   					       , U_ID
+	   					       , G_NAME
+	   					       , G_FLAG
+	   					       )
+	                  VALUES(    G_NO_SEQ.NEXTVAL
+	                 		   , #{u_id}
+	                 		   , #{g_name}
+	                 		   , 1
+	                 		   )
+    </insert>
+		
+	<select id="GroupList" resultType="com.checkmate.vo.GroupVO" parameterType="com.checkmate.vo.GroupVO">
+      SELECT G_NO, U_ID, G_NAME, G_FLAG
+      FROM C_GROUP
+      WHERE G_NO = #{g_no}
+      ORDER BY G_NO DESC
+	</select>
+	
+	<select id="GroupListCount" resultType="int" parameterType="com.checkmate.vo.GroupVO">
+      SELECT COUNT(G_NO)
+      FROM C_GROUP
+	</select>
+	
 	<select id="findMaster" resultType="com.checkmate.vo.GroupVO" parameterType="com.checkmate.vo.GroupVO">
 		SELECT G_NO, U_ID, G_FLAG, G_NAME
 		FROM C_GROUP
 		WHERE G_NO = #{g_no} AND G_FLAG = 1
 	</select>
 
-
+	<update id="userPoint" parameterType="com.checkmate.vo.GroupPointVO">
+		UPDATE C_GROUP SET
+		U_POINT = #{u_point}
+		WHERE G_NO = #{g_no} AND U_ID = #{u_id} AND G_FLAG = #{g_flag}
+	</update>
 
 
 

@@ -23,6 +23,7 @@ import com.checkmate.service.GroupService;
 import com.checkmate.service.HomeworkService;
 import com.checkmate.vo.AttendVO;
 import com.checkmate.vo.CalendarVO;
+import com.checkmate.vo.GroupPointVO;
 import com.checkmate.vo.GroupVO;
 import com.checkmate.vo.NoticeVO;
 import com.checkmate.vo.WrapperVO;
@@ -187,12 +188,34 @@ public class MypageController {
 		
 		System.out.println(attendPercent);
 		
+		//Group 테이블에 유저 point 넣기
+		
+		// 출석 관련 점수 총합
+		int userAttendPoint = (myAttendCountOne * 5) - (myAttendCountTwo * 3) - (myAttendCountThree * 5);
+		
+		// 숙제 관련 점수 총합
+		int userHwPoint = 0;
+		
+		int userTotalPoint = userAttendPoint + userHwPoint;
+		
+		GroupPointVO groupPointVO = new GroupPointVO();
+		
+		groupPointVO.setG_no(groupVO.getG_no());
+		groupPointVO.setU_id(groupVO.getU_id());
+		groupPointVO.setG_flag(groupVO.getG_flag());
+		groupPointVO.setU_point(userTotalPoint);
+		
+		System.out.println("유저 포인트 총합 : " + userTotalPoint);
+		groupService.userPoint(groupPointVO);
+		
 		Map<String, Object> map = new HashMap<String, Object>();
 		
 		map.put("attendOne", myAttendCountOne);
 		map.put("attendTwo", myAttendCountTwo);
 		map.put("attendThree", myAttendCountThree);
 		map.put("attendPercent", attendPercent);
+		
+		map.put("myPoint", userTotalPoint);
 		
 		return map;
 	}

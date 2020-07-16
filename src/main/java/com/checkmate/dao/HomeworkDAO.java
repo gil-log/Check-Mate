@@ -10,4 +10,8 @@ public interface HomeworkDAO {
 	public List<HomeworkVO> homeworkListMini(GroupVO groupVO) throws Exception;
 
 	public int homeworkListCount(GroupVO groupVO) throws Exception;
+	
+	//과제 작성
+	public void write(HomeworkVO homeworkVO) throws Exception;
+	
 }

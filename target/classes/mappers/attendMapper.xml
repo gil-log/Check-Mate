@@ -4,18 +4,39 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="attendMapper">
 
-	<select id="attendList" resultType="com.checkmate.vo.AttendVO" parameterType="com.checkmate.vo.AttendVO">
-		SELECT A_DATE, G_NO, U_ID, A_FLAG
-		FROM   C_ATTEND
-		WHERE  U_id = #{u_id}
-		AND    G_NO = #{g_no}
+	<!-- 출석현황을 불러오는 경우  -->
+	<select id="attendList" resultType="com.checkmate.vo.AttendListVO" parameterType="com.checkmate.vo.AttendVO">
+		SELECT A.A_DATE, A.G_NO, A.U_ID, A.A_FLAG, G.G_FLAG
+		FROM   C_ATTEND A, C_GROUP G
+		WHERE  A.U_id = #{u_id}
+		AND    A.G_NO = #{g_no}
+		AND    A.U_ID = G.U_ID
+		AND    A.G_NO = G.G_NO
 	</select>
 	
-	<!-- 관리자가 아닌 인원들이 출석체크를 눌렀을 경우 동작 -->
+	<!-- 관리자가 출석생성하는 경우-->
+	<insert id="attendMake" parameterType="com.checkmate.vo.AttendVO">
+		INSERT INTO C_ATTEND (A_DATE, U_ID, G_NO, A_FLAG)
+		VALUES(SYSDATE, #{u_id}, #{g_no}, 0)	
+	</insert>
+	
+	<!-- 관리자가 출석생성하는 경우
 	<insert id="attendInsert" parameterType="com.checkmate.vo.AttendVO">
 		INSERT INTO C_ATTEND (A_DATE, U_ID, G_NO, A_FLAG)
 		VALUES(SYSDATE + #{a_date}/24/60, #{u_id}, #{g_no}, 0)	
 	</insert>
+	-->
+	
+	<!-- 추가된 출석을 불러오는 경우  -->
+	<select id="attendLast" resultType="com.checkmate.vo.AttendVO" parameterType="com.checkmate.vo.AttendVO">
+		SELECT A.A_FLAG, A.A_DATE, A.U_ID, A.G_NO
+		FROM ( SELECT ROWNUM AS RNUM, A_DATE, G_NO, U_ID, A_FLAG
+       		   FROM   C_ATTEND
+       		   WHERE  U_ID = #{u_id}
+      	 	   AND 	  G_NO = #{g_no}
+       		   ORDER BY A_DATE DESC) A
+		WHERE RNUM = 1
+	</select>
 	
 	<!-- calendar 용 attend flag 별로 list 뽑기 -->
 	<select id="attendListCalendar" resultType="com.checkmate.vo.AttendVO" parameterType="com.checkmate.vo.AttendVO">

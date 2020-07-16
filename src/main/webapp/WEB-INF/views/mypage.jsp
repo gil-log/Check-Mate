@@ -28,6 +28,18 @@
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 <![endif]-->
 
+<!-- Check Mate! 폰트 -->
+<link href="https://fonts.googleapis.com/css2?family=Ranchers&display=swap" rel="stylesheet">
+
+<style type="text/css">
+.checkmate-text{
+	font-family: 'Ranchers', cursive;
+	font-size: 40px;
+}
+.progress-bg{
+	background: url("${pageContext.request.contextPath}/resources/checkmateimg/checkmate_logo_text.png");
+}
+</style>
 </head>
 
 <body>
@@ -80,7 +92,7 @@
                                 
                                 <div class="col-lg-10" style="margin:auto;">
                                 <div class="progress m-t-15" style="height:30px;">
-                                    <div class="progress-bar" style="width:100%; height:30px;" id="attendProgress">100%</div>
+                                    <div class="progress-bar" style="width:0%; height:30px;" id="attendProgress">100%</div>
                                 </div>
                                 </div>
                                 
@@ -161,7 +173,7 @@
 														<hr>
 														<h4 class="alert-heading text-center">내 순위</h4>
 															<i class="fa fa-chess-king text-dark m-r-10"></i> 5위.
-															<a style="float: right;">test1</a>
+															<a style="float: right;" id="myRank">test1</a>
 														<hr>
 
 														</div>
@@ -192,7 +204,7 @@
 
 						<div class="card">
 							<div class="card-body border-top">
-														<h5 class="card-title text-center">Check Mate!</h5>
+														<h5 class="card-title text-center checkmate-text">Check Mate!</h5>
 														
 														<div class="col-lg-10" style="margin:auto;">
 														<div class="progress m-t-15" style="height:70px;">
@@ -289,6 +301,7 @@
                 $('#attendOk').text("+ " + d.attendOne * 5);
                 $('#attendLate').text("- " + d.attendTwo * 3);
                 $('#attendNo').text("- " + d.attendThree * 5);
+                $('#myRank').text(d.myPoint + " 점");
             },
          
             //Ajax 실패시 호출
