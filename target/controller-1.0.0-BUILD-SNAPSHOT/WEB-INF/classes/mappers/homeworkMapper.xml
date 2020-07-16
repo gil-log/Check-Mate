@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="homeworkMapper">
+
+
+	<!-- 메인에서 5개만 숙제 뽑아오기 위해서, 이때  <=의 부등호를 인식시키기위해 <![CDATA[부등호 들어가는부분]]> 처리 해주어야함 -->
+	<select id="homeworkListMini" resultType="com.checkmate.vo.HomeworkVO" parameterType="com.checkmate.vo.GroupVO">
+	SELECT * FROM(
+      SELECT H_NO, U_ID, G_NO, H_TITLE, H_CONTENT, H_DATE, H_FLAG, A_DEADLINE
+      FROM C_HW
+      WHERE H_FLAG = 1 AND G_NO = #{g_no}
+      ORDER BY H_DATE DESC
+      )
+      <![CDATA[
+      WHERE ROWNUM <= 5
+      ]]>
+	</select>
+	
+	<select id="homeworkListCount" resultType="int" parameterType="com.checkmate.vo.GroupVO">
+      SELECT COUNT(*)
+      FROM(
+      SELECT H_NO, U_ID, G_NO, H_TITLE, H_CONTENT, H_DATE, H_FLAG, A_DEADLINE
+      FROM C_HW
+      WHERE H_FLAG = 1 AND G_NO = #{g_no})
+	</select>
+	
+</mapper>

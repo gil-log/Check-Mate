@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="noticeMapper">
+
+	<select id="noticeList" resultType="com.checkmate.vo.NoticeVO" parameterType="com.checkmate.vo.GroupVO">
+      SELECT N_NO, G_NO, U_ID, N_TITLE, N_CONTENT, N_DATE, N_FLAG
+      FROM C_NOTICE
+      WHERE G_NO = #{g_no}
+      ORDER BY N_DATE DESC
+	</select>
+	
+	<select id="noticeListCount" resultType="int" parameterType="com.checkmate.vo.GroupVO">
+      SELECT COUNT(*)
+      FROM(
+      SELECT N_NO, G_NO, U_ID, N_TITLE, N_CONTENT, N_DATE, N_FLAG
+      FROM C_NOTICE
+      WHERE G_NO = #{g_no})
+	</select>
+	
+	<!-- 메인에서 5개만 공지 뽑아오기 위해서, 이때  <=의 부등호를 인식시키기위해 <![CDATA[부등호 들어가는부분]]> 처리 해주어야함 -->
+	<select id="noticeListMini" resultType="com.checkmate.vo.NoticeVO" parameterType="com.checkmate.vo.GroupVO">
+	  SELECT * FROM(
+      SELECT N_NO, G_NO, U_ID, N_TITLE, N_CONTENT, N_DATE, N_FLAG
+      FROM C_NOTICE
+      WHERE G_NO = #{g_no}
+      ORDER BY N_DATE DESC
+      )
+      <![CDATA[
+      WHERE ROWNUM <= 5
+      ]]>
+	</select>
+	
+	<!-- 선택한 notice가져오기 -->
+	<select id="noticeRead" resultType="com.checkmate.vo.NoticeVO" parameterType="com.checkmate.vo.NoticeVO">	
+      SELECT N_NO, G_NO, U_ID, N_TITLE, N_CONTENT, N_DATE, N_FLAG
+      FROM C_NOTICE
+      WHERE N_NO = #{n_no}
+	</select>
+	
+	<!-- 공지 작성 -->
+	<insert id="noticeWrite" parameterType="com.checkmate.vo.NoticeVO">
+	    INSERT INTO C_NOTICE(   N_NO 
+	   					       , G_NO 
+	   					       , U_ID
+	   					       , N_TITLE
+	   					       , N_CONTENT
+	   					       , N_DATE
+	   					       , N_FLAG
+	   					       )
+	                  VALUES(    N_NO_SEQ.NEXTVAL
+	                 		   , #{g_no}
+	                 		   , #{u_id}
+	                 		   , #{n_title}
+	                 		   , #{n_content}
+	                 		   , SYSDATE
+	                 		   , 1
+	                 		   )
+    </insert>
+    
+    <!-- 공지 삭제 -->
+    <delete id="noticeDelete" parameterType="com.checkmate.vo.NoticeVO">
+    	DELETE FROM C_NOTICE
+    	WHERE N_NO = #{n_no}
+    </delete>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+	<!-- 참고용 -->
+	
+	
+
+
+	<insert id="has_eno_reg">
+	    INSERT INTO EMP(   E_NO 
+	   					       , P_NO 
+	   					       , B_NO
+	   					       , E_NAME
+	   					       , PHONE1
+	   					       , PHONE2
+	   					       , PHONE3
+	   					       , SAL
+	   					       , HIRE)
+	                  VALUES(    #{e_no}
+	                 		   , #{p_no}
+	                 		   , #{b_no}
+	                 		   , #{e_name}
+	                 		   , #{phone1}
+	                 		   , #{phone2}
+	                 		   , #{phone3}
+	                 		   , 0
+	                 		   , SYSDATE
+	                 		   )
+    </insert>    
+    
+    <select id="userinfo">
+      SELECT p_no 
+                   , b_no 
+                   , e_name
+                   , phone1
+                   , phone2
+                   , phone3
+                   , sal
+                   , hire
+      FROM emp
+      WHERE e_no = #{e_no}
+
+   </select>
+    
+    <select id="regwait">
+      SELECT e_no 
+                   , p_no 
+                   , b_no
+                   , e_name
+                   , phone1
+                   , phone2
+                   , phone3
+                   , sal
+                   , hire
+      FROM emp
+      WHERE e_no IN (         
+      <foreach collection="list" item="item" separator=",">
+            #{item.e_no}
+      </foreach> )
+   </select>
+   
+   	<select id="EmpCount" parameterType="int" resultType="int">
+		SELECT COUNT(*)
+		   FROM EMP
+		   WHERE B_NO = #{b_no}
+	</select>
+    
+    <select id="AlreadyBranch" resultType="int">
+		SELECT COUNT(*)
+		   FROM EMP
+		   WHERE B_NO = #{b_no} AND P_NO = 1
+	</select>
+	
+	
+</mapper>
