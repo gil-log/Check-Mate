@@ -32,8 +32,23 @@ public class HomeworkServiceImpl implements HomeworkService {
 	}
 
 	@Override
-	public List<HomeworkVO> homeworkPossibleList(GroupVO groupVO) throws Exception {
-		return dao.homeworkPossibleList(groupVO);
+	public List<HomeworkVO> homeworkPossibleIdList(GroupVO groupVO) throws Exception {
+		return dao.homeworkPossibleIdList(groupVO);
+	}
+
+	@Override
+	public HomeworkVO hwFindVo(HomeworkVO homeworkVO) throws Exception {
+		return dao.hwFindVo(homeworkVO);
+	}
+
+	@Override
+	public List<HomeworkVO> hwFindList(HomeworkVO homeworkVO) throws Exception {
+		return dao.hwFindList(homeworkVO);
+	}
+
+	@Override
+	public List<HomeworkVO> hwImpossibleIdList(GroupVO groupVO) throws Exception {
+		return dao.hwImpossibleIdList(groupVO);
 	}
 
 }

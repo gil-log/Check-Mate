@@ -1,12 +1,12 @@
 package com.checkmate.vo;
 
 public class AttendListVO {
+	
 	private String a_date;
 	private String u_id;
 	private int g_no;
 	private int a_flag;
 	private int g_flag;
-	
 	
 	public String getA_date() {
 		return a_date;

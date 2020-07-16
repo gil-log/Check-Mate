@@ -38,8 +38,8 @@ public class MainController {
 		GroupVO groupVO = new GroupVO();
 		groupVO.setG_no(1);
 		groupVO.setG_name("테스트그룹1");
-		groupVO.setU_id("test");
-		groupVO.setG_flag(1);
+		groupVO.setU_id("ttest");
+		groupVO.setG_flag(0);
 		
 		HttpSession session = request.getSession();
 		

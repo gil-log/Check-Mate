@@ -40,8 +40,34 @@
 		U_POINT = #{u_point}
 		WHERE G_NO = #{g_no} AND U_ID = #{u_id} AND G_FLAG = #{g_flag}
 	</update>
-
-
+	
+	<!-- 그룹에서 3등까지 랭커 찾기 -->
+	<select id="findTopRankList" resultType="com.checkmate.vo.GroupPointVO" parameterType="com.checkmate.vo.GroupVO">
+	SELECT *
+	FROM (
+	SELECT G_NO, U_ID, G_NAME, G_FLAG, U_POINT
+	FROM C_GROUP
+	WHERE G_NO = #{g_no} AND G_FLAG = 0
+	ORDER BY U_POINT DESC
+	)
+	<![CDATA[
+	WHERE ROWNUM <= 3
+	]]>
+	</select>
+	
+	<!-- 내가 몇번째 순위인지 찾기 -->
+	<select id="findMyRank" resultType="com.checkmate.vo.GroupPointVO" parameterType="com.checkmate.vo.GroupVO">
+	SELECT G.r as rank, G.U_ID, G.U_POINT
+	FROM (
+	SELECT ROWNUM as r, U_ID, U_POINT
+	FROM (
+	SELECT G_NO, U_ID, G_NAME, G_FLAG, U_POINT
+	FROM C_GROUP
+	WHERE G_NO = #{g_no} AND G_FLAG = 0
+	ORDER BY U_POINT DESC
+	)) G, C_GROUP C
+	WHERE G.U_ID = C.U_ID AND G.U_ID = #{u_id}
+	</select>
 
 
 

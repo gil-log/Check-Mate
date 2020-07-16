@@ -92,7 +92,7 @@
                                 
                                 <div class="col-lg-10" style="margin:auto;">
                                 <div class="progress m-t-15" style="height:30px;">
-                                    <div class="progress-bar" style="width:0%; height:30px;" id="attendProgress">100%</div>
+                                    <div class="progress-bar" style="width:0%; height:30px;" id="attendProgress">0%</div>
                                 </div>
                                 </div>
                                 
@@ -104,16 +104,16 @@
 														<div class="calendar-events m-b-20"
 															data-class="bg-success">
 															<i class="fa fa-circle text-success m-r-10"></i>출석 완료 <a
-																style="float: right;" id="attendOk">+5</a>
+																style="float: right;" id="attendOk"></a>
 														</div>
 														<div class="calendar-events m-b-20" data-class="bg-danger">
 															<i class="fa fa-circle text-danger m-r-10"></i>결석 <a
-																style="float: right;" id="attendNo">-5</a>
+																style="float: right;" id="attendNo"></a>
 														</div>
 														<div class="calendar-events m-b-20"
 															data-class="bg-warning">
 															<i class="fa fa-circle text-warning m-r-10"></i>지각 <a
-																style="float: right;" id="attendLate">-3</a>
+																style="float: right;" id="attendLate"></a>
 														</div>
 														<hr>
 														
@@ -121,7 +121,7 @@
 														
 														<div class="col-lg-10" style="margin:auto;">
 														<div class="progress m-t-15" style="height:30px;">
-														<div class="progress-bar bg-secondary" style="width:100%; height:30px;" id="hwProgress">100%</div>
+														<div class="progress-bar bg-secondary" style="width:0%; height:30px;" id="hwProgress">0%</div>
 														</div>
 														</div>
                                 
@@ -133,11 +133,11 @@
 														<div class="calendar-events m-b-20"
 															data-class="bg-success">
 															<i class="fa fa-circle text-info m-r-10"></i>과제 제출 완료 <a
-																style="float: right;">+10</a>
+																style="float: right;" id="hwFinished"></a>
 														</div>
 														<div class="calendar-events m-b-20" data-class="bg-danger">
 															<i class="fa fa-circle text-dark m-r-10"></i>과제 미제출 <a
-																style="float: right;">-10</a>
+																style="float: right;" id="hwUnFinished"></a>
 														</div>
 														<hr>
 													</div>
@@ -158,21 +158,25 @@
 
 														<div class="m-b-20"
 															data-class="bg-primary">
-															<i class="fa fa-chess-queen text-warning m-r-10"></i>1위.
-															<a style="float: right;">test1</a>
+															<i class="fa fa-chess-queen text-warning m-r-10">1위.</i>
+															<a class="m-r-10" id="rank1"></a>
+															<a style="float: right;" id="rankOne">test1</a>
 														</div>
 														<div class="m-b-20"
-															data-class="bg-success">
-															<i class="fa fa-chess-bishop text-danger m-r-10"></i> 2위.
-															<a style="float: right;">test2</a>
+															data-class="bg-success" id="rank2div">
+															<i class="fa fa-chess-bishop text-danger m-r-10"> 2위.</i>
+															<a class="m-r-10" id="rank2"></a>
+															<a style="float: right;" id="rankTwo">test2</a>
 														</div>
-														<div class="m-b-20" data-class="bg-danger">
-															<i class="fa fa-chess-rook text-primary m-r-10"></i> 3위.
-															<a style="float: right;">test3</a>
+														<div class="m-b-20" data-class="bg-danger" id="rank3div">
+															<i class="fa fa-chess-rook text-primary m-r-10"> 3위.</i>
+															<a class="m-r-10" id="rank3"></a>
+															<a style="float: right;" id="rankThree">test3</a>
 														</div>
 														<hr>
 														<h4 class="alert-heading text-center">내 순위</h4>
-															<i class="fa fa-chess-king text-dark m-r-10"></i> 5위.
+															<i class="fa fa-chess-king text-dark m-r-10" id="myRanking"></i>
+															<a class="m-r-10" id="rank4"></a>
 															<a style="float: right;" id="myRank">test1</a>
 														<hr>
 
@@ -180,6 +184,21 @@
 
 													</div>
 												</div>
+
+													<div class="card">
+														<div class="card-body border-top">
+															<h5 class="card-title text-center checkmate-text">Check Mate!</h5>
+
+															<div class="col-lg-14" style="margin: auto;">
+																<div class="progress m-t-15" style="height: 70px;">
+																	<div
+																		class="progress-bar progress-bar-striped progress-bar-animated bg-warning"
+																		style="width: 0%; height: 70px;" id="totalProgress">0%</div>
+																</div>
+															</div>
+														</div>
+													</div>
+
 												</div>
 
 
@@ -200,19 +219,9 @@
 
 					<div class="col-lg-6"></div>
 
+					<!-- 수료 프로그레스바 밑에 넣고 싶을때 -->
 					<div class="col-lg-12">
 
-						<div class="card">
-							<div class="card-body border-top">
-														<h5 class="card-title text-center checkmate-text">Check Mate!</h5>
-														
-														<div class="col-lg-10" style="margin:auto;">
-														<div class="progress m-t-15" style="height:70px;">
-														<div class="progress-bar progress-bar-striped progress-bar-animated bg-warning" style="width:100%; height:70px;">100%</div>
-														</div>
-														</div>
-							</div>
-						</div>
 
 					</div>
 				</div>
@@ -296,12 +305,78 @@
             },
             //Ajax 성공시 호출 
             success : function(d){
+
+                // 출석 부분
                 document.getElementById('attendProgress').style.width = d.attendPercent+"%";
                 $('#attendProgress').text(d.attendPercent+"%");
                 $('#attendOk').text("+ " + d.attendOne * 5);
                 $('#attendLate').text("- " + d.attendTwo * 3);
                 $('#attendNo').text("- " + d.attendThree * 5);
+
+                // 과제 부분
+                document.getElementById('hwProgress').style.width = d.hwPercent+"%";
+                $('#hwProgress').text(d.hwPercent+"%");
+                $('#hwFinished').text("+ " + d.hwFinished);
+                $('#hwUnFinished').text(d.hwUnFinished);
+
+                // 랭크 부분
+                if(d.rankCount==1){
+                    
+                    $('#rank1').text(d.rankOne.u_id);
+                    $('#rankOne').text(d.rankOne.u_point +" 점");
+
+                    $('#rank2div').hide();
+                    $('#rank3div').hide();
+                    
+                    $('#myRanking').text(" "+d.myRank.rank+"위.");
+                    $('#rank4').text(d.myRank.u_id);
+                    $('#myrank').text(d.myRank.u_point +" 점");
+                    
+                    } else if(d.rankCount==2){
+
+                        $('#rank1').text(d.rankOne.u_id);
+                        $('#rankOne').text(d.rankOne.u_point +" 점");
+
+                        $('#rank2').text(d.rankTwo.u_id);
+                        $('#rankTwo').text(d.rankTwo.u_point +" 점");
+                        
+                        $('#rank3div').hide();
+                        
+                        $('#myRanking').text(" "+d.myRank.rank+"위.");
+                        $('#rank4').text(d.myRank.u_id);
+                        $('#myrank').text(d.myRank.u_point +" 점");
+                        
+
+                        } else if(d.rankCount==3){
+                            $('#rank1').text(d.rankOne.u_id);
+                            $('#rankOne').text(d.rankOne.u_point +" 점");
+                            $('#rank2').text(d.rankTwo.u_id);
+                            $('#rankTwo').text(d.rankTwo.u_point +" 점");
+                            $('#rank3').text(d.rankThree.u_id);
+                            $('#rankThree').text(d.rankThree.u_point +" 점");
+                            
+                            $('#myRanking').text(" "+d.myRank.rank+"위.");
+                            $('#rank4').text(d.myRank.u_id);
+                            $('#myrank').text(d.myRank.u_point +" 점");
+                            
+
+                            } else if(d.rankCount==4){
+                                $('#rank1').text(d.rankOne.u_id);
+                                $('#rankOne').text(d.rankOne.u_point +" 점");
+                                $('#rank2').text(d.rankTwo.u_id);
+                                $('#rankTwo').text(d.rankTwo.u_point +" 점");
+                                $('#rank3').text(d.rankThree.u_id);
+                                $('#rankThree').text(d.rankThree.u_point +" 점");
+
+                                $('#myRanking').text(" "+d.myRank.rank+"위.");
+                                $('#rank4').text(d.myRank.u_id);
+                                $('#myrank').text(d.myRank.u_point +" 점");
+                                }
                 $('#myRank').text(d.myPoint + " 점");
+
+                // 수료 프로그레스바 부분
+                document.getElementById('totalProgress').style.width = d.totalPercent+"%";
+                $('#totalProgress').text(d.totalPercent+"%");
             },
          
             //Ajax 실패시 호출

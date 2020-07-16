@@ -31,7 +31,7 @@
 	SELECT * FROM(
       SELECT H_NO, U_ID, G_NO, H_TITLE, H_CONTENT, H_DATE, H_FLAG, H_DEADLINE
       FROM C_HW
-      WHERE H_FLAG = 1 AND G_NO = #{g_no}
+      WHERE H_FLAG = 0 AND G_NO = #{g_no}
       ORDER BY H_DATE DESC
       )
       <![CDATA[
@@ -39,33 +39,61 @@
       ]]>
 	</select>
 	
+	<!-- gno 넣으면 생성된 숙제 몇개인지 리턴 -->
 	<select id="homeworkListCount" resultType="int" parameterType="com.checkmate.vo.GroupVO">
       SELECT COUNT(*)
       FROM(
       SELECT H_NO, U_ID, G_NO, H_TITLE, H_CONTENT, H_DATE, H_FLAG, H_DEADLINE
       FROM C_HW
-      WHERE H_FLAG = 1 AND G_NO = #{g_no})
+      WHERE H_FLAG = 0 AND G_NO = #{g_no})
 	</select>
 	
-	<select id="homeworkPossibleList" resultType="com.checkmate.vo.HomeworkVO" parameterType="com.checkmate.vo.GroupVO">
-	SELECT POSSIBLE.H_NO, POSSIBLE.U_ID, POSSIBLE.G_NO, POSSIBLE.H_TITLE, POSSIBLE.H_CONTENT, POSSIBLE.H_FILE, 
-	POSSIBLE.H_DATE, POSSIBLE.H_FLAG, POSSIBLE.H_DEADLINE, POSSIBLE.H_SCORE
-	FROM (
-	SELECT H_NO
-	FROM C_HW
-	WHERE G_NO = #{g_no} AND U_ID = #{u_id} AND H_FLAG = 1) DONE,
-	(SELECT H_NO, U_ID, G_NO, H_TITLE, H_CONTENT, H_FILE, H_DATE, H_FLAG, H_DEADLINE, H_SCORE
+	<!-- 현재 시스템 시간에서 수행 가능한 숙제 목록에서 내가 이미 제출한 숙제들을 빼주어 h_no를 List로 리턴 -->
+	<select id="homeworkPossibleIdList" resultType="com.checkmate.vo.HomeworkVO" parameterType="com.checkmate.vo.GroupVO">
+    (SELECT H_NO
 	FROM C_HW
 	WHERE G_NO = #{g_no} AND H_FLAG = 0 AND
-	SYSDATE BETWEEN H_DATE AND H_DEADLINE) POSSIBLE
-	WHERE DONE.H_NO != POSSIBLE.H_NO
+	SYSDATE BETWEEN H_DATE AND H_DEADLINE)
+	
+    MINUS
+    
+    (SELECT H_NO
+	FROM C_HW
+	WHERE G_NO = #{g_no} AND U_ID = #{u_id} AND H_FLAG = 1)
+	</select>
+	
+	<!-- 현재 시스템 시간 이전까지가 제출 기한이었던 제출 불가능한 숙제 목록에서 내가 제출한 숙제를 뺴주어 내가 결국 미제출한 숙제 h_no list로 리턴 -->
+	<select id="hwImpossibleIdList" resultType="com.checkmate.vo.HomeworkVO" parameterType="com.checkmate.vo.GroupVO">
+	(SELECT H_NO
+	FROM C_HW
+	WHERE G_NO = #{g_no} AND H_FLAG = 0 AND
+	<![CDATA[
+	H_DEADLINE < SYSDATE
+	 ]]>)
+
+	MINUS
+	
+	(SELECT H_NO
+	FROM C_HW
+	WHERE G_NO = #{g_no} AND U_ID = #{u_id} AND H_FLAG = 1)
 	</select>
 	
 	
+	<!-- h_no 넣어주면 vo타입으로 정보 리턴 -->
+	<select id="hwFindVo" resultType="com.checkmate.vo.HomeworkVO" parameterType="com.checkmate.vo.HomeworkVO">
+		SELECT H_NO, U_ID, G_NO, H_TITLE, H_CONTENT, H_DATE, H_FLAG, H_DEADLINE, H_SCORE
+		FROM C_HW
+		WHERE H_NO = #{h_no}
+	</select>
 	
+	<!-- id g_no flag 넣으면 List형태로 정보 리턴 -->
+	<select id="hwFindList" resultType="com.checkmate.vo.HomeworkVO" parameterType="com.checkmate.vo.HomeworkVO">
+		SELECT H_NO, U_ID, G_NO, H_TITLE, H_CONTENT, H_DATE, H_FLAG, H_DEADLINE, H_SCORE
+		FROM C_HW
+		WHERE G_NO = #{g_no} AND U_ID = #{u_id} AND H_FLAG = #{h_flag}
+	</select>
 	
-	
-	
+
 	
 	
 	

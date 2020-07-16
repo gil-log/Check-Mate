@@ -40,5 +40,15 @@ public class GroupDAOImpl implements GroupDAO {
 	public void userPoint(GroupPointVO groupPointVO) throws Exception {
 		sqlSession.update("groupMapper.userPoint", groupPointVO);
 	}
+
+	@Override
+	public List<GroupPointVO> findTopRankList(GroupVO groupVO) throws Exception {
+		return sqlSession.selectList("groupMapper.findTopRankList", groupVO);
+	}
+
+	@Override
+	public GroupPointVO findMyRank(GroupVO groupVO) throws Exception {
+		return sqlSession.selectOne("groupMapper.findMyRank", groupVO);
+	}
 	
 }

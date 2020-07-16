@@ -33,8 +33,23 @@ public class HomeworkDAOImpl implements HomeworkDAO{
 	}
 
 	@Override
-	public List<HomeworkVO> homeworkPossibleList(GroupVO groupVO) throws Exception {
-		return sqlSession.selectList("homeworkMapper.homeworkPossibleList", groupVO);
+	public List<HomeworkVO> homeworkPossibleIdList(GroupVO groupVO) throws Exception {
+		return sqlSession.selectList("homeworkMapper.homeworkPossibleIdList", groupVO);
+	}
+
+	@Override
+	public HomeworkVO hwFindVo(HomeworkVO homeworkVO) throws Exception {
+		return sqlSession.selectOne("homeworkMapper.hwFindVo", homeworkVO);
+	}
+
+	@Override
+	public List<HomeworkVO> hwFindList(HomeworkVO homeworkVO) throws Exception {
+		return sqlSession.selectList("homeworkMapper.hwFindList", homeworkVO);
+	}
+
+	@Override
+	public List<HomeworkVO> hwImpossibleIdList(GroupVO groupVO) throws Exception {
+		return sqlSession.selectList("homeworkMapper.hwImpossibleIdList", groupVO);
 	}
 
 }

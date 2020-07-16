@@ -7,7 +7,14 @@ public class GroupPointVO {
 	private String g_name;
 	private int g_flag;
 	private int u_point;
-	
+	private int rank;
+
+	public int getRank() {
+		return rank;
+	}
+	public void setRank(int rank) {
+		this.rank = rank;
+	}
 	public int getU_point() {
 		return u_point;
 	}
@@ -42,6 +49,6 @@ public class GroupPointVO {
 	@Override
 	public String toString() {
 		return "GroupPointVO [g_no=" + g_no + ", u_id=" + u_id + ", g_name=" + g_name + ", g_flag=" + g_flag
-				+ ", u_point=" + u_point + "]";
+				+ ", u_point=" + u_point + ", rank=" + rank + "]";
 	}
 }

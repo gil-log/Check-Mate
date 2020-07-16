@@ -41,4 +41,14 @@ public class GroupServiceImpl implements GroupService {
 	public void userPoint(GroupPointVO groupPointVO) throws Exception {
 		dao.userPoint(groupPointVO);
 	}
+
+	@Override
+	public List<GroupPointVO> findTopRankList(GroupVO groupVO) throws Exception {
+		return dao.findTopRankList(groupVO);
+	}
+
+	@Override
+	public GroupPointVO findMyRank(GroupVO groupVO) throws Exception {
+		return dao.findMyRank(groupVO);
+	}
 }

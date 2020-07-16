@@ -21,4 +21,10 @@ public interface GroupDAO {
 
 	// 유저 포인트 넣기
 	public void userPoint(GroupPointVO groupPointVO) throws Exception;
+	
+	// 탑 랭크 유저들 뽑아오기 3위까지
+	public List<GroupPointVO> findTopRankList(GroupVO groupVO) throws Exception;
+	
+	// 내 순위 찾아오기
+	public GroupPointVO findMyRank(GroupVO groupVO) throws Exception;
 }
