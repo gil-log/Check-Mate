@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="homeworkMapper">
+
+	<insert id="insert">
+	INSERT INTO C_HW ( h_no
+						, u_id
+						, g_no
+						, h_title
+						, h_content
+						, h_file
+						, h_date
+						, h_flag
+						, h_deadline)
+				VALUES ( h_no_seq.NEXTVAL
+						, #{u_id}
+						, #{g_no}
+						, #{h_title}
+						, #{h_content}
+						, #{h_file}
+						, SYSDATE
+						, 0
+						, #{h_deadline}
+						 )
+	    
+    </insert>
+   
+</mapper>
