@@ -31,4 +31,9 @@ public class HomeworkServiceImpl implements HomeworkService {
 		dao.write(homeworkVO);
 	}
 
+	@Override
+	public List<HomeworkVO> homeworkPossibleList(GroupVO groupVO) throws Exception {
+		return dao.homeworkPossibleList(groupVO);
+	}
+
 }

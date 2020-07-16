@@ -25,6 +25,7 @@ import com.checkmate.vo.AttendVO;
 import com.checkmate.vo.CalendarVO;
 import com.checkmate.vo.GroupPointVO;
 import com.checkmate.vo.GroupVO;
+import com.checkmate.vo.HomeworkVO;
 import com.checkmate.vo.NoticeVO;
 import com.checkmate.vo.WrapperVO;
 
@@ -73,7 +74,6 @@ public class MypageController {
 		attendVO.setA_flag(0);
 		List<AttendVO> attendFlagZero = attendService.attendListCalendar(attendVO);
 		
-		
 		attendVO.setA_flag(1);
 		List<AttendVO> attendFlagOne = attendService.attendListCalendar(attendVO);
 
@@ -84,7 +84,7 @@ public class MypageController {
 		List<AttendVO> attendFlagThree = attendService.attendListCalendar(attendVO);
 		
 		//뽑아온 출석 list를 calendarVO로 치환 해주기
-		List<CalendarVO> calendarAttendList = new ArrayList<CalendarVO>();
+		List<CalendarVO> calendarList = new ArrayList<CalendarVO>();
 		
 		//뽑아온 출석 list를 하나 하나 Attend용 list 통에다가 다 넣어 주자
 		for(int i =0; i < attendFlagZero.size(); i++) {
@@ -95,7 +95,7 @@ public class MypageController {
 			calendarAttendVO.setColor("#7460ee");
 			
 			calendarAttendVO.setStart(attendFlagZero.get(i).getA_date());
-			calendarAttendList.add(calendarAttendVO);
+			calendarList.add(calendarAttendVO);
 		}
 		
 		for(int i =0; i < attendFlagOne.size(); i++) {
@@ -106,7 +106,7 @@ public class MypageController {
 			calendarAttendVO.setColor("#28b779");
 			
 			calendarAttendVO.setStart(attendFlagOne.get(i).getA_date());
-			calendarAttendList.add(calendarAttendVO);
+			calendarList.add(calendarAttendVO);
 		}
 		
 		for(int i =0; i < attendFlagTwo.size(); i++) {
@@ -117,7 +117,7 @@ public class MypageController {
 			calendarAttendVO.setColor("#ffb848");
 			
 			calendarAttendVO.setStart(attendFlagTwo.get(i).getA_date());
-			calendarAttendList.add(calendarAttendVO);
+			calendarList.add(calendarAttendVO);
 		}
 		
 		for(int i =0; i < attendFlagThree.size(); i++) {
@@ -128,10 +128,29 @@ public class MypageController {
 			calendarAttendVO.setColor("#da542e");
 			
 			calendarAttendVO.setStart(attendFlagThree.get(i).getA_date());
-			calendarAttendList.add(calendarAttendVO);
+			calendarList.add(calendarAttendVO);
 		}
 		
-		JSONArray jsonArray = JSONArray.fromObject(calendarAttendList);
+		// hwlist 부분아직 제대로 확인 못했다..
+
+		
+		List<HomeworkVO> homeworkPossibleList = homeworkService.homeworkPossibleList(groupVO);
+		
+		for(int i=0; i<homeworkPossibleList.size(); i++) {
+			CalendarVO calendarHwVO = new CalendarVO();
+			
+			calendarHwVO.setTitle(homeworkPossibleList.get(i).getH_title());
+			calendarHwVO.setColor("#6c757d");
+			
+			calendarHwVO.setStart(homeworkPossibleList.get(i).getH_date());
+			calendarHwVO.setEnd(homeworkPossibleList.get(i).getH_deadline());
+			
+			calendarList.add(calendarHwVO);
+		}
+		
+		//
+		
+		JSONArray jsonArray = JSONArray.fromObject(calendarList);
 
 		System.out.println(jsonArray);
 		

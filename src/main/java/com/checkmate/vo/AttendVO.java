@@ -1,11 +1,19 @@
 package com.checkmate.vo;
 
 public class AttendVO {
+	
 	private String a_date;
 	private String u_id;
 	private int g_no;
 	private int a_flag;
-	
+	private String a_deadline;
+
+	public String getA_deadline() {
+		return a_deadline;
+	}
+	public void setA_deadline(String a_deadline) {
+		this.a_deadline = a_deadline;
+	}
 	public String getA_date() {
 		return a_date;
 	}
@@ -33,6 +41,7 @@ public class AttendVO {
 	
 	@Override
 	public String toString() {
-		return "AttendVO [a_date=" + a_date + ", u_id=" + u_id + ", g_no=" + g_no + ", a_flag=" + a_flag + "]";
+		return "AttendVO [a_date=" + a_date + ", u_id=" + u_id + ", g_no=" + g_no + ", a_flag=" + a_flag
+				+ ", a_deadline=" + a_deadline + "]";
 	}
 }

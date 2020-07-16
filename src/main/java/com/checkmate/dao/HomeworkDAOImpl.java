@@ -32,4 +32,9 @@ public class HomeworkDAOImpl implements HomeworkDAO{
 		sqlSession.insert("homeworkMapper.write", homeworkVO);
 	}
 
+	@Override
+	public List<HomeworkVO> homeworkPossibleList(GroupVO groupVO) throws Exception {
+		return sqlSession.selectList("homeworkMapper.homeworkPossibleList", groupVO);
+	}
+
 }

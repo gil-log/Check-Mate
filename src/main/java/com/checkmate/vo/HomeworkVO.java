@@ -1,7 +1,5 @@
 package com.checkmate.vo;
 
-import java.sql.Date;
-
 public class HomeworkVO {
 
 	private int h_no;
@@ -10,9 +8,10 @@ public class HomeworkVO {
 	private String h_title;
 	private String h_content;
 	private String h_file;
-	private Date h_date;
+	private String h_date;
 	private int h_flag;
 	private String h_deadline;
+	private int h_score;
 	
 	public int getH_no() {
 		return h_no;
@@ -50,12 +49,7 @@ public class HomeworkVO {
 	public void setH_file(String h_file) {
 		this.h_file = h_file;
 	}
-	public Date getH_date() {
-		return h_date;
-	}
-	public void setH_date(Date h_date) {
-		this.h_date = h_date;
-	}
+
 	public int getH_flag() {
 		return h_flag;
 	}
@@ -68,10 +62,23 @@ public class HomeworkVO {
 	public void setH_deadline(String h_deadline) {
 		this.h_deadline = h_deadline;
 	}
+	public String getH_date() {
+		return h_date;
+	}
+	public void setH_date(String h_date) {
+		this.h_date = h_date;
+	}
+	public int getH_score() {
+		return h_score;
+	}
+	public void setH_score(int h_score) {
+		this.h_score = h_score;
+	}
+	
 	@Override
 	public String toString() {
 		return "HomeworkVO [h_no=" + h_no + ", u_id=" + u_id + ", g_no=" + g_no + ", h_title=" + h_title
 				+ ", h_content=" + h_content + ", h_file=" + h_file + ", h_date=" + h_date + ", h_flag=" + h_flag
-				+ ", h_deadline=" + h_deadline + "]";
+				+ ", h_deadline=" + h_deadline + ", h_score=" + h_score + "]";
 	}
 }
