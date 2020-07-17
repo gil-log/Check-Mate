@@ -30,14 +30,26 @@
 
 <!-- Check Mate! 폰트 -->
 <link href="https://fonts.googleapis.com/css2?family=Ranchers&display=swap" rel="stylesheet">
-
+<!-- 한글 Check Mate! 폰트 -->
+<link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&display=swap" rel="stylesheet">
+<!-- 본문 폰트 -->
+<link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+<!-- 달력 폰트 -->
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@700&display=swap" rel="stylesheet">
 <style type="text/css">
 .checkmate-text{
-	font-family: 'Ranchers', cursive;
+/* 	font-family: 'Ranchers', cursive; */
+	font-family: 'Do Hyeon', sans-serif;
 	font-size: 40px;
 }
 .progress-bg{
 	background: url("${pageContext.request.contextPath}/resources/checkmateimg/checkmate_logo_text.png");
+}
+.container-fluid{
+	font-family: 'Jua', sans-serif;
+}
+#calendar{
+	font-family: 'Noto Sans KR', sans-serif;
 }
 </style>
 </head>
@@ -187,7 +199,7 @@
 
 													<div class="card">
 														<div class="card-body border-top">
-															<h5 class="card-title text-center checkmate-text">Check Mate!</h5>
+															<h5 class="card-title text-center checkmate-text" id="totalProgressTitle">수료까지...</h5>
 
 															<div class="col-lg-14" style="margin: auto;">
 																<div class="progress m-t-15" style="height: 70px;">
@@ -224,6 +236,61 @@
 
 
 					</div>
+					
+				<!-- BEGIN MODAL -->
+                <div class="modal none-border" id="my-event">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title"><strong>Add Event</strong></h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            </div>
+                            <div class="modal-body"></div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary waves-effect" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-success save-event waves-effect waves-light">Create event</button>
+                                <button type="button" class="btn btn-danger delete-event waves-effect waves-light" data-dismiss="modal">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Modal Add Category -->
+                <div class="modal fade none-border" id="add-new-event">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title"><strong>Add</strong> a category</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <form>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label class="control-label">Category Name</label>
+                                            <input class="form-control form-white" placeholder="Enter name" type="text" name="category-name" />
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="control-label">Choose Category Color</label>
+                                            <select class="form-control form-white" data-placeholder="Choose a color..." name="category-color">
+                                                <option value="success">Success</option>
+                                                <option value="danger">Danger</option>
+                                                <option value="info">Info</option>
+                                                <option value="primary">Primary</option>
+                                                <option value="warning">Warning</option>
+                                                <option value="inverse">Inverse</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger waves-effect waves-light save-category" data-dismiss="modal">Save</button>
+                                <button type="button" class="btn btn-secondary waves-effect" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- END MODAL -->
 				</div>
 
 
@@ -265,12 +332,13 @@
     <script src="${pageContext.request.contextPath}/resources/template/assets/libs/moment/min/moment.min.js"></script>
     <script src="${pageContext.request.contextPath}/resources/template/assets/libs/fullcalendar/dist/fullcalendar.min.js"></script>
     <script src="${pageContext.request.contextPath}/resources/template/assets/libs/fullcalendar/dist/locale/ko.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/template/dist/js/pages/calendar/cal-init.js"></script>
+<%--     <script src="${pageContext.request.contextPath}/resources/custom/js/cal.js"></script> --%>
     <script src="${pageContext.request.contextPath}/resources/template/dist/js/jquery.ui.touch-punch-improved.js"></script>
     <script src="${pageContext.request.contextPath}/resources/template/dist/js/jquery-ui.min.js"></script>
 
     <script type="text/javascript">
     $(document).ready(function() {
+    	calendarInit();
     	calendarEventsList();
     	calendarPoint();
     });
@@ -375,8 +443,14 @@
                 $('#myRank').text(d.myPoint + " 점");
 
                 // 수료 프로그레스바 부분
+                
+                if(d.totalPercent >= 60){
+                	$('#totalProgressTitle').text("Check Mate!");
+                }
                 document.getElementById('totalProgress').style.width = d.totalPercent+"%";
                 $('#totalProgress').text(d.totalPercent+"%");
+                
+                
             },
          
             //Ajax 실패시 호출
@@ -386,6 +460,28 @@
         });
 
         }
+    
+    function calendarInit(){
+    	
+    	$('#calendar').fullCalendar({
+            slotDuration: '00:15:00',
+            /* If we want to split day time each 15minutes */
+            minTime: '08:00:00',
+            maxTime: '19:00:00',
+            defaultView: 'month',
+            handleWindowResize: true,
+            displayEventTime: false,
+            header: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'month,agendaWeek,agendaDay'
+            },
+            events: [],
+            eventLimit: true
+
+        });
+    	
+    }
     </script>
  
 </body>

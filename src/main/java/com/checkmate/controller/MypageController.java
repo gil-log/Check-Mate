@@ -93,6 +93,7 @@ public class MypageController {
 			
 			calendarAttendVO.setTitle("출석 진행 중");
 			calendarAttendVO.setColor("#7460ee");
+			calendarAttendVO.setUrl("attend");
 			
 			calendarAttendVO.setStart(attendFlagZero.get(i).getA_date());
 			calendarList.add(calendarAttendVO);
@@ -104,6 +105,7 @@ public class MypageController {
 			
 			calendarAttendVO.setTitle("출석 완료");
 			calendarAttendVO.setColor("#28b779");
+			calendarAttendVO.setUrl("attend");
 			
 			calendarAttendVO.setStart(attendFlagOne.get(i).getA_date());
 			calendarList.add(calendarAttendVO);
@@ -115,6 +117,7 @@ public class MypageController {
 			
 			calendarAttendVO.setTitle("지각");
 			calendarAttendVO.setColor("#ffb848");
+			calendarAttendVO.setUrl("attend");
 			
 			calendarAttendVO.setStart(attendFlagTwo.get(i).getA_date());
 			calendarList.add(calendarAttendVO);
@@ -126,6 +129,7 @@ public class MypageController {
 			
 			calendarAttendVO.setTitle("결석");
 			calendarAttendVO.setColor("#da542e");
+			calendarAttendVO.setUrl("attend");
 			
 			calendarAttendVO.setStart(attendFlagThree.get(i).getA_date());
 			calendarList.add(calendarAttendVO);
@@ -147,6 +151,7 @@ public class MypageController {
 			
 			calendarHwVO.setTitle(homeworkPossibleList.get(i).getH_title());
 			calendarHwVO.setColor("#6c757d");
+			calendarHwVO.setUrl("homework-list");
 			
 			calendarHwVO.setStart(homeworkPossibleList.get(i).getH_date());
 			calendarHwVO.setEnd(homeworkPossibleList.get(i).getH_deadline());
@@ -168,6 +173,7 @@ public class MypageController {
 			
 			calendarHwVO.setTitle(hwFinishedList.get(i).getH_title() + " 제출완료!");
 			calendarHwVO.setColor("#2255a4");
+			calendarHwVO.setUrl("homework-list");
 			
 			calendarHwVO.setStart(hwFinishedList.get(i).getH_date());
 			
@@ -188,6 +194,7 @@ public class MypageController {
 			
 			calendarHwVO.setTitle(hwImpossibleList.get(i).getH_title() + " 미제출...");
 			calendarHwVO.setColor("#343a40");
+			calendarHwVO.setUrl("homework-list");
 			
 			//깔끔하게 보이기 위해서 그 제출 과제의 종료일에만 미제출로 표시되게 함
 			calendarHwVO.setStart(hwImpossibleList.get(i).getH_deadline());
