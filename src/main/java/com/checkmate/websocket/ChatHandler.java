@@ -50,6 +50,8 @@ public class ChatHandler extends TextWebSocketHandler{
 		
 		u_id = groupVO.getU_id();
 		
+		//관리자인지 보기 위해
+		String g_flag = Integer.toString(groupVO.getG_flag());
 	    Date now = new Date();
 	        
 	    // 채팅 시간
@@ -62,7 +64,7 @@ public class ChatHandler extends TextWebSocketHandler{
         
         //모든 유저에게 메세지 출력
         for(WebSocketSession sess : sessionList){
-            sess.sendMessage(new TextMessage(u_id + "|" + message.getPayload() + "|" + nT));
+            sess.sendMessage(new TextMessage(u_id + "|" + message.getPayload() + "|" + nT + "|" + g_flag));
         }
     }
 

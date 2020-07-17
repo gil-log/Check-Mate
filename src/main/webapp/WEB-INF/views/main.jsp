@@ -167,45 +167,35 @@
                         <div class="card">
                             <div class="card-body">
                                 <h4 class="card-title">그룹 채팅</h4>
+                                
+                                
+                                <div class="chat-box scrollable" style="height:75px;">
+                                
+                                    <ul class="chat-list">
+                                    	<li style="float:left;">
+                                    		<div class="chat-time">test1</div>
+                                    	</li>
+                                    	<li style="float:right;">
+                                    		<div class="chat-time">test2</div>
+                                    	</li>
+                                    	<li style="float:left;">
+                                    		<div class="chat-time">test3</div>
+                                    	</li>                                    	
+                                    	<li style="float:right;">
+                                    		<div class="chat-time">test4</div>
+                                    	</li>
+                                    	<li style="float:left;">
+                                    		<div class="chat-time">test5</div>
+                                    	</li>
+                                    	<li style="float:right;">
+                                    		<div class="chat-time">test6</div>
+                                    	</li>
+                                    </ul>
+                                </div>
+                                
                                 <div class="chat-box scrollable" style="height:475px;">
-                                    <!--chat Row -->
+                                    <!--chat Row 여기에 채팅이 계속 append 됨-->
                                     <ul class="chat-list" id='chatList'>
-                                    
-                                    
-                                        <!--chat Row -->
-                                        <li class="chat-item">
-                                            <div class="chat-img"><img src="${pageContext.request.contextPath}/resources/checkmateimg/chessking.png" alt="user"></div>
-                                            <div class="chat-content">
-                                                <h6 class="font-medium" id="chatOtherId">James Anderson</h6>
-                                                <div class="box bg-light-info">Lorem Ipsum is simply dummy text of the printing &amp; type setting industry.</div>
-                                            </div>
-                                            <div class="chat-time">10:56 am</div>
-                                        </li>
-                                        <!--chat Row -->
-                                        
-                                        <!--chat Row -->
-                                        <li class="chat-item">
-                                            <div class="chat-img"><img src="${pageContext.request.contextPath}/resources/checkmateimg/chessknight.png" alt="user"></div>
-                                            <div class="chat-content">
-                                                <h6 class="font-medium">James Anderson</h6>
-                                                <div class="box bg-light-info">Lorem Ipsum is simply dummy text of the printing &amp; type setting industry.</div>
-                                            </div>
-                                            <div class="chat-time">10:56 am</div>
-                                        </li>
-                                        <!--chat Row -->
-                                        
-                                        <!--chat Row -->
-                                        <li class="odd chat-item">
-                                            <div class="chat-content">
-                                                <div class="box bg-light-inverse">Whats budget of the new project.</div>
-                                                <br>
-                                            </div>
-                                            <div class="chat-time">10:59 am</div>
-                                        </li>
-                                       
-                                       
-                                       
-                                        
                                     </ul>
                                 </div>
                             </div>
@@ -214,7 +204,6 @@
                                     <div class="col-9">
                                         <div class="input-field m-t-0 m-b-0">
                                             <textarea id="message" placeholder="메시지 입력 후 전송 버튼을 눌러주세요." class="form-control border-0"></textarea>
-                                            <textarea id="messagearea" placeholder="메시지 입력 후 전송 버튼을 눌러주세요." class="form-control border-0"></textarea>
                                         </div>
                                     </div>
                                     <div class="col-3">
@@ -274,9 +263,25 @@
     
     <script type="text/javascript">
     	$('#chatSendBtn').click(function(){
-    		sendMessage();
-    		$('#message').val('');
+        	if($('#message').val()==''){
+            	
+            	} else{
+            		sendMessage();
+            		$('#message').val('');
+                	}
+    		
     	});
+
+    	$("#message").keyup(function(e){
+        	if($('#message').val()=='\n'){
+        	} else{
+        		if(e.keyCode == 13){
+            		sendMessage();
+            		$('#message').val('');
+        		} 
+            }
+        });
+
     	
     	let sock = new SockJS('http://localhost:8080/cm/chat/');
     	sock.onmessage = onMessage;
@@ -291,6 +296,8 @@
     		var data = msg.data;
     		var socketSenderId = null;
     		var message = null;
+    		var nowTime = null;
+    		var gFlag = null;
     		
     		var strArray = data.split('|');
     		
@@ -305,9 +312,11 @@
     		socketSenderId = strArray[0]; //소켓에서 받은 메시지 전송자의 아이디 등록
     		message = strArray[1]; // 받은 메시지
     		nowTime = strArray[2];
+    		gFlag = strArray[3];
     		//내가 보낸 메시지는 왼쪽에 뜰꺼고 상대방이 보낸 메시지는 오른쪽에 뜨게 구분해준다
     		
     		if(socketSenderId == myId){
+
     			var html = '<li class="odd chat-item" tabindex ="-1">';
     			html += '<div class="chat-content">';
     			html += '<div class="box bg-light-inverse">'+message+'</div>';
@@ -315,21 +324,33 @@
                 html += '</div>';
                 html += '<div class="chat-time">'+nowTime+'</div>';
                 html += '</li>';
-                
+
         		$("#chatList").append(html);
         		
         		$("#chatList").children().last().focus();
     		} else{
     			
     			var html = '<li class="chat-item" tabindex ="-1">';
-    			html += '<div class="chat-img"><img src="${pageContext.request.contextPath}/resources/checkmateimg/chessknight.png" alt="user"></div>';
-    			html += '<div class="chat-content">';
-    			html += '<h6 class="font-medium">'+socketSenderId+'</h6>'
-    			html += '<div class="box bg-light-info">'+message+'</div>';
-                html += '</div>';
-                html += '<div class="chat-time">'+nowTime+'</div>';
-                html += '</li>';
-                
+
+    			if(gFlag == '0'){
+        			html += '<div class="chat-img"><img src="${pageContext.request.contextPath}/resources/checkmateimg/chessknight.png" alt="user"></div>';
+        			html += '<div class="chat-content">';
+        			html += '<h6 class="font-medium">'+socketSenderId+'</h6>'
+        			html += '<div class="box bg-light-info">'+message+'</div>';
+                    html += '</div>';
+                    html += '<div class="chat-time">'+nowTime+'</div>';
+                    html += '</li>';
+    			} else {
+        			html += '<div class="chat-img"><img src="${pageContext.request.contextPath}/resources/checkmateimg/chessking.png" alt="user"></div>';
+        			html += '<div class="chat-content">';
+        			html += '<h6 class="font-medium" style="font-family: sans-serif; font-weight: bold; color: #D1BA09" id="chatOtherId">'+socketSenderId+'</h6>'
+        			html += '<div class="box bg-light-info"><a style="font-weight: bold;">'+message+'</a></div>';
+                    html += '</div>';
+                    html += '<div class="chat-time">'+nowTime+'</div>';
+                    html += '</li>';
+    				
+        		}
+        		
         		$("#chatList").append(html);
         		
         		$("#chatList").children().last().focus();
