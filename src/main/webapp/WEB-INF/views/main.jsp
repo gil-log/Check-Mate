@@ -304,31 +304,36 @@
     		
     		socketSenderId = strArray[0]; //소켓에서 받은 메시지 전송자의 아이디 등록
     		message = strArray[1]; // 받은 메시지
-
+    		nowTime = strArray[2];
     		//내가 보낸 메시지는 왼쪽에 뜰꺼고 상대방이 보낸 메시지는 오른쪽에 뜨게 구분해준다
     		
     		if(socketSenderId == myId){
-    			var html = '<li class="odd chat-item">';
+    			var html = '<li class="odd chat-item" tabindex ="-1">';
     			html += '<div class="chat-content">';
     			html += '<div class="box bg-light-inverse">'+message+'</div>';
                 html += '<br>';
                 html += '</div>';
-                html += '<div class="chat-time">'+myId+'</div>';
+                html += '<div class="chat-time">'+nowTime+'</div>';
                 html += '</li>';
                 
         		$("#chatList").append(html);
+        		
+        		$("#chatList").children().last().focus();
     		} else{
     			
-    			var html = '<li class="chat-item">';
+    			var html = '<li class="chat-item" tabindex ="-1">';
     			html += '<div class="chat-img"><img src="${pageContext.request.contextPath}/resources/checkmateimg/chessknight.png" alt="user"></div>';
     			html += '<div class="chat-content">';
     			html += '<h6 class="font-medium">'+socketSenderId+'</h6>'
     			html += '<div class="box bg-light-info">'+message+'</div>';
                 html += '</div>';
-                html += '<div class="chat-time">'+socketSenderId+'</div>';
+                html += '<div class="chat-time">'+nowTime+'</div>';
                 html += '</li>';
                 
         		$("#chatList").append(html);
+        		
+        		$("#chatList").children().last().focus();
+        		
     		}
     	}
     	

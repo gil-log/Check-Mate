@@ -1,7 +1,9 @@
 package com.checkmate.websocket;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.ArrayList;
@@ -43,15 +45,24 @@ public class ChatHandler extends TextWebSocketHandler{
 		Map<String, Object> map;
 		map = session.getAttributes();
 
+		//소켓에 접속한 세션의 아이디 받아오기
 		GroupVO groupVO = (GroupVO) map.get("group");
 		
 		u_id = groupVO.getU_id();
+		
+	    Date now = new Date();
+	        
+	    // 채팅 시간
+	    SimpleDateFormat nowTime = new SimpleDateFormat("hh:mm");
+	    String nT = nowTime.format(now);
+	    System.out.println("Time: "+ nT);
+
 		
         System.out.println(session.getId() + " 가( "+u_id+") 이고" + message.getPayload() + " 를 보냈음");
         
         //모든 유저에게 메세지 출력
         for(WebSocketSession sess : sessionList){
-            sess.sendMessage(new TextMessage(u_id + "|" + message.getPayload()));
+            sess.sendMessage(new TextMessage(u_id + "|" + message.getPayload() + "|" + nT));
         }
     }
 
