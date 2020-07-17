@@ -27,6 +27,31 @@
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+<!-- Check Mate! 폰트 -->
+<link href="https://fonts.googleapis.com/css2?family=Ranchers&display=swap" rel="stylesheet">
+<!-- 한글 Check Mate! 폰트 -->
+<link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&display=swap" rel="stylesheet">
+<!-- 본문 폰트 -->
+<link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+<!-- 달력 폰트 -->
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@700&display=swap" rel="stylesheet">
+<style type="text/css">
+.checkmate-text{
+/* 	font-family: 'Ranchers', cursive; */
+	font-family: 'Do Hyeon', sans-serif;
+	font-size: 40px;
+}
+.progress-bg{
+	background: url("${pageContext.request.contextPath}/resources/checkmateimg/checkmate_logo_text.png");
+}
+.container-fluid{
+	font-family: 'Jua', sans-serif;
+}
+#calendar{
+	font-family: 'Noto Sans KR', sans-serif;
+}
+</style>
 </head>
 
 <body>
@@ -79,7 +104,7 @@
                                 
                                 <div class="col-lg-10" style="margin:auto;">
                                 <div class="progress m-t-15" style="height:30px;">
-                                    <div class="progress-bar" style="width:100%; height:30px;">100%</div>
+                                    <div class="progress-bar" style="width:0%; height:30px;" id="attendProgress">0%</div>
                                 </div>
                                 </div>
                                 
@@ -91,16 +116,16 @@
 														<div class="calendar-events m-b-20"
 															data-class="bg-success">
 															<i class="fa fa-circle text-success m-r-10"></i>출석 완료 <a
-																style="float: right;">+5</a>
+																style="float: right;" id="attendOk"></a>
 														</div>
 														<div class="calendar-events m-b-20" data-class="bg-danger">
 															<i class="fa fa-circle text-danger m-r-10"></i>결석 <a
-																style="float: right;">-5</a>
+																style="float: right;" id="attendNo"></a>
 														</div>
 														<div class="calendar-events m-b-20"
 															data-class="bg-warning">
 															<i class="fa fa-circle text-warning m-r-10"></i>지각 <a
-																style="float: right;">-3</a>
+																style="float: right;" id="attendLate"></a>
 														</div>
 														<hr>
 														
@@ -108,7 +133,7 @@
 														
 														<div class="col-lg-10" style="margin:auto;">
 														<div class="progress m-t-15" style="height:30px;">
-														<div class="progress-bar bg-secondary" style="width:100%; height:30px;">100%</div>
+														<div class="progress-bar bg-secondary" style="width:0%; height:30px;" id="hwProgress">0%</div>
 														</div>
 														</div>
                                 
@@ -120,11 +145,11 @@
 														<div class="calendar-events m-b-20"
 															data-class="bg-success">
 															<i class="fa fa-circle text-info m-r-10"></i>과제 제출 완료 <a
-																style="float: right;">+10</a>
+																style="float: right;" id="hwFinished"></a>
 														</div>
 														<div class="calendar-events m-b-20" data-class="bg-danger">
 															<i class="fa fa-circle text-dark m-r-10"></i>과제 미제출 <a
-																style="float: right;">-10</a>
+																style="float: right;" id="hwUnFinished"></a>
 														</div>
 														<hr>
 													</div>
@@ -145,28 +170,47 @@
 
 														<div class="m-b-20"
 															data-class="bg-primary">
-															<i class="fa fa-chess-queen text-warning m-r-10"></i>1위.
-															<a style="float: right;">test1</a>
+															<i class="fa fa-chess-queen text-warning m-r-10">1위.</i>
+															<a class="m-r-10" id="rank1"></a>
+															<a style="float: right;" id="rankOne">test1</a>
 														</div>
 														<div class="m-b-20"
-															data-class="bg-success">
-															<i class="fa fa-chess-bishop text-danger m-r-10"></i> 2위.
-															<a style="float: right;">test2</a>
+															data-class="bg-success" id="rank2div">
+															<i class="fa fa-chess-bishop text-danger m-r-10"> 2위.</i>
+															<a class="m-r-10" id="rank2"></a>
+															<a style="float: right;" id="rankTwo">test2</a>
 														</div>
-														<div class="m-b-20" data-class="bg-danger">
-															<i class="fa fa-chess-rook text-primary m-r-10"></i> 3위.
-															<a style="float: right;">test3</a>
+														<div class="m-b-20" data-class="bg-danger" id="rank3div">
+															<i class="fa fa-chess-rook text-primary m-r-10"> 3위.</i>
+															<a class="m-r-10" id="rank3"></a>
+															<a style="float: right;" id="rankThree">test3</a>
 														</div>
 														<hr>
 														<h4 class="alert-heading text-center">내 순위</h4>
-															<i class="fa fa-chess-king text-dark m-r-10"></i> 5위.
-															<a style="float: right;">test1</a>
+															<i class="fa fa-chess-king text-dark m-r-10" id="myRanking"></i>
+															<a class="m-r-10" id="rank4"></a>
+															<a style="float: right;" id="myRank">test1</a>
 														<hr>
 
 														</div>
 
 													</div>
 												</div>
+
+													<div class="card">
+														<div class="card-body border-top">
+															<h5 class="card-title text-center checkmate-text" id="totalProgressTitle">수료까지...</h5>
+
+															<div class="col-lg-14" style="margin: auto;">
+																<div class="progress m-t-15" style="height: 70px;">
+																	<div
+																		class="progress-bar progress-bar-striped progress-bar-animated bg-warning"
+																		style="width: 0%; height: 70px;" id="totalProgress">0%</div>
+																</div>
+															</div>
+														</div>
+													</div>
+
 												</div>
 
 
@@ -187,21 +231,66 @@
 
 					<div class="col-lg-6"></div>
 
+					<!-- 수료 프로그레스바 밑에 넣고 싶을때 -->
 					<div class="col-lg-12">
 
-						<div class="card">
-							<div class="card-body border-top">
-														<h5 class="card-title text-center">Check Mate!</h5>
-														
-														<div class="col-lg-10" style="margin:auto;">
-														<div class="progress m-t-15" style="height:70px;">
-														<div class="progress-bar progress-bar-striped progress-bar-animated bg-warning" style="width:100%; height:70px;">100%</div>
-														</div>
-														</div>
-							</div>
-						</div>
 
 					</div>
+					
+				<!-- BEGIN MODAL -->
+                <div class="modal none-border" id="my-event">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title"><strong>Add Event</strong></h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            </div>
+                            <div class="modal-body"></div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary waves-effect" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-success save-event waves-effect waves-light">Create event</button>
+                                <button type="button" class="btn btn-danger delete-event waves-effect waves-light" data-dismiss="modal">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Modal Add Category -->
+                <div class="modal fade none-border" id="add-new-event">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title"><strong>Add</strong> a category</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <form>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label class="control-label">Category Name</label>
+                                            <input class="form-control form-white" placeholder="Enter name" type="text" name="category-name" />
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="control-label">Choose Category Color</label>
+                                            <select class="form-control form-white" data-placeholder="Choose a color..." name="category-color">
+                                                <option value="success">Success</option>
+                                                <option value="danger">Danger</option>
+                                                <option value="info">Info</option>
+                                                <option value="primary">Primary</option>
+                                                <option value="warning">Warning</option>
+                                                <option value="inverse">Inverse</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger waves-effect waves-light save-category" data-dismiss="modal">Save</button>
+                                <button type="button" class="btn btn-secondary waves-effect" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- END MODAL -->
 				</div>
 
 
@@ -243,60 +332,28 @@
     <script src="${pageContext.request.contextPath}/resources/template/assets/libs/moment/min/moment.min.js"></script>
     <script src="${pageContext.request.contextPath}/resources/template/assets/libs/fullcalendar/dist/fullcalendar.min.js"></script>
     <script src="${pageContext.request.contextPath}/resources/template/assets/libs/fullcalendar/dist/locale/ko.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/template/dist/js/pages/calendar/cal-init.js"></script>
+<%--     <script src="${pageContext.request.contextPath}/resources/custom/js/cal.js"></script> --%>
     <script src="${pageContext.request.contextPath}/resources/template/dist/js/jquery.ui.touch-punch-improved.js"></script>
     <script src="${pageContext.request.contextPath}/resources/template/dist/js/jquery-ui.min.js"></script>
 
-    <script>
-
+    <script type="text/javascript">
     $(document).ready(function() {
-    	
+    	calendarInit();
     	calendarEventsList();
-    	
-        var defaultEvents = [
-            {
-            	id : 1
-            	, title : "All Day Event"
-               , start : "2020-07-01"
-          },
-          {
-        	  	id : 1,
-                title : "Long Event"
-              , start : "2020-07-02"
-              , end : "2020-07-04"
-          },
-          {
-                id : 2
-              , title : "출석진행중"
-              , color : "#7460ee"
-
-              , start : "2020-07-13T16:00:00"
-          },
-          {
-                id : 2
-              , title : "zzzz"
-              , color : "#0000FF"
-              , start : "2020-07-20T16:00:00"
-          }
-            ];
-       
+    	calendarPoint();
     });
-    
+
     function calendarEventsList() {
-    	var u_id = '${group.u_id}';
-    	var g_no = ${group.g_no};
+
         $.ajax({
-            url : 'caltest',                    // 전송 URL
+            url : 'calendarinfo',                    // 전송 URL
             type : 'GET',                // GET or POST 방식
             traditional : true,
             data : {
-                u_id : u_id,        // 보내고자 하는 data 변수 설정
-                g_no : g_no
             },
-            
             //Ajax 성공시 호출 
             success : function(d){
-                alert(d);
+                $('#calendar').fullCalendar( 'addEventSource', d )
             },
          
             //Ajax 실패시 호출
@@ -305,34 +362,128 @@
             }
         });
     }
-    
-    
-    function calendarCreate(defaultEvents) {
-  	  $('#calendar').fullCalendar({
-          slotDuration: '00:15:00',
-          /* If we want to split day time each 15minutes */
-          minTime: '08:00:00',
-          maxTime: '19:00:00',
-          defaultView: 'month',
-          handleWindowResize: true,
 
-          header: {
-              left: 'prev,next today',
-              center: 'title',
-              right: 'month,agendaWeek,agendaDay'
-          },
-          events: defaultEvents,
-          editable: false,
-          droppable: false, // this allows things to be dropped onto the calendar !!!
-          eventLimit: true, // allow "more" link when too many events
-          selectable: true,
-          locale: 'ko'
-      });
+    function calendarPoint() {
+        
+        $.ajax({
+            url : 'calendarpoint',                    // 전송 URL
+            type : 'GET',                // GET or POST 방식
+            traditional : true,
+            data : {
+            },
+            //Ajax 성공시 호출 
+            success : function(d){
+
+                // 출석 부분
+                document.getElementById('attendProgress').style.width = d.attendPercent+"%";
+                $('#attendProgress').text(d.attendPercent+"%");
+                $('#attendOk').text("+ " + d.attendOne * 5);
+                $('#attendLate').text("- " + d.attendTwo * 3);
+                $('#attendNo').text("- " + d.attendThree * 5);
+
+                // 과제 부분
+                document.getElementById('hwProgress').style.width = d.hwPercent+"%";
+                $('#hwProgress').text(d.hwPercent+"%");
+                $('#hwFinished').text("+ " + d.hwFinished);
+                $('#hwUnFinished').text(d.hwUnFinished);
+
+                // 랭크 부분
+                if(d.rankCount==1){
+                    
+                    $('#rank1').text(d.rankOne.u_id);
+                    $('#rankOne').text(d.rankOne.u_point +" 점");
+
+                    $('#rank2div').hide();
+                    $('#rank3div').hide();
+                    
+                    $('#myRanking').text(" "+d.myRank.rank+"위.");
+                    $('#rank4').text(d.myRank.u_id);
+                    $('#myrank').text(d.myRank.u_point +" 점");
+                    
+                    } else if(d.rankCount==2){
+
+                        $('#rank1').text(d.rankOne.u_id);
+                        $('#rankOne').text(d.rankOne.u_point +" 점");
+
+                        $('#rank2').text(d.rankTwo.u_id);
+                        $('#rankTwo').text(d.rankTwo.u_point +" 점");
+                        
+                        $('#rank3div').hide();
+                        
+                        $('#myRanking').text(" "+d.myRank.rank+"위.");
+                        $('#rank4').text(d.myRank.u_id);
+                        $('#myrank').text(d.myRank.u_point +" 점");
+                        
+
+                        } else if(d.rankCount==3){
+                            $('#rank1').text(d.rankOne.u_id);
+                            $('#rankOne').text(d.rankOne.u_point +" 점");
+                            $('#rank2').text(d.rankTwo.u_id);
+                            $('#rankTwo').text(d.rankTwo.u_point +" 점");
+                            $('#rank3').text(d.rankThree.u_id);
+                            $('#rankThree').text(d.rankThree.u_point +" 점");
+                            
+                            $('#myRanking').text(" "+d.myRank.rank+"위.");
+                            $('#rank4').text(d.myRank.u_id);
+                            $('#myrank').text(d.myRank.u_point +" 점");
+                            
+
+                            } else if(d.rankCount==4){
+                                $('#rank1').text(d.rankOne.u_id);
+                                $('#rankOne').text(d.rankOne.u_point +" 점");
+                                $('#rank2').text(d.rankTwo.u_id);
+                                $('#rankTwo').text(d.rankTwo.u_point +" 점");
+                                $('#rank3').text(d.rankThree.u_id);
+                                $('#rankThree').text(d.rankThree.u_point +" 점");
+
+                                $('#myRanking').text(" "+d.myRank.rank+"위.");
+                                $('#rank4').text(d.myRank.u_id);
+                                $('#myrank').text(d.myRank.u_point +" 점");
+                                }
+                $('#myRank').text(d.myPoint + " 점");
+
+                // 수료 프로그레스바 부분
+                
+                if(d.totalPercent >= 60){
+                	$('#totalProgressTitle').text("Check Mate!");
+                }
+                document.getElementById('totalProgress').style.width = d.totalPercent+"%";
+                $('#totalProgress').text(d.totalPercent+"%");
+                
+                
+            },
+         
+            //Ajax 실패시 호출
+            error : function(jqXHR, textStatus, errorThrown){
+                console.log("jqXHR : " +jqXHR +"textStatus : " + textStatus + "errorThrown : " + errorThrown);
+            }
+        });
+
+        }
+    
+    function calendarInit(){
+    	
+    	$('#calendar').fullCalendar({
+            slotDuration: '00:15:00',
+            /* If we want to split day time each 15minutes */
+            minTime: '08:00:00',
+            maxTime: '19:00:00',
+            defaultView: 'month',
+            handleWindowResize: true,
+            displayEventTime: false,
+            header: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'month,agendaWeek,agendaDay'
+            },
+            events: [],
+            eventLimit: true
+
+        });
     	
     }
-    
     </script>
-    
+ 
 </body>
 
 </html>

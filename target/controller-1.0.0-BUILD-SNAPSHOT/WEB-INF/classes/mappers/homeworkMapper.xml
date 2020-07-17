@@ -4,13 +4,34 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="homeworkMapper">
 
-
+	<insert id="write">
+	INSERT INTO C_HW ( h_no
+						, u_id
+						, g_no
+						, h_title
+						, h_content
+						, h_file
+						, h_date
+						, h_flag
+						, h_deadline)
+				VALUES ( h_no_seq.NEXTVAL
+						, #{u_id}
+						, #{g_no}
+						, #{h_title}
+						, #{h_content}
+						, #{h_file}
+						, SYSDATE
+						, 0
+						, #{h_deadline}
+						 )
+    </insert>
+    
 	<!-- 메인에서 5개만 숙제 뽑아오기 위해서, 이때  <=의 부등호를 인식시키기위해 <![CDATA[부등호 들어가는부분]]> 처리 해주어야함 -->
 	<select id="homeworkListMini" resultType="com.checkmate.vo.HomeworkVO" parameterType="com.checkmate.vo.GroupVO">
 	SELECT * FROM(
-      SELECT H_NO, U_ID, G_NO, H_TITLE, H_CONTENT, H_DATE, H_FLAG, A_DEADLINE
+      SELECT H_NO, U_ID, G_NO, H_TITLE, H_CONTENT, H_DATE, H_FLAG, H_DEADLINE
       FROM C_HW
-      WHERE H_FLAG = 1 AND G_NO = #{g_no}
+      WHERE H_FLAG = 0 AND G_NO = #{g_no}
       ORDER BY H_DATE DESC
       )
       <![CDATA[
@@ -18,12 +39,112 @@
       ]]>
 	</select>
 	
+	<!-- gno 넣으면 생성된 숙제 몇개인지 리턴 -->
 	<select id="homeworkListCount" resultType="int" parameterType="com.checkmate.vo.GroupVO">
       SELECT COUNT(*)
       FROM(
-      SELECT H_NO, U_ID, G_NO, H_TITLE, H_CONTENT, H_DATE, H_FLAG, A_DEADLINE
+      SELECT H_NO, U_ID, G_NO, H_TITLE, H_CONTENT, H_DATE, H_FLAG, H_DEADLINE
       FROM C_HW
-      WHERE H_FLAG = 1 AND G_NO = #{g_no})
+      WHERE H_FLAG = 0 AND G_NO = #{g_no})
 	</select>
+	
+	<!-- 현재 시스템 시간에서 수행 가능한 숙제 목록에서 내가 이미 제출한 숙제들을 빼주어 h_no를 List로 리턴 -->
+	<select id="homeworkPossibleIdList" resultType="com.checkmate.vo.HomeworkVO" parameterType="com.checkmate.vo.GroupVO">
+    (SELECT H_NO
+	FROM C_HW
+	WHERE G_NO = #{g_no} AND H_FLAG = 0 AND
+	SYSDATE BETWEEN H_DATE AND H_DEADLINE)
+	
+    MINUS
+    
+    (SELECT H_NO
+	FROM C_HW
+	WHERE G_NO = #{g_no} AND U_ID = #{u_id} AND H_FLAG = 1)
+	</select>
+	
+	<!-- 현재 시스템 시간 이전까지가 제출 기한이었던 제출 불가능한 숙제 목록에서 내가 제출한 숙제를 뺴주어 내가 결국 미제출한 숙제 h_no list로 리턴 -->
+	<select id="hwImpossibleIdList" resultType="com.checkmate.vo.HomeworkVO" parameterType="com.checkmate.vo.GroupVO">
+	(SELECT H_NO
+	FROM C_HW
+	WHERE G_NO = #{g_no} AND H_FLAG = 0 AND
+	<![CDATA[
+	H_DEADLINE < SYSDATE
+	 ]]>)
+
+	MINUS
+	
+	(SELECT H_NO
+	FROM C_HW
+	WHERE G_NO = #{g_no} AND U_ID = #{u_id} AND H_FLAG = 1)
+	</select>
+	
+	
+	<!-- h_no 넣어주면 vo타입으로 정보 리턴 -->
+	<select id="hwFindVo" resultType="com.checkmate.vo.HomeworkVO" parameterType="com.checkmate.vo.HomeworkVO">
+		SELECT H_NO, U_ID, G_NO, H_TITLE, H_CONTENT, H_DATE, H_FLAG, H_DEADLINE, H_SCORE
+		FROM C_HW
+		WHERE H_NO = #{h_no}
+	</select>
+	
+	<!-- id g_no flag 넣으면 List형태로 정보 리턴 -->
+	<select id="hwFindList" resultType="com.checkmate.vo.HomeworkVO" parameterType="com.checkmate.vo.HomeworkVO">
+		SELECT H_NO, U_ID, G_NO, H_TITLE, H_CONTENT, H_DATE, H_FLAG, H_DEADLINE, H_SCORE
+		FROM C_HW
+		WHERE G_NO = #{g_no} AND U_ID = #{u_id} AND H_FLAG = #{h_flag}
+	</select>
+	
+
+	
+	
+	
+
+<!-- 	
+
+
+// 지난거
+SELECT H_NO, U_ID, G_NO, H_TITLE, H_CONTENT, H_FILE, H_DATE, H_FLAG, H_DEADLINE
+FROM C_HW
+WHERE G_NO = 1 AND H_FLAG = 0 AND
+H_DEADLINE < SYSDATE
+
+// 안한거 이제 못하는거
+SELECT PAST.H_NO, PAST.U_ID, PAST.G_NO, PAST.H_TITLE, PAST.H_CONTENT, PAST.H_FILE, PAST.H_DATE, PAST.H_FLAG, PAST.H_DEADLINE
+FROM (
+SELECT H_NO
+FROM C_HW
+WHERE G_NO = 1 AND U_ID = 'test1' AND H_FLAG = 1) DONE,
+(SELECT H_NO, U_ID, G_NO, H_TITLE, H_CONTENT, H_FILE, H_DATE, H_FLAG, H_DEADLINE
+FROM C_HW
+WHERE G_NO = 1 AND H_FLAG = 0 AND
+H_DEADLINE < SYSDATE) PAST
+WHERE DONE.H_NO != PAST.H_NO
+
+
+// 진행중
+SELECT H_NO, U_ID, G_NO, H_TITLE, H_CONTENT, H_FILE, H_DATE, H_FLAG, H_DEADLINE
+FROM C_HW
+WHERE G_NO = 1 AND H_FLAG = 0 AND
+SYSDATE BETWEEN H_DATE AND H_DEADLINE
+
+// 내가 한거
+SELECT H_NO, U_ID, G_NO, H_TITLE, H_CONTENT, H_FILE, H_DATE, H_FLAG, H_DEADLINE
+FROM C_HW
+WHERE G_NO = 1 AND U_ID = 'test1' AND H_FLAG = 1
+
+// 진행중인데 내가 아직 안한거 아직 할수 있음
+	SELECT POSSIBLE.H_NO, POSSIBLE.U_ID, POSSIBLE.G_NO, POSSIBLE.H_TITLE, POSSIBLE.H_CONTENT, POSSIBLE.H_FILE, POSSIBLE.H_DATE, POSSIBLE.H_FLAG, POSSIBLE.H_DEADLINE
+	FROM (
+	SELECT H_NO
+	FROM C_HW
+	WHERE G_NO = 1 AND U_ID = 'test1' AND H_FLAG = 1) DONE,
+	(SELECT H_NO, U_ID, G_NO, H_TITLE, H_CONTENT, H_FILE, H_DATE, H_FLAG, H_DEADLINE
+	FROM C_HW
+	WHERE G_NO = 1 AND H_FLAG = 0 AND
+	SYSDATE BETWEEN H_DATE AND H_DEADLINE) POSSIBLE
+	WHERE DONE.H_NO != POSSIBLE.H_NO
+ -->
+	
+
+	
 	
 </mapper>

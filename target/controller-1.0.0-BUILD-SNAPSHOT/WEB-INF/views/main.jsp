@@ -168,7 +168,7 @@
                                     <ul class="chat-list">
                                         <!--chat Row -->
                                         <li class="chat-item">
-                                            <div class="chat-img"><img src="${pageContext.request.contextPath}/resources/template/assets/images/users/1.jpg" alt="user"></div>
+                                            <div class="chat-img"><img src="${pageContext.request.contextPath}/resources/checkmateimg/chessking.png" alt="user"></div>
                                             <div class="chat-content">
                                                 <h6 class="font-medium">James Anderson</h6>
                                                 <div class="box bg-light-info">Lorem Ipsum is simply dummy text of the printing &amp; type setting industry.</div>
@@ -176,21 +176,18 @@
                                             <div class="chat-time">10:56 am</div>
                                         </li>
                                         <!--chat Row -->
+                                        
+                                        <!--chat Row -->
                                         <li class="chat-item">
-                                            <div class="chat-img"><img src="${pageContext.request.contextPath}/resources/template/assets/images/users/2.jpg" alt="user"></div>
+                                            <div class="chat-img"><img src="${pageContext.request.contextPath}/resources/checkmateimg/chessknight.png" alt="user"></div>
                                             <div class="chat-content">
-                                                <h6 class="font-medium">Bianca Doe</h6>
-                                                <div class="box bg-light-info">It’s Great opportunity to work.</div>
+                                                <h6 class="font-medium">James Anderson</h6>
+                                                <div class="box bg-light-info">Lorem Ipsum is simply dummy text of the printing &amp; type setting industry.</div>
                                             </div>
-                                            <div class="chat-time">10:57 am</div>
+                                            <div class="chat-time">10:56 am</div>
                                         </li>
                                         <!--chat Row -->
-                                        <li class="odd chat-item">
-                                            <div class="chat-content">
-                                                <div class="box bg-light-inverse">I would love to join the team.</div>
-                                                <br>
-                                            </div>
-                                        </li>
+                                        
                                         <!--chat Row -->
                                         <li class="odd chat-item">
                                             <div class="chat-content">
@@ -199,16 +196,7 @@
                                             </div>
                                             <div class="chat-time">10:59 am</div>
                                         </li>
-                                        <!--chat Row -->
-                                        <li class="chat-item">
-                                            <div class="chat-img"><img src="${pageContext.request.contextPath}/resources/template/assets/images/users/3.jpg" alt="user"></div>
-                                            <div class="chat-content">
-                                                <h6 class="font-medium">Angelina Rhodes</h6>
-                                                <div class="box bg-light-info">Well we have good budget for the project</div>
-                                            </div>
-                                            <div class="chat-time">11:00 am</div>
-                                        </li>
-                                        <!--chat Row -->
+   
                                     </ul>
                                 </div>
                             </div>
