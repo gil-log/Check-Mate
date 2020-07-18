@@ -169,28 +169,8 @@
                                 <h4 class="card-title">그룹 채팅</h4>
                                 
                                 
-                                <div class="chat-box scrollable" style="height:75px;">
-                                
-                                    <ul class="chat-list">
-                                    	<li style="float:left;">
-                                    		<div class="chat-time">test1</div>
-                                    	</li>
-                                    	<li style="float:right;">
-                                    		<div class="chat-time">test2</div>
-                                    	</li>
-                                    	<li style="float:left;">
-                                    		<div class="chat-time">test3</div>
-                                    	</li>                                    	
-                                    	<li style="float:right;">
-                                    		<div class="chat-time">test4</div>
-                                    	</li>
-                                    	<li style="float:left;">
-                                    		<div class="chat-time">test5</div>
-                                    	</li>
-                                    	<li style="float:right;">
-                                    		<div class="chat-time">test6</div>
-                                    	</li>
-                                    </ul>
+                                <div class="chat-box scrollable" style="height:35px;" id='chatUserList'>
+
                                 </div>
                                 
                                 <div class="chat-box scrollable" style="height:475px;">
@@ -203,7 +183,7 @@
                                 <div class="row">
                                     <div class="col-9">
                                         <div class="input-field m-t-0 m-b-0">
-                                            <textarea id="message" placeholder="메시지 입력 후 전송 버튼을 눌러주세요." class="form-control border-0"></textarea>
+                                            <textarea id="message" placeholder="메시지 입력 후 전송 버튼을 눌러주세요." class="form-control border-0" style="resize: none;"></textarea>
                                         </div>
                                     </div>
                                     <div class="col-3">
@@ -262,6 +242,13 @@
     <script src="${pageContext.request.contextPath}/resources/template/dist/js/pages/chart/chart-page-init.js"></script>
     
     <script type="text/javascript">
+
+		let sock = new SockJS('http://localhost:8080/cm/chat/');
+	
+    	sock.onmessage = onMessage;
+    	sock.onclose = onClose;
+    	
+        
     	$('#chatSendBtn').click(function(){
         	if($('#message').val()==''){
             	
@@ -283,10 +270,6 @@
         });
 
     	
-    	let sock = new SockJS('http://localhost:8080/cm/chat/');
-    	sock.onmessage = onMessage;
-    	sock.onclose = onClose;
-    	
     	function sendMessage(){
     		sock.send($('#message').val());
     	}
@@ -300,66 +283,88 @@
     		var gFlag = null;
     		
     		var strArray = data.split('|');
-    		
-    		// 받은 문자열 쪼개주어서 요소 나누기
-    		for(var i=0; i<strArray.length; i++){
-    			console.log('str['+i+']: ' + strArray[i]);
-    		}
-    		
-    		var myId = '${group.u_id}';
-    		console.log('로그인한 내 아이디 : ' + myId);
-    		
-    		socketSenderId = strArray[0]; //소켓에서 받은 메시지 전송자의 아이디 등록
-    		message = strArray[1]; // 받은 메시지
-    		nowTime = strArray[2];
-    		gFlag = strArray[3];
-    		//내가 보낸 메시지는 왼쪽에 뜰꺼고 상대방이 보낸 메시지는 오른쪽에 뜨게 구분해준다
-    		
-    		if(socketSenderId == myId){
 
-    			var html = '<li class="odd chat-item" tabindex ="-1">';
-    			html += '<div class="chat-content">';
-    			html += '<div class="box bg-light-inverse">'+message+'</div>';
-                html += '<br>';
-                html += '</div>';
-                html += '<div class="chat-time">'+nowTime+'</div>';
-                html += '</li>';
+    		// main에 접속할때 세션 연결되면 채팅방 인원에 표현하려고 u_id g_flag 2개 보냈음
+    		if(strArray.length == 2){
+        		chatUserId = strArray[0];
+        		chatUserGflag = strArray[1];
 
-        		$("#chatList").append(html);
-        		
-        		$("#chatList").children().last().focus();
-    		} else{
-    			
-    			var html = '<li class="chat-item" tabindex ="-1">';
+        		//관리자면 노란색으로 채팅 인원 리스트에 보여줌
+        		if(chatUserGflag == 1){
+            		var html = '<i class="fa fa-chess-queen" style="color: #D1BA09">'+chatUserId+'&nbsp;&nbsp;</i>';
+        			$("#chatUserList").append(html);
+            		} else {
+                		var html = '<i class="fa fa-chess-knight">'+chatUserId+'&nbsp;&nbsp;</i>';
+            			$("#chatUserList").append(html);
+                		}
+        		} else {
 
-    			if(gFlag == '0'){
-        			html += '<div class="chat-img"><img src="${pageContext.request.contextPath}/resources/checkmateimg/chessknight.png" alt="user"></div>';
-        			html += '<div class="chat-content">';
-        			html += '<h6 class="font-medium">'+socketSenderId+'</h6>'
-        			html += '<div class="box bg-light-info">'+message+'</div>';
-                    html += '</div>';
-                    html += '<div class="chat-time">'+nowTime+'</div>';
-                    html += '</li>';
-    			} else {
-        			html += '<div class="chat-img"><img src="${pageContext.request.contextPath}/resources/checkmateimg/chessking.png" alt="user"></div>';
-        			html += '<div class="chat-content">';
-        			html += '<h6 class="font-medium" style="font-family: sans-serif; font-weight: bold; color: #D1BA09" id="chatOtherId">'+socketSenderId+'</h6>'
-        			html += '<div class="box bg-light-info"><a style="font-weight: bold;">'+message+'</a></div>';
-                    html += '</div>';
-                    html += '<div class="chat-time">'+nowTime+'</div>';
-                    html += '</li>';
-    				
-        		}
-        		
-        		$("#chatList").append(html);
-        		
-        		$("#chatList").children().last().focus();
-        		
-    		}
+
+        			// 받은 문자열 쪼개주어서 요소 나누기
+            		for(var i=0; i<strArray.length; i++){
+            			console.log('str['+i+']: ' + strArray[i]);
+            		}
+            		
+            		var myId = '${group.u_id}';
+            		console.log('로그인한 내 아이디 : ' + myId);
+            		
+            		socketSenderId = strArray[0]; //소켓에서 받은 메시지 전송자의 아이디 등록
+            		message = strArray[1]; // 받은 메시지
+            		nowTime = strArray[2];
+            		gFlag = strArray[3];
+            		//내가 보낸 메시지는 왼쪽에 뜰꺼고 상대방이 보낸 메시지는 오른쪽에 뜨게 구분해준다
+            		
+            		if(socketSenderId == myId){
+
+            			var html = '<li class="odd chat-item" tabindex ="-1">';
+            			html += '<div class="chat-content">';
+            			html += '<div class="box bg-light-inverse">'+message+'</div>';
+                        html += '<br>';
+                        html += '</div>';
+                        html += '<div class="chat-time">'+nowTime+'</div>';
+                        html += '</li>';
+
+                		$("#chatList").append(html);
+                		
+                		$("#chatList").children().last().focus();
+            		} else{
+            			
+            			var html = '<li class="chat-item" tabindex ="-1">';
+
+            			if(gFlag == '0'){
+                			html += '<div class="chat-img"><img src="${pageContext.request.contextPath}/resources/checkmateimg/chessknight.png" alt="user"></div>';
+                			html += '<div class="chat-content">';
+                			html += '<h6 class="font-medium">'+socketSenderId+'</h6>'
+                			html += '<div class="box bg-light-info">'+message+'</div>';
+                            html += '</div>';
+                            html += '<div class="chat-time">'+nowTime+'</div>';
+                            html += '</li>';
+            			} else {
+                			html += '<div class="chat-img"><img src="${pageContext.request.contextPath}/resources/checkmateimg/chessking.png" alt="user"></div>';
+                			html += '<div class="chat-content">';
+                			html += '<h6 class="font-medium" style="font-family: sans-serif; font-weight: bold; color: #D1BA09" id="chatOtherId">'+socketSenderId+'</h6>'
+                			html += '<div class="box bg-light-info"><a style="font-weight: bold;">'+message+'</a></div>';
+                            html += '</div>';
+                            html += '<div class="chat-time">'+nowTime+'</div>';
+                            html += '</li>';
+            				
+                		}
+                		
+                		$("#chatList").append(html);
+                		
+                		$("#chatList").children().last().focus();
+                		
+            		}
+
+
+            		}
+    		
     	}
     	
     	function onClose(evt) {
+        	
     		$("#message").append("연결 끊김");
+    		
     	}
     </script>
 </body>

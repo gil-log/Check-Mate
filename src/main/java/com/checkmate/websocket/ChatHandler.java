@@ -32,6 +32,19 @@ public class ChatHandler extends TextWebSocketHandler{
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         sessionList.add(session);
         
+		//소켓에 접속한 세션의 아이디 받아오기
+		Map<String, Object> map;
+		map = session.getAttributes();
+		GroupVO groupVO = (GroupVO) map.get("group");
+		
+		String u_id = groupVO.getU_id();
+		int g_flag = groupVO.getG_flag();
+		
+        //모든 유저에게 메세지 출력
+        for(WebSocketSession sess : sessionList){
+            sess.sendMessage(new TextMessage(u_id + "|" + g_flag));
+        }
+        
         System.out.println(session.getId() + " 연결됨!");
         logger.info("{} 연결됨", session.getId()); 
     }
