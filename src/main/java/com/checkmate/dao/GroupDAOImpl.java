@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.checkmate.vo.GroupPointVO;
 import com.checkmate.vo.GroupVO;
+import com.checkmate.vo.UserVO;
 
 @Repository
 public class GroupDAOImpl implements GroupDAO {
@@ -22,13 +23,13 @@ public class GroupDAOImpl implements GroupDAO {
 	}
 
 	@Override
-	public List<GroupVO> GroupList(GroupVO groupVO) throws Exception {
-		return sqlSession.selectList("groupMapper.GroupList", groupVO);
+	public List<GroupVO> GroupList(UserVO userVO) throws Exception {
+		return sqlSession.selectList("groupMapper.GroupList", userVO);
 	}
 
 	@Override
-	public int GroupListCount(GroupVO groupVO) throws Exception {
-		return sqlSession.selectOne("groupMapper.GroupListCount", groupVO);
+	public int GroupListCount(UserVO userVO) throws Exception {
+		return sqlSession.selectOne("groupMapper.GroupListCount", userVO);
 	}
 
 	@Override
@@ -40,5 +41,15 @@ public class GroupDAOImpl implements GroupDAO {
 	public void userPoint(GroupPointVO groupPointVO) throws Exception {
 		sqlSession.update("groupMapper.userPoint", groupPointVO);
 	}
+
+	@Override
+	public GroupVO groupRead(int g_no) throws Exception {
+		return sqlSession.selectOne("groupMapper.groupRead", g_no);
+	}
 	
+	@Override
+	public void userPlus(GroupVO groupVO) throws Exception {
+		sqlSession.insert("groupMapper.userPlus", groupVO);
+	}
+
 }

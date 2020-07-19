@@ -72,12 +72,14 @@ $(function(){
 			}
 		}
 	});
-	
+
+/* 
 	$("#submit-r").on("click", function(){
 		window.alert("회원가입에 성공 하였습니다!");
 		    
 		window.close();
 		});
+	 */
 });
 </script>
 
@@ -108,7 +110,7 @@ $(function(){
                         <span class="db"><img src="${pageContext.request.contextPath}/resources/checkmateimg/logo.png" height="200" width="200" alt="logo" /></span>
                     </div>
                     <!-- Form -->
-                    <form class="form-horizontal m-t-20" id="loginform" method="post" action="login">
+                    <form class="form-horizontal m-t-20" id="loginform" method="post" action="loginok">  <!--경로 로그인 성공시 group으로 가고싶은데 redirect가 안됨..우선 임시로 이걸그냥 group로 원래logincheck로 하고싶음  -->
                     <c:if test="${user == null}">
                         <div class="row p-b-30">
                             <div class="col-12">
@@ -166,7 +168,7 @@ $(function(){
                                     <div class="input-group-prepend">
                                         <span class="input-group-text bg-success text-white"><i class="ti-user"></i></span>
                                     </div>
-                                    <input type="text" name="u_id" class="form-control form-control-lg" id="u_id" placeholder="아이디" required>
+                                    <input type="text" name="u_id" class="form-control form-control-lg" id="uid" placeholder="아이디" required>
                                 </div>
                                 <div class="input-group mb-3">
                                     <div class="input-group-prepend">
@@ -186,13 +188,13 @@ $(function(){
                                     <div class="input-group-prepend">
                                         <span class="input-group-text bg-success text-white"><i class="ti-user"></i></span>
                                     </div>
-                                    <input type="text" name="u_name" class="form-control form-control-lg" id="u_name" placeholder="이름" required>
+                                    <input type="text" name="u_name" class="form-control form-control-lg" id="uname" placeholder="이름" required>
                                 </div>
                                 <div class="input-group mb-3">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text bg-danger text-white"><i class="ti-email"></i></span>
                                     </div>
-                                    <input type="text" name="u_email" class="form-control form-control-lg" id="u_email" placeholder="이메일 주소" required>
+                                    <input type="text" name="u_email" class="form-control form-control-lg" id="uemail" placeholder="이메일 주소" required>
                                 </div>
                             </div>
                         </div>

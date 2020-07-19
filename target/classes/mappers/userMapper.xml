@@ -36,4 +36,28 @@
 		   AND U_PWD = #{u_pwd}   
 	</select>
 	
+	<!-- 유저 리스트 가져오기 -->
+	<select id="userList" resultType="com.checkmate.vo.UserVO">
+		SELECT C.U_ID, C.U_NAME, C.U_EMAIL, C.U_FLAG
+		FROM C_USER C
+		
+		MINUS
+		
+		(SELECT C.U_ID, C.U_NAME, C.U_EMAIL, C.U_FLAG
+		FROM C_USER C, C_GROUP G
+		WHERE C.U_ID = G.U_ID AND G_NO = #{g_no} AND G_FLAG IN(0, 1))
+	</select>
+	
+	<select id="userListCount" resultType="int">
+		SELECT COUNT(*)
+		FROM (		SELECT C.U_ID, C.U_NAME, C.U_EMAIL, C.U_FLAG
+		FROM C_USER C
+		
+		MINUS
+		
+		(SELECT C.U_ID, C.U_NAME, C.U_EMAIL, C.U_FLAG
+		FROM C_USER C, C_GROUP G
+		WHERE C.U_ID = G.U_ID AND G_NO = #{g_no} AND G_FLAG IN(0, 1)))
+	</select>
+	
 </mapper>

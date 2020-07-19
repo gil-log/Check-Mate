@@ -63,6 +63,7 @@ public class InformationController {
 			rtnVO.setiTotalDisplayRecords(noticeListCount);
 			rtnVO.setiTotalRecords(noticeListCount);
 
+
 			return rtnVO;
 		} else {
 
