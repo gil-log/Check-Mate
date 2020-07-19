@@ -444,7 +444,7 @@
 
                 // 수료 프로그레스바 부분
                 
-                if(d.totalPercent >= 60){
+                if(d.totalPercent >= 80){
                 	$('#totalProgressTitle').text("Check Mate!");
                 }
                 document.getElementById('totalProgress').style.width = d.totalPercent+"%";
