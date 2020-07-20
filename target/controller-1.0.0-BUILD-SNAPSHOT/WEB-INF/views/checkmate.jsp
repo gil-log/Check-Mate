@@ -159,7 +159,7 @@ $(function(){
                     </div>
                     <div class="row m-t-20">
                         <!-- Form -->
-                    <form class="form-horizontal m-t-20" method="post" action="register">
+                    <form class="form-horizontal m-t-20" style="margin:auto;" method="post" action="register">
                         <div class="row p-b-30">
                             <div class="col-12">
                             	<div class="input-group mb-3">
@@ -194,13 +194,28 @@ $(function(){
                                     </div>
                                     <input type="text" name="u_email" class="form-control form-control-lg" id="u_email" placeholder="이메일 주소" required>
                                 </div>
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text bg-dark text-white"><i class="ti-email"></i></span>
+                                    </div>
+                                    <input type="text" class="form-control form-control-lg" id="u_email_auth" placeholder="메일 인증 번호" required>
+
+                                </div>
+                                
+                                    <div class="text-center text-white" id="mailAuthMessage">
+                        				<span class="text-white" ></span>
+                    				</div>
+                    			
                             </div>
                         </div>
                             
                             <div class="row m-t-20 p-t-20 border-top border-secondary">
+                            
+                                
                                 <div class="col-12">
                                     <a class="btn btn-success" href="#" id="to-login" name="action">돌아가기</a>
-                                    <button class="btn btn-info float-right" type="submit" name = "submit" id = "submit-r" >회원가입</button>
+                                    <button class="btn btn-info float-right" type="button" id = "mailAuthBtn" >인증메일발송</button>
+                                    <button class="btn btn-info float-right" type="submit" name = "submit" id = "submit-r" value="0">회원가입</button>
                                 </div>
                             </div>
                     </form>
@@ -237,6 +252,56 @@ $(function(){
     <!-- This page plugin js -->
     <!-- ============================================================== -->
     <script>
+    
+    //이메일 인증 시작
+    $('#submit-r').hide();
+    
+	$("#mailAuthBtn").on("click", function(){
+		if($(this).val==0){
+			$('#mailAuthMessage').text("인증 메일이 발송되었습니다!");
+			$(this).text("인증");
+		} else{
+			
+			var u_mail = $('#u_email').val();
+			var ran = $('#u_email_auth').val();
+			
+			const send = new Array(2);
+			
+			send[0] = u_mail;
+			send[1] = ran;
+	        $.ajax({
+	            url : 'mailAuth',                    // 전송 URL
+	            type : 'POST',                // GET or POST 방식
+	            traditional : true,
+	            data : {
+	            	data : send
+	            },
+	            //Ajax 성공시 호출 
+	            success : function(d){
+	            	
+	                
+	            },
+	         
+	            //Ajax 실패시 호출
+	            error : function(jqXHR, textStatus, errorThrown){
+	                console.log("jqXHR : " +jqXHR +"textStatus : " + textStatus + "errorThrown : " + errorThrown);
+	            }
+	        });
+			
+			$('#mailAuthMessage').text("인증 결과 ajax 여기다 구현");
+			$(this).hide();
+		    $('#submit-r').show();
+			
+			
+		}
+		
+    });
+
+    
+    
+    
+    //이메일 인증 끝
+    
     $('[data-toggle="tooltip"]').tooltip();
     $(".preloader").fadeOut();
     $("#registerform").hide();

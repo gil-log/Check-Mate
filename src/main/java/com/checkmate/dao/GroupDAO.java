@@ -27,4 +27,10 @@ public interface GroupDAO {
 	
 	// 내 순위 찾아오기
 	public GroupPointVO findMyRank(GroupVO groupVO) throws Exception;
+	
+	// 소켓 접속했을때 세션 아이디 넣기
+	public void socketConnection(GroupVO groupVO) throws Exception;
+	
+	// 해당 그룹에 소켓 접속 인원 list 가져오기
+	public List<GroupVO> socketConnectionList(GroupVO groupVO) throws Exception;
 }

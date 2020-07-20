@@ -8,12 +8,14 @@
 	    INSERT INTO C_USER(		U_ID 
 	   					  		, U_PWD
 	   					       	, U_NAME
-	   					       	, U_EMAIL)
+	   					       	, U_EMAIL
+	   					       	, U_FLAG)
 	   					       
 	                  VALUES(    #{u_id} 
 	                 		   , #{u_pwd}
 	                 		   , #{u_name}
 	                 		   , #{u_email}
+	                 		   , 1
 	                 		   )
     </insert>
     

@@ -30,6 +30,7 @@
 	<!-- 웹 소켓 때문에 추가 시작 -->
 	<websocket:handlers>
 		<websocket:mapping handler="chatHandler" path="/chat" />
+		<websocket:mapping handler="alarmHandler" path="/alarm" />
 		
 		<!-- httpsession 값을 가져오기 위해 -->
 		<websocket:handshake-interceptors>
@@ -41,7 +42,10 @@
 	</websocket:handlers>
     
 	<beans:bean id="chatHandler" class="com.checkmate.websocket.ChatHandler"></beans:bean>
-	
+	<beans:bean id="alarmHandler" class="com.checkmate.websocket.AlarmHandler"></beans:bean>
 	<!-- 웹 소켓 떄문에 추가 끝 -->
-	
+
+
+
+
 </beans:beans>

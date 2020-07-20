@@ -51,4 +51,14 @@ public class GroupServiceImpl implements GroupService {
 	public GroupPointVO findMyRank(GroupVO groupVO) throws Exception {
 		return dao.findMyRank(groupVO);
 	}
+
+	@Override
+	public void socketConnection(GroupVO groupVO) throws Exception {
+		dao.socketConnection(groupVO);
+	}
+
+	@Override
+	public List<GroupVO> socketConnectionList(GroupVO groupVO) throws Exception {
+		return dao.socketConnectionList(groupVO);
+	}
 }

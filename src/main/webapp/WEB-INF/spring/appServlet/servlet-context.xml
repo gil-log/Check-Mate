@@ -44,5 +44,8 @@
 	<beans:bean id="chatHandler" class="com.checkmate.websocket.ChatHandler"></beans:bean>
 	<beans:bean id="alarmHandler" class="com.checkmate.websocket.AlarmHandler"></beans:bean>
 	<!-- 웹 소켓 떄문에 추가 끝 -->
-	
+
+
+
+
 </beans:beans>

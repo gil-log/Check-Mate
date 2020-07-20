@@ -248,7 +248,6 @@
     	sock.onmessage = onMessage;
     	sock.onclose = onClose;
     	
-        
     	$('#chatSendBtn').click(function(){
         	if($('#message').val()==''){
             	
@@ -285,7 +284,13 @@
     		var strArray = data.split('|');
 
     		// main에 접속할때 세션 연결되면 채팅방 인원에 표현하려고 u_id g_flag 2개 보냈음
-    		if(strArray.length == 2){
+    		if(strArray.length == 1){
+    			if(strArray[0] == '0'){
+        			$("#chatUserList").empty();
+    			}
+    		}
+    		else if(strArray.length == 2){
+    			
         		chatUserId = strArray[0];
         		chatUserGflag = strArray[1];
 

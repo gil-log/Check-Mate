@@ -7,7 +7,14 @@ public class GroupVO {
 	private String g_name;
 	private int g_flag;
 	private int u_point;
-	
+	private String g_socket;
+
+	public String getG_socket() {
+		return g_socket;
+	}
+	public void setG_socket(String g_socket) {
+		this.g_socket = g_socket;
+	}
 	public int getU_point() {
 		return u_point;
 	}
@@ -40,7 +47,7 @@ public class GroupVO {
 	}
 	@Override
 	public String toString() {
-		return "GroupPointVO [g_no=" + g_no + ", u_id=" + u_id + ", g_name=" + g_name + ", g_flag=" + g_flag
-				+ ", u_point=" + u_point + "]";
+		return "GroupVO [g_no=" + g_no + ", u_id=" + u_id + ", g_name=" + g_name + ", g_flag=" + g_flag + ", u_point="
+				+ u_point + ", g_socket=" + g_socket + "]";
 	}
 }

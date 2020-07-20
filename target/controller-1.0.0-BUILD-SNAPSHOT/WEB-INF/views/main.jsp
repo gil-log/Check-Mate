@@ -17,6 +17,10 @@
     <link href="${pageContext.request.contextPath}/resources/template/assets/libs/flot/css/float-chart.css" rel="stylesheet">
     <!-- Custom CSS -->
     <link href="${pageContext.request.contextPath}/resources/template/dist/css/style.min.css" rel="stylesheet">
+    
+    <!-- 웹 소켓 -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.5/sockjs.min.js"></script>
+    
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -163,40 +167,15 @@
                         <div class="card">
                             <div class="card-body">
                                 <h4 class="card-title">그룹 채팅</h4>
+                                
+                                
+                                <div class="chat-box scrollable" style="height:35px;" id='chatUserList'>
+
+                                </div>
+                                
                                 <div class="chat-box scrollable" style="height:475px;">
-                                    <!--chat Row -->
-                                    <ul class="chat-list">
-                                        <!--chat Row -->
-                                        <li class="chat-item">
-                                            <div class="chat-img"><img src="${pageContext.request.contextPath}/resources/checkmateimg/chessking.png" alt="user"></div>
-                                            <div class="chat-content">
-                                                <h6 class="font-medium">James Anderson</h6>
-                                                <div class="box bg-light-info">Lorem Ipsum is simply dummy text of the printing &amp; type setting industry.</div>
-                                            </div>
-                                            <div class="chat-time">10:56 am</div>
-                                        </li>
-                                        <!--chat Row -->
-                                        
-                                        <!--chat Row -->
-                                        <li class="chat-item">
-                                            <div class="chat-img"><img src="${pageContext.request.contextPath}/resources/checkmateimg/chessknight.png" alt="user"></div>
-                                            <div class="chat-content">
-                                                <h6 class="font-medium">James Anderson</h6>
-                                                <div class="box bg-light-info">Lorem Ipsum is simply dummy text of the printing &amp; type setting industry.</div>
-                                            </div>
-                                            <div class="chat-time">10:56 am</div>
-                                        </li>
-                                        <!--chat Row -->
-                                        
-                                        <!--chat Row -->
-                                        <li class="odd chat-item">
-                                            <div class="chat-content">
-                                                <div class="box bg-light-inverse">Whats budget of the new project.</div>
-                                                <br>
-                                            </div>
-                                            <div class="chat-time">10:59 am</div>
-                                        </li>
-   
+                                    <!--chat Row 여기에 채팅이 계속 append 됨-->
+                                    <ul class="chat-list" id='chatList'>
                                     </ul>
                                 </div>
                             </div>
@@ -204,11 +183,12 @@
                                 <div class="row">
                                     <div class="col-9">
                                         <div class="input-field m-t-0 m-b-0">
-                                            <textarea id="textarea1" placeholder="Type and enter" class="form-control border-0"></textarea>
+                                            <textarea id="message" placeholder="메시지 입력 후 전송 버튼을 눌러주세요." class="form-control border-0" style="resize: none;"></textarea>
                                         </div>
                                     </div>
                                     <div class="col-3">
-                                        <a class="btn-circle btn-lg btn-cyan float-right text-white" href="javascript:void(0)"><i class="fas fa-paper-plane"></i></a>
+                                        <button class="btn-circle btn-lg btn-cyan float-right text-white fas fa-paper-plane" id="chatSendBtn">
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -260,7 +240,138 @@
     <script src="${pageContext.request.contextPath}/resources/template/assets/libs/flot/jquery.flot.crosshair.js"></script>
     <script src="${pageContext.request.contextPath}/resources/template/assets/libs/flot.tooltip/js/jquery.flot.tooltip.min.js"></script>
     <script src="${pageContext.request.contextPath}/resources/template/dist/js/pages/chart/chart-page-init.js"></script>
+    
+    <script type="text/javascript">
 
+		let sock = new SockJS('http://localhost:8080/cm/chat/');
+	
+    	sock.onmessage = onMessage;
+    	sock.onclose = onClose;
+    	
+    	$('#chatSendBtn').click(function(){
+        	if($('#message').val()==''){
+            	
+            	} else{
+            		sendMessage();
+            		$('#message').val('');
+                	}
+    		
+    	});
+
+    	$("#message").keyup(function(e){
+        	if($('#message').val()=='\n'){
+        	} else{
+        		if(e.keyCode == 13){
+            		sendMessage();
+            		$('#message').val('');
+        		} 
+            }
+        });
+
+    	
+    	function sendMessage(){
+    		sock.send($('#message').val());
+    	}
+    	
+    	function onMessage(msg) {
+    		//msg는 websocket class에서 보내준 데이터임
+    		var data = msg.data;
+    		var socketSenderId = null;
+    		var message = null;
+    		var nowTime = null;
+    		var gFlag = null;
+    		
+    		var strArray = data.split('|');
+
+    		// main에 접속할때 세션 연결되면 채팅방 인원에 표현하려고 u_id g_flag 2개 보냈음
+    		if(strArray.length == 1){
+    			if(strArray[0] == '0'){
+        			$("#chatUserList").empty();
+    			}
+    		}
+    		else if(strArray.length == 2){
+    			
+        		chatUserId = strArray[0];
+        		chatUserGflag = strArray[1];
+
+        		//관리자면 노란색으로 채팅 인원 리스트에 보여줌
+        		if(chatUserGflag == 1){
+            		var html = '<i class="fa fa-chess-queen" style="color: #D1BA09">'+chatUserId+'&nbsp;&nbsp;</i>';
+        			$("#chatUserList").append(html);
+            		} else {
+                		var html = '<i class="fa fa-chess-knight">'+chatUserId+'&nbsp;&nbsp;</i>';
+            			$("#chatUserList").append(html);
+                		}
+        		} else {
+
+
+        			// 받은 문자열 쪼개주어서 요소 나누기
+            		for(var i=0; i<strArray.length; i++){
+            			console.log('str['+i+']: ' + strArray[i]);
+            		}
+            		
+            		var myId = '${group.u_id}';
+            		console.log('로그인한 내 아이디 : ' + myId);
+            		
+            		socketSenderId = strArray[0]; //소켓에서 받은 메시지 전송자의 아이디 등록
+            		message = strArray[1]; // 받은 메시지
+            		nowTime = strArray[2];
+            		gFlag = strArray[3];
+            		//내가 보낸 메시지는 왼쪽에 뜰꺼고 상대방이 보낸 메시지는 오른쪽에 뜨게 구분해준다
+            		
+            		if(socketSenderId == myId){
+
+            			var html = '<li class="odd chat-item" tabindex ="-1">';
+            			html += '<div class="chat-content">';
+            			html += '<div class="box bg-light-inverse">'+message+'</div>';
+                        html += '<br>';
+                        html += '</div>';
+                        html += '<div class="chat-time">'+nowTime+'</div>';
+                        html += '</li>';
+
+                		$("#chatList").append(html);
+                		
+                		$("#chatList").children().last().focus();
+            		} else{
+            			
+            			var html = '<li class="chat-item" tabindex ="-1">';
+
+            			if(gFlag == '0'){
+                			html += '<div class="chat-img"><img src="${pageContext.request.contextPath}/resources/checkmateimg/chessknight.png" alt="user"></div>';
+                			html += '<div class="chat-content">';
+                			html += '<h6 class="font-medium">'+socketSenderId+'</h6>'
+                			html += '<div class="box bg-light-info">'+message+'</div>';
+                            html += '</div>';
+                            html += '<div class="chat-time">'+nowTime+'</div>';
+                            html += '</li>';
+            			} else {
+                			html += '<div class="chat-img"><img src="${pageContext.request.contextPath}/resources/checkmateimg/chessking.png" alt="user"></div>';
+                			html += '<div class="chat-content">';
+                			html += '<h6 class="font-medium" style="font-family: sans-serif; font-weight: bold; color: #D1BA09" id="chatOtherId">'+socketSenderId+'</h6>'
+                			html += '<div class="box bg-light-info"><a style="font-weight: bold;">'+message+'</a></div>';
+                            html += '</div>';
+                            html += '<div class="chat-time">'+nowTime+'</div>';
+                            html += '</li>';
+            				
+                		}
+                		
+                		$("#chatList").append(html);
+                		
+                		$("#chatList").children().last().focus();
+                		
+            		}
+
+
+            		}
+    		
+    	}
+    	
+    	function onClose(evt) {
+        	
+    		$("#message").append("연결 끊김");
+    		
+    	}
+    </script>
 </body>
 
 </html>

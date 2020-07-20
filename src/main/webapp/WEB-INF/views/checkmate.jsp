@@ -159,7 +159,7 @@ $(function(){
                     </div>
                     <div class="row m-t-20">
                         <!-- Form -->
-                    <form class="form-horizontal m-t-20" method="post" action="register">
+                    <form class="form-horizontal m-t-20" style="margin:auto;" method="post" action="register" id="regFrom">
                         <div class="row p-b-30">
                             <div class="col-12">
                             	<div class="input-group mb-3">
@@ -194,12 +194,27 @@ $(function(){
                                     </div>
                                     <input type="text" name="u_email" class="form-control form-control-lg" id="u_email" placeholder="이메일 주소" required>
                                 </div>
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text bg-dark text-white"><i class="ti-email"></i></span>
+                                    </div>
+                                    <input type="text" class="form-control form-control-lg" id="u_email_auth" placeholder="메일 인증 번호" required>
+
+                                </div>
+                                
+                                    <div class="text-center text-white" id="mailAuthMessage">
+                        				<span class="text-white" ></span>
+                    				</div>
+                    			
                             </div>
                         </div>
                             
                             <div class="row m-t-20 p-t-20 border-top border-secondary">
+                            
+                                
                                 <div class="col-12">
                                     <a class="btn btn-success" href="#" id="to-login" name="action">돌아가기</a>
+                                    <button class="btn btn-info float-right" type="button" id = "mailAuthBtn" value="0">인증메일발송</button>
                                     <button class="btn btn-info float-right" type="submit" name = "submit" id = "submit-r" >회원가입</button>
                                 </div>
                             </div>
@@ -237,6 +252,112 @@ $(function(){
     <!-- This page plugin js -->
     <!-- ============================================================== -->
     <script>
+    
+    //이메일 인증 시작
+    $('#submit-r').hide();
+    
+	$("#mailAuthBtn").on("click", function(){
+		if($('#mailAuthBtn').val() == 0){
+
+			
+			
+			  
+			  var exptext = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/;
+			   if (exptext.test($('#u_email').val())!=true){
+			   alert('이메일 형식이 올바르지 않습니다.');
+			   $('#u_email').focus();
+			   var bol = true;
+				  return bol;
+			   }
+
+
+			
+			
+			
+			
+			
+			if($('#u_email').val())
+			
+				
+				
+				
+				
+				
+			$(this).val(1);
+			$('#mailAuthMessage').text("인증 메일이 발송되었습니다!");
+			$(this).text("인증하기");
+			
+			
+			var u_mail = $('#u_email').val();
+			
+			const send = new Array(3);
+			
+			send[0] = u_mail;
+			send[1] = 0;
+			send[2] = 0; //처음 메일 주소 보내는 방식에서는 0으로 인식
+	        $.ajax({
+	            url : 'mailAuth',                    // 전송 URL
+	            type : 'POST',                // GET or POST 방식
+	            traditional : true,
+	            data : {
+	            	data : send
+	            },
+	            //Ajax 성공시 호출 
+	            success : function(d){
+
+	                
+	            },
+	         
+	            //Ajax 실패시 호출
+	            error : function(jqXHR, textStatus, errorThrown){
+	                console.log("jqXHR : " +jqXHR +"textStatus : " + textStatus + "errorThrown : " + errorThrown);
+	            }
+	        });
+			
+			return true;
+			
+		} else if ($('#mailAuthBtn').val() == 1){
+			
+			var u_mail = $('#u_email').val();
+			var ran = $('#u_email_auth').val();
+			
+			const send = new Array(3);
+			
+			send[0] = u_mail;
+			send[1] = ran;
+			send[2] = 1; //처음 메일 주소 보내는 방식에서는 0으로 인식
+	        $.ajax({
+	            url : 'mailAuth',                    // 전송 URL
+	            type : 'POST',                // GET or POST 방식
+	            traditional : true,
+	            data : {
+	            	data : send
+	            },
+	            //Ajax 성공시 호출 
+	            success : function(d){
+	            	if(d==0){
+	        			$('#mailAuthMessage').text("인증에 성공 하였습니다!");
+	        			$('#mailAuthBtn').hide();
+	        		    $('#submit-r').show();
+	            	} else if(d==1){
+	        			$('#mailAuthMessage').text("인증에 실패 하였습니다. 인증 번호를 확인해주세요.");
+	            	}
+	            },
+	         
+	            //Ajax 실패시 호출
+	            error : function(jqXHR, textStatus, errorThrown){
+	                console.log("jqXHR : " +jqXHR +"textStatus : " + textStatus + "errorThrown : " + errorThrown);
+	            }
+	        });
+			
+		}
+    });
+
+    
+    
+    
+    //이메일 인증 끝
+    
     $('[data-toggle="tooltip"]').tooltip();
     $(".preloader").fadeOut();
     $("#registerform").hide();
@@ -249,6 +370,15 @@ $(function(){
     });
     $('#to-login').click(function(){
         
+    	//이메일 인증 부분
+    	
+    	$('#mailAuthBtn').val(0);
+    	$('#u_email').val('');
+		$('#mailAuthMessage').text("");
+		$('#mailAuthBtn').text("인증메일발송");
+    	
+    	//때문에 추가 한거 끝
+    	
         $("#registerform").hide();
         $("#loginform").fadeIn();
     });
