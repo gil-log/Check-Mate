@@ -6,6 +6,7 @@ import java.util.Random;
 import javax.inject.Inject;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -73,8 +74,8 @@ JavaMailSender mailSender; // 메일 서비스를 사용하기 위해 의존성�
 	
 	// 네이버 로그인 성공시 callback호출 메소드
 	@RequestMapping(value = "/callback", method = { RequestMethod.GET, RequestMethod.POST })
-	public String callback(Model model, @RequestParam String code, @RequestParam String state, HttpSession session)
-			throws IOException, ParseException {
+	public void callback(Model model, @RequestParam String code, @RequestParam String state, HttpSession session, HttpServletResponse response)
+			throws Exception {
 		System.out.println("여기는 callback");
 		OAuth2AccessToken oauthToken;
 		oauthToken = naverLoginBO.getAccessToken(session, code, state);
@@ -95,11 +96,31 @@ JavaMailSender mailSender; // 메일 서비스를 사용하기 위해 의존성�
 		String id = (String) response_obj.get("id");
 		System.out.println(id);
 		// 4.파싱 닉네임 세션으로 저장
+
+		String email = (String) response_obj.get("email");
+
+		System.out.println(email);
 		
-		session.setAttribute("sessionId", id); // 세션 생성
-		model.addAttribute("result", apiResult);
+		String name = (String) response_obj.get("name");
+
+		System.out.println(name);
+		UserVO naverGroupVO = new UserVO();
 		
-		return "login";
+		naverGroupVO.setU_id(id);
+		naverGroupVO.setU_email(email);
+		naverGroupVO.setU_name(name);
+		
+		int naverAlreadyChk = service.naverAlreadyChk(naverGroupVO);
+		
+		if(naverAlreadyChk == 0) {
+			service.naverReg(naverGroupVO);
+		}
+		
+		//session.setAttribute("naverId", id); 
+		
+		System.out.println("네이버 로그인 세션 붙여주기만 하면된다 이제");
+		response.sendRedirect("main");
+	
 	}
 
 	

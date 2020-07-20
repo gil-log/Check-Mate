@@ -29,4 +29,14 @@ public class UserServiceImpl implements UserService {
 		return dao.userinfo(u_id);
 	}
 
+	@Override
+	public void naverReg(UserVO userVO) throws Exception {
+		dao.naverReg(userVO);
+	}
+
+	@Override
+	public int naverAlreadyChk(UserVO userVO) throws Exception {
+		return dao.naverAlreadyChk(userVO);
+	}
+
 }

@@ -28,4 +28,14 @@ public class UserDAOImpl implements UserDAO {
 		return sqlSession.selectOne("userMapper.userInfo", u_id);
 	}
 
+	@Override
+	public void naverReg(UserVO userVO) throws Exception {
+		sqlSession.insert("userMapper.naverReg", userVO);
+	}
+
+	@Override
+	public int naverAlreadyChk(UserVO userVO) throws Exception {
+		return sqlSession.selectOne("naverAlreadyChk", userVO);
+	}
+
 }
