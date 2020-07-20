@@ -13,7 +13,7 @@
                     <ul id="sidebarnav" class="p-t-30">
                         <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="main" aria-expanded="false"><i class="mdi mdi-view-dashboard"></i><span class="hide-menu">Dashboard</span></a></li>
                         <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="information" aria-expanded="false"><i class="mdi mdi-boombox"></i><span class="hide-menu">공지사항</span></a></li>
-                        <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="homework-list" aria-expanded="false"><i class="mdi mdi-owl"></i><span class="hide-menu">숙제</span></a></li>
+                        <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="homeworklist" aria-expanded="false"><i class="mdi mdi-owl"></i><span class="hide-menu">숙제</span></a></li>
                         
                         <!-- 출결관리 사이드 시작-->
                         <li class="sidebar-item"> <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-face"></i><span class="hide-menu">출석</span></a>

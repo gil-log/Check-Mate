@@ -13,6 +13,7 @@ public class HomeworkVO {
 	private Date h_date;
 	private int h_flag;
 	private String h_deadline;
+	private int h_score;
 	
 	public int getH_no() {
 		return h_no;
@@ -68,10 +69,17 @@ public class HomeworkVO {
 	public void setH_deadline(String h_deadline) {
 		this.h_deadline = h_deadline;
 	}
+	public int getH_score() {
+		return h_score;
+	}
+	public void setH_score(int h_score) {
+		this.h_score = h_score;
+	}
 	@Override
 	public String toString() {
 		return "HomeworkVO [h_no=" + h_no + ", u_id=" + u_id + ", g_no=" + g_no + ", h_title=" + h_title
 				+ ", h_content=" + h_content + ", h_file=" + h_file + ", h_date=" + h_date + ", h_flag=" + h_flag
-				+ ", h_deadline=" + h_deadline + "]";
+				+ ", h_deadline=" + h_deadline + ", h_score=" + h_score + "]";
 	}
+	
 }

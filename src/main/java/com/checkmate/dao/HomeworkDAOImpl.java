@@ -26,10 +26,38 @@ public class HomeworkDAOImpl implements HomeworkDAO{
 		return sqlSession.selectOne("homeworkMapper.homeworkListCount", groupVO);
 	}
 	
-	//과제 작성
+	//과제 작성(그룹장)
 	@Override
 	public void write(HomeworkVO homeworkVO) throws Exception{
 		sqlSession.insert("homeworkMapper.write", homeworkVO);
 	}
-
+	
+	//과제 작성
+	@Override
+	public void homeworkwrite(HomeworkVO homeworkVO) throws Exception{
+		sqlSession.insert("homeworkMapper.homeworkwrite", homeworkVO);
+	}
+	
+	//과제 제출완료
+	@Override
+	public HomeworkVO read(HomeworkVO homeworkVO) throws Exception {
+		return sqlSession.selectOne("homeworkMapper.read", homeworkVO);
+	}
+		
+	//과제 제출완료(그룹장)
+	@Override
+	public HomeworkVO homeworkread(HomeworkVO homeworkVO) throws Exception {
+		return sqlSession.selectOne("homeworkMapper.homeworkread", homeworkVO);
+	}
+		
+	//전체 목록 조회
+	@Override
+	public List<HomeworkVO> homeworkList(GroupVO groupVO) throws Exception{
+		return sqlSession.selectList("homeworkMapper.homeworkList", groupVO);
+	}
+			
+	@Override
+	public int homeworkListAllCount(GroupVO groupVO) throws Exception{
+		return sqlSession.selectOne("homeworkMapper.homeworkListAllCount", groupVO);
+	}
 }
