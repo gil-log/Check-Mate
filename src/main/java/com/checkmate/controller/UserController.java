@@ -113,9 +113,10 @@ JavaMailSender mailSender; // 메일 서비스를 사용하기 위해 의존성�
 		System.out.println(name);
 		UserVO naverGroupVO = new UserVO();
 		
-		naverGroupVO.setU_id(id);
+		naverGroupVO.setU_id(name);
 		naverGroupVO.setU_email(email);
 		naverGroupVO.setU_name(name);
+		naverGroupVO.setU_pwd(id);
 		naverGroupVO.setU_flag(2);
 		
 		int naverAlreadyChk = service.socialAlreadyChk(naverGroupVO);
@@ -148,7 +149,8 @@ JavaMailSender mailSender; // 메일 서비스를 사용하기 위해 의존성�
         UserVO kakaoUserVO = new UserVO();
         kakaoUserVO.setU_email((String)userInfo.get("email"));
         kakaoUserVO.setU_name((String)userInfo.get("nickname"));
-        kakaoUserVO.setU_id((String)userInfo.get("id"));
+        kakaoUserVO.setU_pwd((String)userInfo.get("id"));
+        kakaoUserVO.setU_id((String)userInfo.get("nickname"));
         kakaoUserVO.setU_flag(3);
         
         System.out.println("카카오 로그인 // VO에 담은 정보 :" + kakaoUserVO.getU_email() + kakaoUserVO.getU_name() + kakaoUserVO.getU_id());

@@ -80,6 +80,6 @@
     
     <select id="socialAlreadyChk" resultType="int">
     	SELECT COUNT(*)
-    	FROM (SELECT U_ID FROM C_USER WHERE U_ID = #{u_id} AND U_FLAG = #{u_flag})
+    	FROM (SELECT U_ID FROM C_USER WHERE U_ID = #{u_id})
     </select>
 </mapper>
