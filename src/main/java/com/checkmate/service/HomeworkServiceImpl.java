@@ -45,8 +45,8 @@ public class HomeworkServiceImpl implements HomeworkService {
 		
 	//모든 과제 읽어오기(그룹장)
 	@Override
-	public HomeworkVO homeworkread(HomeworkVO homeworkVO) throws Exception {
-		return dao.homeworkread(homeworkVO);
+	public HomeworkVO homeworkread(int h_no) throws Exception {
+		return dao.homeworkread(h_no);
 	}
 		
 	@Override

@@ -58,7 +58,7 @@
       SELECT H_NO, U_ID, G_NO, H_TITLE, H_DEADLINE, H_DATE
       FROM C_HW
       WHERE G_NO = #{g_no}
-      ORDER BY H_DATE DESC
+      ORDER BY H_NO 
 	</select>
     
 	<!-- 메인에서 5개만 숙제 뽑아오기 위해서, 이때  <=의 부등호를 인식시키기위해 <![CDATA[부등호 들어가는부분]]> 처리 해주어야함 -->
@@ -82,10 +82,11 @@
       WHERE H_FLAG = 1 AND G_NO = #{g_no})
 	</select>
 	
+	<!-- 과제 전체 불러오기  -->
 	<select id="homeworkListAllCount" resultType="int" parameterType="com.checkmate.vo.GroupVO">
       SELECT COUNT(*)
       FROM(
-      SELECT H_NO, U_ID, G_NO, H_TITLE, H_CONTENT, H_FILE, H_DATE, H_FLAG, H_DEADLINE, H_SCORE
+      SELECT H_NO, U_ID, G_NO, H_TITLE
       FROM C_HW
       WHERE G_NO = #{g_no})
 	</select>

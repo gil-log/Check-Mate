@@ -50,7 +50,7 @@ public class InformationController {
 
 			int noticeListCount = noticeService.noticeListCount(groupVO);
 			List<NoticeVO> noticeList = noticeService.noticeList(groupVO);
-
+			logger.info(""+noticeListCount);
 			for (int i = 0; i < noticeList.size(); i++) {
 				System.out.println(i + "번째" + "N_no : " + noticeList.get(i).getN_no());
 				System.out.println(i + "번째" + "N_title : " + noticeList.get(i).getN_title());

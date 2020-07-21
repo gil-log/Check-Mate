@@ -46,8 +46,8 @@ public class HomeworkDAOImpl implements HomeworkDAO{
 		
 	//과제 제출완료(그룹장)
 	@Override
-	public HomeworkVO homeworkread(HomeworkVO homeworkVO) throws Exception {
-		return sqlSession.selectOne("homeworkMapper.homeworkread", homeworkVO);
+	public HomeworkVO homeworkread(int h_no) throws Exception {
+		return sqlSession.selectOne("homeworkMapper.homeworkread", h_no);
 	}
 		
 	//전체 목록 조회

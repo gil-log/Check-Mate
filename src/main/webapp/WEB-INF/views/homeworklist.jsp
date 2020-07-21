@@ -35,6 +35,11 @@
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 <![endif]-->
 
+<style>
+#listTable {
+cursor:pointer;
+}
+</style>
 </head>
 
 <body>
@@ -103,7 +108,7 @@
                                     <div class="form-group row">
                                         <label for="h_title" class="col-sm-2 text-right control-label col-form-label">제목</label>
                                         <div class="col-sm-9">
-                                            <input type="text" class="form-control" id="h_title" name="h_title" placeholder="Title Input Here">
+                                            <input type="text" class="form-control" id="h_title" name="h_title" placeholder="제목을 입력하세요.">
                                         </div>
                                     </div>
                                     <div class="form-group row">
@@ -261,6 +266,16 @@
         ]
     });
   	
+  	//테이블 row 선택
+     $('#listTable tbody').on('click', 'tr', function() {
+    	$('.selected').toggleClass('selected');
+        $(this).toggleClass('selected');
+
+        var h_no = $(this).find("td").eq(0).text();
+        alert(h_no);
+        location.href = "homeworkshow?h_no="+h_no;
+     
+     });
     
    }
    </script>

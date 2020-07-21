@@ -68,45 +68,40 @@
                                 <div class="card-body">
                                     <h4 class="card-title">과제</h4>
                                     <div class="form-group row">
-                                        <label for="fname" class="col-sm-2 text-right control-label col-form-label">제목</label>
+                                        <label for="h_title" class="col-sm-2 text-right control-label col-form-label">제목</label>
                                         <div class="col-sm-9">
-                                            <input type="text" class="form-control" id="fname" placeholder="First Name Here">
+                                            <input type="text" class="form-control" readonly>${homework.h_title}
+                                        </div>
+                                    </div>
+                                   
+                                    <div class="form-group row">
+                                        <label for="h_date" class="col-sm-2 text-right control-label col-form-label">게시일</label>
+                                        <div class="col-sm-9">
+                                            <input type="date" class="form-control" readonly>${homework.h_date}
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label for="lname" class="col-sm-2 text-right control-label col-form-label">제출방식</label>
+                                        <label for="h_deadline" class="col-sm-2 text-right control-label col-form-label">마감일</label>
                                         <div class="col-sm-9">
-                                            <input type="text" class="form-control" id="lname" placeholder="Last Name Here">
+                                            <input type="date" class="form-control" readonly>${homework.h_deadline}
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label for="lname" class="col-sm-2 text-right control-label col-form-label">게시일</label>
+                                        <label for="h_score" class="col-sm-2 text-right control-label col-form-label">배점</label>
                                         <div class="col-sm-9">
-                                            <input type="password" class="form-control" id="lname" placeholder="Password Here">
+                                            <input type="number" class="form-control" readonly>${homework.h_score}
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label for="email1" class="col-sm-2 text-right control-label col-form-label">마감일</label>
+                                        <label for="h_content" class="col-sm-2 text-right control-label col-form-label">과제설명</label>
                                         <div class="col-sm-9">
-                                            <input type="text" class="form-control" id="email1" placeholder="Company Name Here">
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="cono1" class="col-sm-2 text-right control-label col-form-label">배점</label>
-                                        <div class="col-sm-9">
-                                            <input type="text" class="form-control" id="cono1" placeholder="Contact No Here">
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="cono1" class="col-sm-2 text-right control-label col-form-label">과제설명</label>
-                                        <div class="col-sm-9">
-                                            <textarea class="form-control" rows="6" cols="60"></textarea>
+                                            <textarea class="form-control" rows="6" cols="60" readonly>${homework.h_content}</textarea>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="border-top">
                                     <div class="card-body">
-                                        <label for="cono1" class="col-sm-2 text-right control-label col-form-label">첨부파일</label>
+                                        <label for="h_file" class="col-sm-2 text-right control-label col-form-label">첨부파일</label>
                                     </div>
                                 </div>
                             </form>

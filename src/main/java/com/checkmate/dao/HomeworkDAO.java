@@ -26,6 +26,6 @@ public interface HomeworkDAO {
 	public HomeworkVO read(HomeworkVO homeworkVO) throws Exception;
 		
 	//모든 과제 읽어오기(그룹장)
-	public HomeworkVO homeworkread(HomeworkVO homeworkVO) throws Exception;
+	public HomeworkVO homeworkread(int h_no) throws Exception;
 	
 }
