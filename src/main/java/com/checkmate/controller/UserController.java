@@ -1,6 +1,8 @@
 package com.checkmate.controller;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
 
 import javax.inject.Inject;
@@ -16,23 +18,25 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.checkmate.api.KakaoAPI;
 import com.checkmate.api.NaverLoginBO;
 import com.checkmate.service.UserService;
 import com.checkmate.vo.GroupVO;
 import com.checkmate.vo.NoticeVO;
 import com.checkmate.vo.UserVO;
+import com.checkmate.vo.WrapperVO;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.web.bind.annotation.RequestParam;
 import com.github.scribejava.core.model.OAuth2AccessToken;
-
 
 @Controller
 public class UserController {
@@ -52,7 +56,10 @@ JavaMailSender mailSender; // 메일 서비스를 사용하기 위해 의존성�
 	private void setNaverLoginBO(NaverLoginBO naverLoginBO) {
 		this.naverLoginBO = naverLoginBO;
 	}
-
+	 
+    @Autowired
+    private KakaoAPI kakao;
+    
 	//첫화면(로그인)
 	@RequestMapping(value = "/checkmate", method = RequestMethod.GET)
 	public String checkmateget(Model model, HttpSession session) {
@@ -109,42 +116,53 @@ JavaMailSender mailSender; // 메일 서비스를 사용하기 위해 의존성�
 		naverGroupVO.setU_id(id);
 		naverGroupVO.setU_email(email);
 		naverGroupVO.setU_name(name);
+		naverGroupVO.setU_flag(2);
 		
-		int naverAlreadyChk = service.naverAlreadyChk(naverGroupVO);
+		int naverAlreadyChk = service.socialAlreadyChk(naverGroupVO);
 		
 		if(naverAlreadyChk == 0) {
-			service.naverReg(naverGroupVO);
+			service.socialReg(naverGroupVO);
 		}
+
+		session.setAttribute("user", naverGroupVO); 
 		
-		//session.setAttribute("naverId", id); 
-		
-		System.out.println("네이버 로그인 세션 붙여주기만 하면된다 이제");
-		response.sendRedirect("main");
+		response.sendRedirect("group");
 	
 	}
 
+	//카카오 callback
 	
-	//로그인 성공,실패시 갈곳
-	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public String login(UserVO vo, HttpServletRequest req, RedirectAttributes rttr) throws Exception{
-		logger.info("post login");
+	@RequestMapping(value = "/kcallback", method = { RequestMethod.GET})
+	public void callback(@RequestParam String code, HttpSession session, HttpServletResponse response)
+			throws Exception {
+		System.out.println("카카오 callback");
 		
+		System.out.println("code : " + code);
+
+        String access_Token = kakao.getAccessToken(code);
+
+        HashMap<String, Object> userInfo = kakao.getUserInfo(access_Token);
+        
+        System.out.println(userInfo);
+        
+        UserVO kakaoUserVO = new UserVO();
+        kakaoUserVO.setU_email((String)userInfo.get("email"));
+        kakaoUserVO.setU_name((String)userInfo.get("nickname"));
+        kakaoUserVO.setU_id((String)userInfo.get("id"));
+        kakaoUserVO.setU_flag(3);
+        
+        System.out.println("카카오 로그인 // VO에 담은 정보 :" + kakaoUserVO.getU_email() + kakaoUserVO.getU_name() + kakaoUserVO.getU_id());
+        
+        int kakaoAlreadyChk = service.socialAlreadyChk(kakaoUserVO);
+        
+        if(kakaoAlreadyChk == 0 ) {
+        	service.socialReg(kakaoUserVO);
+        }
+        
+		session.setAttribute("user", kakaoUserVO); 
 		
-		HttpSession session = req.getSession();
-		UserVO loginchk = service.login(vo);
-		UserVO login = new UserVO();
-				
-		if(loginchk == null) {
-			session.setAttribute("user", null);
-			rttr.addFlashAttribute("msg", false);
-			return "checkmate";
-		}else {
-			login = service.userinfo(loginchk.getU_id());
-			session.setAttribute("user", login);
-			logger.info(login.getU_id());
-			return "group";
-		}
-		
+		response.sendRedirect("group");
+        
 	}
 	
 	//로그아웃
@@ -153,7 +171,7 @@ JavaMailSender mailSender; // 메일 서비스를 사용하기 위해 의존성�
 		
 		session.invalidate();
 		
-		return "checkmate";
+		return "redirect:checkmate";
 	}
 	
 	//회원가입 POST
@@ -248,6 +266,58 @@ JavaMailSender mailSender; // 메일 서비스를 사용하기 위해 의존성�
 		}
 		
 		return msg;
+	}
+	
+	//로그인 성공,실패시 갈곳
+	@RequestMapping(value = "/loginok", method = RequestMethod.POST)
+	public void login(UserVO vo, HttpServletRequest req, RedirectAttributes rttr, HttpServletResponse response) throws Exception{
+		logger.info("post login");
+		
+		
+		HttpSession session = req.getSession();
+		UserVO loginchk = service.login(vo);
+		UserVO login = new UserVO();
+		
+		
+		
+		String url = "";
+				
+		if(loginchk == null) {
+			session.setAttribute("user", null);
+			rttr.addFlashAttribute("msg", false);
+			
+			url = "checkmate";
+			
+			response.sendRedirect(url);
+
+		}else {
+			login = service.userinfo(loginchk.getU_id());
+			session.setAttribute("user", login);
+			logger.info(login.getU_id());
+			
+			url = "group";
+			response.sendRedirect(url);
+			
+		}
+	}
+	
+	@RequestMapping(value = "/user" , method = RequestMethod.GET)
+	@ResponseBody
+	public Object userajaxget(HttpServletRequest request, @ModelAttribute GroupVO groupVO) throws Exception {
+
+		logger.info("/user_get");
+		
+			
+			List<UserVO> userList = service.userList(groupVO);
+			int userListCount = service.userListCount(groupVO);
+			
+			WrapperVO rtnVO = new WrapperVO();
+			rtnVO.setAaData(userList);
+			rtnVO.setiTotalDisplayRecords(userListCount);
+			rtnVO.setiTotalRecords(userListCount);
+			
+			return rtnVO;
+					
 	}
 	
 	/*

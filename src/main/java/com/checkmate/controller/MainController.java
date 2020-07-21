@@ -34,14 +34,14 @@ public class MainController {
 		logger.info("main_get");
 		
 		
-		//로그인 처리 부분의 세션으로 대체 할 예정
-		GroupVO groupVO = new GroupVO();
-		groupVO.setG_no(1);
-		groupVO.setG_name("테스트그룹1");
-		groupVO.setU_id("ttest");
-		groupVO.setG_flag(0);
+		/*
+		 * //로그인 처리 부분의 세션으로 대체 할 예정 GroupVO groupVO = new GroupVO();
+		 * groupVO.setG_no(1); groupVO.setG_name("테스트그룹1"); groupVO.setU_id("ttest");
+		 * groupVO.setG_flag(0);
+		 */
 		
 		HttpSession session = request.getSession();
+		GroupVO groupVO = (GroupVO) session.getAttribute("group");
 		
 		session.setAttribute("group", groupVO);
 		//로그인 후의 세션 처리로 대체 예정

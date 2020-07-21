@@ -19,7 +19,7 @@ public class NaverLoginBO {
 //state: 애플리케이션이 생성한 상태 토큰
 	private final static String CLIENT_ID = "AqENXSnB2Lb4abPOOWdt";
 	private final static String CLIENT_SECRET = "DbDmUKzDei";
-	private final static String REDIRECT_URI = "http://localhost:8080/cm/callback";
+	private final static String REDIRECT_URI = "http://localhost:8080/callback";
 	private final static String SESSION_STATE = "oauth_state";
 	/* 프로필 조회 API URL */
 	private final static String PROFILE_API_URL = "https://openapi.naver.com/v1/nid/me";
@@ -33,7 +33,7 @@ public class NaverLoginBO {
 		/* Scribe에서 제공하는 인증 URL 생성 기능을 이용하여 네아로 인증 URL 생성 */
 		OAuth20Service oauthService = new ServiceBuilder().apiKey(CLIENT_ID).apiSecret(CLIENT_SECRET)
 				.callback(REDIRECT_URI).state(state) // 앞서 생성한 난수값을 인증 URL생성시 사용함
-				.build(NaverLoginApi.instance());
+				.build(NaverLoginAPI.instance());
 		return oauthService.getAuthorizationUrl();
 	}
 
@@ -43,7 +43,7 @@ public class NaverLoginBO {
 		String sessionState = getSession(session);
 		if (StringUtils.pathEquals(sessionState, state)) {
 			OAuth20Service oauthService = new ServiceBuilder().apiKey(CLIENT_ID).apiSecret(CLIENT_SECRET)
-					.callback(REDIRECT_URI).state(state).build(NaverLoginApi.instance());
+					.callback(REDIRECT_URI).state(state).build(NaverLoginAPI.instance());
 			/* Scribe에서 제공하는 AccessToken 획득 기능으로 네아로 Access Token을 획득 */
 			OAuth2AccessToken accessToken = oauthService.getAccessToken(code);
 			return accessToken;
@@ -69,7 +69,7 @@ public class NaverLoginBO {
 	/* Access Token을 이용하여 네이버 사용자 프로필 API를 호출 */
 	public String getUserProfile(OAuth2AccessToken oauthToken) throws IOException {
 		OAuth20Service oauthService = new ServiceBuilder().apiKey(CLIENT_ID).apiSecret(CLIENT_SECRET)
-				.callback(REDIRECT_URI).build(NaverLoginApi.instance());
+				.callback(REDIRECT_URI).build(NaverLoginAPI.instance());
 		OAuthRequest request = new OAuthRequest(Verb.GET, PROFILE_API_URL, oauthService);
 		oauthService.signRequest(oauthToken, request);
 		Response response = request.send();

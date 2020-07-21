@@ -2,15 +2,15 @@ package com.checkmate.api;
 
 import com.github.scribejava.core.builder.api.DefaultApi20;
 
-public class NaverLoginApi extends DefaultApi20 {
-	protected NaverLoginApi() {
+public class NaverLoginAPI extends DefaultApi20 {
+	protected NaverLoginAPI() {
 	}
 
 	private static class InstanceHolder {
-		private static final NaverLoginApi INSTANCE = new NaverLoginApi();
+		private static final NaverLoginAPI INSTANCE = new NaverLoginAPI();
 	}
 
-	public static NaverLoginApi instance() {
+	public static NaverLoginAPI instance() {
 		return InstanceHolder.INSTANCE;
 	}
 

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.checkmate.dao.GroupDAO;
 import com.checkmate.vo.GroupPointVO;
 import com.checkmate.vo.GroupVO;
+import com.checkmate.vo.UserVO;
 
 
 @Service
@@ -23,13 +24,13 @@ public class GroupServiceImpl implements GroupService {
 	}
 
 	@Override
-	public List<GroupVO> GroupList(GroupVO groupVO) throws Exception {
-		return dao.GroupList(groupVO);
+	public List<GroupVO> GroupList(UserVO userVO) throws Exception {
+		return dao.GroupList(userVO);
 	}
 
 	@Override
-	public int GroupListCount(GroupVO groupVO) throws Exception {
-		return dao.GroupListCount(groupVO);
+	public int GroupListCount(UserVO userVO) throws Exception {
+		return dao.GroupListCount(userVO);
 	}
 	
 	@Override
@@ -60,5 +61,15 @@ public class GroupServiceImpl implements GroupService {
 	@Override
 	public List<GroupVO> socketConnectionList(GroupVO groupVO) throws Exception {
 		return dao.socketConnectionList(groupVO);
+	}
+	
+	@Override
+	public GroupVO groupRead(GroupVO groupVO) throws Exception {
+		return dao.groupRead(groupVO);
+	}
+	
+	@Override
+	public void userPlus(GroupVO groupVO) throws Exception {
+		dao.userPlus(groupVO);
 	}
 }

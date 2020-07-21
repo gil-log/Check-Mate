@@ -1,10 +1,13 @@
 package com.checkmate.dao;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
+import com.checkmate.vo.GroupVO;
 import com.checkmate.vo.UserVO;
 
 @Repository
@@ -29,13 +32,24 @@ public class UserDAOImpl implements UserDAO {
 	}
 
 	@Override
-	public void naverReg(UserVO userVO) throws Exception {
-		sqlSession.insert("userMapper.naverReg", userVO);
+	public void socialReg(UserVO userVO) throws Exception {
+		sqlSession.insert("userMapper.socialReg", userVO);
 	}
 
 	@Override
-	public int naverAlreadyChk(UserVO userVO) throws Exception {
-		return sqlSession.selectOne("naverAlreadyChk", userVO);
+	public int socialAlreadyChk(UserVO userVO) throws Exception {
+		return sqlSession.selectOne("userMapper.socialAlreadyChk", userVO);
 	}
+	
+	@Override
+	public List<UserVO> userList(GroupVO groupVO) throws Exception {
+		return sqlSession.selectList("userMapper.userList", groupVO);
+	}
+
+	@Override
+	public int userListCount(GroupVO groupVO) throws Exception {
+		return sqlSession.selectOne("userMapper.userListCount", groupVO);
+	}
+
 
 }

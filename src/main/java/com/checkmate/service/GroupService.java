@@ -4,14 +4,15 @@ import java.util.List;
 
 import com.checkmate.vo.GroupPointVO;
 import com.checkmate.vo.GroupVO;
+import com.checkmate.vo.UserVO;
 
 public interface GroupService {
 
 	public void GroupCreate(GroupVO groupVO) throws Exception;
 	
-	public List<GroupVO> GroupList(GroupVO groupVO) throws Exception;	
+	public List<GroupVO> GroupList(UserVO userVO) throws Exception;	
 	
-	public int GroupListCount(GroupVO groupVO) throws Exception;
+	public int GroupListCount(UserVO userVO) throws Exception;
 	
 	// 원하는 그룹의 관리자 찾기
 	public GroupVO findMaster (GroupVO groupVO) throws Exception;
@@ -30,4 +31,10 @@ public interface GroupService {
 
 	// 해당 그룹에 소켓 접속 인원 list 가져오기
 	public List<GroupVO> socketConnectionList(GroupVO groupVO) throws Exception;
+	
+	//선택한 그룹 가져오기
+	public GroupVO groupRead(GroupVO groupVO) throws Exception;
+	
+	//그룹 user 추가 
+	public void userPlus(GroupVO groupVO) throws Exception;
 }

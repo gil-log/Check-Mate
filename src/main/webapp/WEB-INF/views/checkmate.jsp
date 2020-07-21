@@ -72,12 +72,6 @@ $(function(){
 			}
 		}
 	});
-	
-	$("#submit-r").on("click", function(){
-		window.alert("회원가입에 성공 하였습니다!");
-		    
-		window.close();
-		});
 });
 </script>
 
@@ -108,7 +102,7 @@ $(function(){
                         <span class="db"><img src="${pageContext.request.contextPath}/resources/checkmateimg/logo.png" height="200" width="200" alt="logo" /></span>
                     </div>
                     <!-- Form -->
-                    <form class="form-horizontal m-t-20" id="loginform" method="post" action="login">
+                    <form class="form-horizontal m-t-20" id="loginform" method="post" action="loginok">
                     <c:if test="${user == null}">
                         <div class="row p-b-30">
                             <div class="col-12">
@@ -140,7 +134,14 @@ $(function(){
                                 <img width="360" height="65" src="https://developers.naver.com/doc/review_201802/CK_bEFnWMeEBjXpQ5o8N_20180202_7aot50.png"/>
                                 </a>
                                 </div>
-
+                                
+                                <!-- 카카오 로그인 창으로 이동 -->
+                                <div id="kakao_id_login" style="text-align:center">
+                                        <a href="https://kauth.kakao.com/oauth/authorize?client_id=5a5993ff472f844911315cfb05709f5a&redirect_uri=http://localhost:8080/kcallback&response_type=code">
+                                        <img width="360" height="65" src="${pageContext.request.contextPath}/resources/checkmateimg/kakao_login_medium_narrow.png">
+                                        </a>
+                                </div>
+                                
                             </div>
                         </div>
                     </c:if>

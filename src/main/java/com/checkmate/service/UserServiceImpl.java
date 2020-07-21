@@ -1,10 +1,13 @@
 package com.checkmate.service;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
 
 import com.checkmate.dao.UserDAO;
+import com.checkmate.vo.GroupVO;
 import com.checkmate.vo.UserVO;
 
 
@@ -30,13 +33,24 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void naverReg(UserVO userVO) throws Exception {
-		dao.naverReg(userVO);
+	public void socialReg(UserVO userVO) throws Exception {
+		dao.socialReg(userVO);
 	}
 
 	@Override
-	public int naverAlreadyChk(UserVO userVO) throws Exception {
-		return dao.naverAlreadyChk(userVO);
+	public int socialAlreadyChk(UserVO userVO) throws Exception {
+		return dao.socialAlreadyChk(userVO);
 	}
+	
+	@Override
+	public List<UserVO> userList(GroupVO groupVO) throws Exception {
+		return dao.userList(groupVO);
+	}
+
+	@Override
+	public int userListCount(GroupVO groupVO) throws Exception {
+		return dao.userListCount(groupVO);
+	}
+	
 
 }

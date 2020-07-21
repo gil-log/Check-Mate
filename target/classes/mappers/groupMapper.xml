@@ -9,24 +9,31 @@
 	   					       , U_ID
 	   					       , G_NAME
 	   					       , G_FLAG
+	   					       , U_POINT
+	   					       , G_SOCKET
 	   					       )
 	                  VALUES(    G_NO_SEQ.NEXTVAL
 	                 		   , #{u_id}
 	                 		   , #{g_name}
 	                 		   , 1
+	                 		   , #{u_point}
+	                 		   , 0
 	                 		   )
     </insert>
 		
 	<select id="GroupList" resultType="com.checkmate.vo.GroupVO" parameterType="com.checkmate.vo.GroupVO">
-      SELECT G_NO, U_ID, G_NAME, G_FLAG
+      SELECT G_NO, U_ID, G_NAME, G_FLAG, U_POINT
       FROM C_GROUP
-      WHERE G_NO = #{g_no}
+      WHERE U_id = #{u_id}
       ORDER BY G_NO DESC
 	</select>
 	
 	<select id="GroupListCount" resultType="int" parameterType="com.checkmate.vo.GroupVO">
-      SELECT COUNT(G_NO)
+      SELECT COUNT(*)
+      FROM(
+      SELECT G_NO, U_ID, G_NAME, G_FLAG, U_POINT
       FROM C_GROUP
+      WHERE U_id = #{u_id})
 	</select>
 	
 	<select id="findMaster" resultType="com.checkmate.vo.GroupVO" parameterType="com.checkmate.vo.GroupVO">
@@ -40,6 +47,31 @@
 		U_POINT = #{u_point}
 		WHERE G_NO = #{g_no} AND U_ID = #{u_id} AND G_FLAG = #{g_flag}
 	</update>
+	
+	<!-- 선택한 그룹 가져오기 -->
+	<select id="groupRead" resultType="com.checkmate.vo.GroupVO" parameterType="com.checkmate.vo.GroupVO">
+		SELECT G_NO, U_ID, G_NAME, G_FLAG, U_POINT
+		FROM C_GROUP
+		WHERE G_NO = #{g_no} AND U_ID = #{u_id}
+	</select>
+	
+	<!-- 그룹에 인원추가  -->
+	<insert id="userPlus" parameterType="com.checkmate.vo.GroupVO">
+	    INSERT INTO C_Group(   G_NO 
+	   					       , U_ID
+	   					       , G_NAME
+	   					       , G_FLAG
+	   					       , U_POINT
+	   					       , G_SOCKET
+	   					       )
+	                  VALUES(    #{g_no}
+	                 		   , #{u_id}
+	                 		   , #{g_name}
+	                 		   , #{g_flag}
+	                 		   , #{u_point}
+	                 		   , 0
+	                 		   )
+    </insert>
 	
 	<!-- 그룹에서 3등까지 랭커 찾기 -->
 	<select id="findTopRankList" resultType="com.checkmate.vo.GroupPointVO" parameterType="com.checkmate.vo.GroupVO">
