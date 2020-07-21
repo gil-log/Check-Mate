@@ -43,8 +43,8 @@ public class GroupDAOImpl implements GroupDAO {
 	}
 
 	@Override
-	public GroupVO groupRead(int g_no) throws Exception {
-		return sqlSession.selectOne("groupMapper.groupRead", g_no);
+	public GroupVO groupRead(GroupVO groupVO) throws Exception {
+		return sqlSession.selectOne("groupMapper.groupRead", groupVO);
 	}
 	
 	@Override

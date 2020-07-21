@@ -24,9 +24,9 @@ public interface GroupDAO {
 	public void userPoint(GroupPointVO groupPointVO) throws Exception;
 	
 	//선택한 그룹 가져오기
-	public GroupVO groupRead(int g_no) throws Exception;
+	public GroupVO groupRead(GroupVO groupVO) throws Exception;
 	
 	//그룹 user 추가 
 	public void userPlus(GroupVO groupVO) throws Exception;
-
+	
 }

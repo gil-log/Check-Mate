@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -14,7 +16,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.checkmate.service.GroupService;
@@ -22,7 +23,6 @@ import com.checkmate.vo.GroupVO;
 import com.checkmate.vo.UserVO;
 import com.checkmate.vo.WrapperVO;
 
-import net.sf.json.JSONArray;
 
 @Controller
 public class GroupController {
@@ -86,7 +86,7 @@ public class GroupController {
 			return rtnVO;
 		} else {
 
-			GroupVO group = service.groupRead(g_no);
+			GroupVO group = service.groupRead(groupVO);
 
 			return group;
 		}
@@ -95,12 +95,26 @@ public class GroupController {
 
 	// 그룹 조회
 	@RequestMapping(value = "/groupRead", method = RequestMethod.GET)
-	public String read(GroupVO groupVO, Model model) throws Exception {
+	public String read(HttpServletRequest request, GroupVO groupVO, Model model, HttpServletResponse response) throws Exception {
 		logger.info("read");
+		
+		HttpSession session = request.getSession();
 
-		model.addAttribute("read", service.groupRead(groupVO.getG_no()));
+		UserVO userVO = (UserVO) session.getAttribute("user");
+		
+		
+		groupVO.setU_id(userVO.getU_id());
+		System.out.println(groupVO.getU_id());
+		System.out.println(groupVO.getG_no());
+		GroupVO group = service.groupRead(groupVO);
 
-		return "main";
+		System.out.println(group);
+		session.setAttribute("group", group);
+		//세션설정하기
+		//mai
+		String url = "main";
+//		response.sendRedirect("main");
+		return url;
 	}
 
 	// 그룹 user 추가

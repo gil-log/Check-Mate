@@ -34,17 +34,20 @@ public class MainController {
 		logger.info("main_get");
 		
 		
-		//로그인 처리 부분의 세션으로 대체 할 예정
-		GroupVO groupVO = new GroupVO();
-		groupVO.setG_no(1);
-		groupVO.setG_name("테스트그룹1");
-		groupVO.setU_id("test");
-		groupVO.setG_flag(1);
-		
-		HttpSession session = request.getSession();
-		
-		session.setAttribute("group", groupVO);
-		//로그인 후의 세션 처리로 대체 예정
+		/*
+		 * //로그인 처리 부분의 세션으로 대체 할 예정 GroupVO groupVO = new GroupVO();
+		 * groupVO.setG_no(1); groupVO.setG_name("테스트그룹1"); groupVO.setU_id("test");
+		 * groupVO.setG_flag(1);
+		 * 
+		 * HttpSession session = request.getSession();
+		 * 
+		 * session.setAttribute("group", groupVO); //로그인 후의 세션 처리로 대체 예정
+		 * 
+		 */
+			
+			  HttpSession session = request.getSession(); 
+			  GroupVO groupVO = (GroupVO) session.getAttribute("group");
+			
 		
 		int noticeListCount = noticeService.noticeListCount(groupVO);
 		
@@ -63,12 +66,15 @@ public class MainController {
 		
 		if(homeworkListCount==0) {
 			model.addAttribute("homeworkIsNull", 1);
+
+			System.out.println("머야이거");
 		} else {
 			List<HomeworkVO> homeworkList = homeworkService.homeworkListMini(groupVO);
 			model.addAttribute("homeworkIsNull", 0);
 			model.addAttribute("homeworkList", homeworkList);
 		}
 		
+		System.out.println("되냐");
 		return "main";
 	}
 }

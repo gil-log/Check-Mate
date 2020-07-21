@@ -50,7 +50,7 @@
 	<select id="groupRead" resultType="com.checkmate.vo.GroupVO" parameterType="com.checkmate.vo.GroupVO">
 		SELECT G_NO, U_ID, G_NAME, G_FLAG, U_POINT
 		FROM C_GROUP
-		WHERE G_NO = #{g_no}	
+		WHERE G_NO = #{g_no} AND U_ID = #{u_id}
 	</select>
 	
 	<!-- 그룹에 인원추가  -->
@@ -68,7 +68,6 @@
 	                 		   , #{u_point}
 	                 		   )
     </insert>
-
 
 
 

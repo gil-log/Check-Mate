@@ -44,8 +44,8 @@ public class GroupServiceImpl implements GroupService {
 	}
 
 	@Override
-	public GroupVO groupRead(int g_no) throws Exception {
-		return dao.groupRead(g_no);
+	public GroupVO groupRead(GroupVO groupVO) throws Exception {
+		return dao.groupRead(groupVO);
 	}
 	
 	@Override

@@ -114,114 +114,26 @@
 							</div>
 								<div class="modal-body">
 									<div class="form-group row">
-                                    <label class="col-md-12 m-t-15">추가할 인원의 ID를 입력하세요.</label><br>
-                                    
-                                    
-                                    
-                                    
-                                    
-                                    
-                                    
-                                    
-                                    
-                                    
-                                    
-                                    
-                                    
-                                    
-                                    
-                                    
-                                    
-                                    
+                                    <label class="col-md-12 m-t-15">추가할 인원의 ID를 입력하세요.</label><br>                                                                    
                                     <div class="col-md-9">
-                                        <select class="select2 form-control m-t-15" multiple="multiple" style="height: 36px;width: 100%;" id="userListSelect">
-                                        
-                                            <optgroup label="UserID">
-                                            </optgroup>
-
+                                        <select class="select2 form-control m-t-15" multiple="multiple" style="height: 36px;width: 100%;" id="userListSelect">                                     
+                                            <optgroup label="UserID"></optgroup>
                                         </select>
                                     </div>
-
-
-
-
-
-
-
-
-
-
-
-
-									<button type="button"
-										class="btn btn-danger waves-effect waves-light save-category" onclick="userPlus();" id="groupUserPlus">Save</button>
-
-
-
-
-
-
-
-
-
-
-
-
-
-                                     <%-- <input type="hidden" name="g_no" value="${g_no}" /> --%>
-									<!-- 	<input type="hidden" name="g_name" value="g_name" /> -->
-								
-								
-								
-								
-								
-								
-								
-								
-								
-								
-			<!-- 					
-									<input class="form-control form-white" placeholder="추가할 인원의 id를 입력해 주세요." type="text" name="u_id" id="u_id" 
-												required="required" />
-												
-												
-												
-												 -->
-												
-												
-												
-												
-												
-												
-												
-												
-												
-												
-									<!-- <input class="form-control form-white" placeholder="" type="text" name="u_id"
-												required="required" />  -->
-												
-										
-										</div>
+									<button type="button" class="btn btn-danger waves-effect waves-light save-category" 
+											onclick="userPlus();" id="groupUserPlus">Save</button>
+																
+															
 									</div>
 								</div>
-								<div class="modal-footer">
+						</div>
+								<!-- <div class="modal-footer">
 									<button type="button"
 										class="btn btn-danger waves-effect waves-light save-category" onclick="userPlus();" id="">Save</button>
 									<button type="button" class="btn btn-secondary waves-effect"
 										data-dismiss="modal">Close</button>
-								</div>
-								
-								
-								
-								
-								
-								
-								
-								
-								
-								
-								
-						</div>
+								</div> -->
+		                 
 					</div>
 				</div>
 				
@@ -351,16 +263,16 @@
 						// $('#groupListDiv').append();
 						$('#groupListDiv').append("<div class='col-md-6 col-lg-2 col-xlg-3'><div class='card card-hover'>" + 
 								"<div class='ml-auto'><div class='tetx-right'>" +  
-								"<a href='#' data-toggle='modal' data-target='#add-new-user' data-gno=" + groupList[i].g_no + 
-								" data-gname=" + groupList[i].g_name + ">" + 
+								"<a class ='groupInfo'href='#' data-toggle='modal' data-target='#add-new-user' data-gno=" + groupList[i].g_no + 
+								" data-gname='" + groupList[i].g_name + "'>" + 
 								"<i class='fa fa-user-plus w-30px m-t-5'></i></a></div></div>" + 
-								"<div class='box bg-success text-center'>" + 
+								"<div class='box bg-success text-center' onclick='gomain(this);'>" + 
 								"<h1 class='font-light text-white'><i class='fas fa-chess-king'></i></h1>" + 
 								"<h4 class='text-white'>" + groupList[i].g_name + "</h4></div></div></div>");
 					   
 					} else {
 						// 배경 파란색인거가 append 되는거
-						$('#groupListDiv').append("<div class='col-md-6 col-lg-2 col-xlg-3'><div class='card card-hover'><div class='box bg-cyan text-center'><br>"
+						$('#groupListDiv').append("<div class='col-md-6 col-lg-2 col-xlg-3'><div class='card card-hover'><div class='box bg-cyan text-center' onclick='gomain();'><br>"
 		                        + "<h1 class='font-light text-white'><i class='fas fa-chess-pawn'></i></h1><h4 class='text-white'>" + groupList[i].g_name + "</h4></div></div></div>");					
 					} 			
 			}
@@ -403,15 +315,16 @@
     	$('#add-new-user').on('show.bs.modal', function(event) {
     		var g_no = $(event.relatedTarget).data('gno');
     		var g_name = $(event.relatedTarget).data('gname');
-
+	
     		$('#userListSelect').children('option').remove();
     		
         	userList(g_no);
     		
     		$('#selectedGno').val(g_no);
     		$('#selectedGname').val(g_name);
-/*     		alert(g_no);
-    		alert(g_name); */
+		
+    		
+    	 alert(g_no);
     	});
     });
     
@@ -456,25 +369,61 @@
     			grouplist : groupArray
     		},
     		success : function(data){
-			
-    			alert("성공");
+    			$('#add-new-user').modal('hide');
+    			alert("인원추가 성공");
     		}, error: function(request, status, error){
-    			alert("통신실패");
+    			alert("인원추가 통신실패");
     	
     		}
     });
-    
-    
-    
-    
-    
-    };
-
-
-    
-
-    		
+  
+    }   		
 	</script>
+	
+<!-- 	<script>
+	 $(document).ready(function(){
+
+	    $(groupListDiv).unbind("click").on("click", function(){	    	
+	    	var g_no = $('#selectedGno').val();
+	    	alert(g_no);
+	    	g_no *= 1;
+				$.ajax({
+					url : "groupRead",
+					type : "GET",
+					traditional : true,
+					data : {
+						g_no : g_no
+					},
+				});
+			});
+		});
+	</script> -->
+	
+	<script>
+	
+	
+	
+	function gomain(thisVal) {
+		var g_no = $(thisVal).parents().children(".ml-auto").children(".tetx-right").children(".groupInfo").data("gno");
+
+    	g_no *= 1;
+			$.ajax({
+				url : "groupRead",
+				type : "GET",
+				traditional : true,
+				data : {
+					g_no : g_no
+				},
+				success : function(data){
+					location.href="main";
+				}
+			});
+		}
+	 
+	
+	</script>
+	
+	
 	
 	<script>
 		$(".select2").select2();
