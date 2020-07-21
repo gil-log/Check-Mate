@@ -49,7 +49,12 @@ public class HomeworkDAOImpl implements HomeworkDAO{
 	public HomeworkVO homeworkread(int h_no) throws Exception {
 		return sqlSession.selectOne("homeworkMapper.homeworkread", h_no);
 	}
-		
+	
+	@Override
+	public void delete(HomeworkVO homeworkVO) throws Exception {
+		sqlSession.delete("homeworkMapper.delete", homeworkVO);
+	}
+	
 	//전체 목록 조회
 	@Override
 	public List<HomeworkVO> homeworkList(GroupVO groupVO) throws Exception{
@@ -59,5 +64,10 @@ public class HomeworkDAOImpl implements HomeworkDAO{
 	@Override
 	public int homeworkListAllCount(GroupVO groupVO) throws Exception{
 		return sqlSession.selectOne("homeworkMapper.homeworkListAllCount", groupVO);
+	}
+
+	@Override
+	public int hwCount(HomeworkVO homeworkVO) throws Exception {
+		return sqlSession.selectOne("homeworkMapper.hwCount", homeworkVO);
 	}
 }

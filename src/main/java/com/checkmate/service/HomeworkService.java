@@ -21,9 +21,15 @@ public interface HomeworkService {
 		
 	//모든 과제 읽어오기(그룹장)
 	public HomeworkVO homeworkread(int h_no) throws Exception;
+	
+	//과제 삭제(그룹장)
+	public void delete(HomeworkVO homeworkVO) throws Exception;
 		
 	//전체 목록 조회
 	public List<HomeworkVO> homeworkList(GroupVO groupVO) throws Exception;
 			
 	public int homeworkListAllCount(GroupVO groupVO) throws Exception;
+
+	// 해당 개수 0 인지 1 인지 세기
+	public int hwCount(HomeworkVO homeworkVO) throws Exception;
 }

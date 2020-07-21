@@ -64,32 +64,33 @@
                 <div class="row">
                     <div class="col-md-8 offset-md-2">
                         <div class="card">
+                        	<div id="hwForm">
                             <form class="form-horizontal">
                                 <div class="card-body">
                                     <h4 class="card-title">과제</h4>
                                     <div class="form-group row">
                                         <label for="h_title" class="col-sm-2 text-right control-label col-form-label">제목</label>
                                         <div class="col-sm-9">
-                                            <input type="text" class="form-control" readonly>${homework.h_title}
+                                            <input type="text" class="form-control" value="${homework.h_title}" readonly>
                                         </div>
                                     </div>
                                    
                                     <div class="form-group row">
                                         <label for="h_date" class="col-sm-2 text-right control-label col-form-label">게시일</label>
                                         <div class="col-sm-9">
-                                            <input type="date" class="form-control" readonly>${homework.h_date}
+                                            <input type="date" class="form-control" value="${homework.h_date}" readonly>
                                         </div>
                                     </div>
                                     <div class="form-group row">
                                         <label for="h_deadline" class="col-sm-2 text-right control-label col-form-label">마감일</label>
                                         <div class="col-sm-9">
-                                            <input type="date" class="form-control" readonly>${homework.h_deadline}
+                                            <input type="date" class="form-control" value="${homework.h_deadline}" readonly>
                                         </div>
                                     </div>
                                     <div class="form-group row">
                                         <label for="h_score" class="col-sm-2 text-right control-label col-form-label">배점</label>
                                         <div class="col-sm-9">
-                                            <input type="number" class="form-control" readonly>${homework.h_score}
+                                            <input type="number" class="form-control" value="${homework.h_score}" readonly>
                                         </div>
                                     </div>
                                     <div class="form-group row">
@@ -104,45 +105,98 @@
                                         <label for="h_file" class="col-sm-2 text-right control-label col-form-label">첨부파일</label>
                                     </div>
                                 </div>
+                                <button class="btn btn-primary" type="button" id="updateHwBtn" onclick="updateHw();">수정</button>
+							    <button class="btn btn-primary" type="button" id="deleteHwBtn" onclick="deleteHw();">삭제</button>
+                                
                             </form>
+                           </div> 
                         </div>
                        
                     </div>
                     
                 </div>
-                <!-- 과제제출 폼 -->
+                <!-- 과제제출 폼  h_flag=0-->
                 <div class="row">
                     <div class="col-md-8 offset-md-2">
                         <div class="card">
+                        	<div id="submitForm">
                             <div class="card-body">
                                 <h4 class="card-title">과제제출</h4>
                                 <!-- Create the Quill editor container -->
-                                <form method="post" action="/homework/homework-write" class="form-horizontal">
-							
+            						<div class="form-group row">
+		                            	<label for="fno" class="col-sm-2 text-right control-label col-form-label">번호</label>
+		                                <div class="col-sm-9">
+		                                	<input type="text" class="form-control" id="sub_no" value="${homework.h_no }">
+		                                </div>
+		                            </div>
+		                            
 							    	<div class="form-group row">
 		                            	<label for="fname" class="col-sm-2 text-right control-label col-form-label">제목</label>
 		                                <div class="col-sm-9">
-		                                	<input type="text" class="form-control" id="h_title" name="h_title" placeholder="Title Input Here">
+		                                	<input type="text" class="form-control" id="sub_title" name="h_title" placeholder="Title Input Here">
 		                                </div>
 		                            </div>
 							
 							        <div class="form-group row">
 							        	<label for="content" class="col-sm-2 text-right control-label col-form-label">내용</label>
 							            <div class="col-sm-9">
-							            	<textarea rows="4" id="h_content" name="h_content" placeholder="Content" class="form-control" autocomplete="off"></textarea>
+							            	<textarea rows="4" id="sub_content" name="h_content" placeholder="Content Input Here" class="form-control" autocomplete="off"></textarea>
 							            </div>
 							        </div>
 									<div class="form-group row">
                                     	<label for="file" class="col-sm-2 text-right control-label col-form-label">첨부파일:</label>
                                         <div class="col-sm-9">
-                                        	<input type="file" class="form-control" id="h_file" name="h_file" placeholder="File include Here">
+                                        	<input type="file" class="form-control" id="sub_file" name="h_file" placeholder="File include Here">
                                         </div>
                                     </div>
-							        <button class="btn btn-primary" type="submit">제출</button>
-							        <button class="btn btn-primary" type="submit">취소</button>
-							    </form>
+							        <button class="btn btn-primary" type="button" id="addSubmitHwBtn" onclick="addSubmitHw();">제출</button>
+							        <button class="btn btn-primary" type="button">취소</button>
 							    
                             </div>
+                           </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 과제제출 폼  h_flag=1-->
+                <div class="row">
+                    <div class="col-md-8 offset-md-2">
+                        <div class="card">
+                        	<div id="completeForm">
+                            <div class="card-body">
+                                <h4 class="card-title">과제제출</h4>
+                                <!-- Create the Quill editor container -->
+            						<div class="form-group row">
+		                            	<label for="fno" class="col-sm-2 text-right control-label col-form-label">번호</label>
+		                                <div class="col-sm-9">
+		                                	<input type="hidden" class="form-control" id="sub_no" value="${homework.h_no }">
+		                                </div>
+		                            </div>
+		                            
+							    	<div class="form-group row">
+		                            	<label for="fname" class="col-sm-2 text-right control-label col-form-label">제목</label>
+		                                <div class="col-sm-9">
+		                                	<input type="text" class="form-control" id="completeHtitle" value="${complete.h_title}" readonly>
+		                                </div>
+		                            </div>
+							
+							        <div class="form-group row">
+							        	<label for="content" class="col-sm-2 text-right control-label col-form-label">내용</label>
+							            <div class="col-sm-9">
+							            	<textarea rows="4" class="form-control" id="completeHcontent" readonly>${complete.h_content}</textarea>
+							            </div>
+							        </div>
+									<div class="form-group row">
+                                    	<label for="file" class="col-sm-2 text-right control-label col-form-label">첨부파일:</label>
+                                        <div class="col-sm-9">
+                                        	<input type="file" class="form-control" id="completeHfile" >${complete.h_file}
+                                        </div>
+                                    </div>
+							        <button class="btn btn-primary" type="button" id="addSubmitHwBtn" onclick="updateSubmitHw();">수정</button>
+							        <button class="btn btn-primary" type="button" onclick="deleteSubmitHw();">삭제</button>
+							    
+                            </div>
+                           </div>
                         </div>
                     </div>
                 </div>
@@ -194,6 +248,118 @@
     <script src="${pageContext.request.contextPath}/resources/template/assets/libs/flot/jquery.flot.crosshair.js"></script>
     <script src="${pageContext.request.contextPath}/resources/template/assets/libs/flot.tooltip/js/jquery.flot.tooltip.min.js"></script>
     <script src="${pageContext.request.contextPath}/resources/template/dist/js/pages/chart/chart-page-init.js"></script>
+   
+   	<script type="text/javascript">
+   	
+		$(document).ready(function(){
+			
+			$("#hwForm").show(); //과제 상세 폼 
+			$("#updateHwBtn").hide(); //과제 상세 폼 
+			$("#deleteHwBtn").hide(); //과제 상세 폼 
+			
+			if(${group.g_flag} == 1){ //관리자일 경우
+				$('#updateHwBtn').show();
+				$('#deleteHwBtn').show();
+			}
+			
+			
+			
+			if(${myHwCount} == 1){ //숙제제출했으면, h_flag = 1
+				$('#submitForm').hide();
+				$('#completeForm').show();
+			}else{
+				$('#submitForm').show();
+				$('#completeForm').hide();
+			}
+			
+			
+			
+	  	 });
+		
+   		function addSubmitHw(){
+   			if($('#h_title').val()==""){
+   	    		alert("제목을 입력해주세요.");
+   	    		$('#h_title').focus();
+   	    		return false;
+   	    	}
+   	    	if($('#h_content').val()==""){
+   	    		alert("내용을 입력해주세요.");
+   	    		$('#h_content').focus();
+   	    		return false;
+   	    	}
+   	    	
+   	    	const sendVar = new Array(4);
+   	    	sendVar[0] = $('#sub_title').val();
+   	    	sendVar[1] = $('#sub_content').val();
+   	    	sendVar[2] = $('#sub_file').val();
+   	    	sendVar[3] = $('#sub_no').val();
+   	    	
+   	    	
+   	    	$.ajax({
+   	    		url : 'homeworkshow',
+   	    		type : 'POST',
+   	    		traditional : true,
+   	    		data : {
+   	    			homework : sendVar //보내고자 하는 data 변수 설정
+   	    		},
+   	    		
+   	    		//Ajax 성공시 호출
+   	    		success : function(msg){
+   	    			
+   	    			$('#sub_title').val("");
+   	        		$('#sub_content').val("");
+   	        		$('#sub_file').val("");
+   	        	
+   	        		$("#submitForm").hide();
+   	        		
+   	        		
+   	        		$('#completeHtitle').val(sendVar[0]);
+   	        		$('#completeHcontent').val(sendVar[1]);
+   	        		$('#completeHfile').val(sendVar[2]);
+   	        		
+   	        		
+   	        		
+   	        		
+   	        		
+   	        		$("#completeForm").show();
+   	    			
+   	    		},
+   	    		//Ajax 실패시 호출
+   	            error : function(jqXHR, textStatus, errorThrown){
+   	                console.log("jqXHR : " +jqXHR +"textStatus : " + textStatus + "errorThrown : " + errorThrown);
+   	            }
+   	    	});
+   		}
+   		
+   		//그룹장이 과제 삭제
+   		function deleteHw() {
+   			var h_no = ${homework.h_no};
+
+   	        $.ajax({
+   	            url : 'homeworkadd',                    // 전송 URL
+   	            type : 'DELETE',                // GET or POST 방식
+   	            traditional : true,
+   	            data : {
+   	                h_no : h_no        // 보내고자 하는 data 변수 설정
+   	            },
+   	            
+   	            //Ajax 성공시 호출 
+   	            success : function(msg){
+   	            	alert(msg);
+   	            	location.href = "homeworklist; 
+   	            },
+   	         
+   	            //Ajax 실패시 호출
+   	            error : function(jqXHR, textStatus, errorThrown){
+   	                console.log("jqXHR : " +jqXHR +"textStatus : " + textStatus + "errorThrown : " + errorThrown);
+   	            }
+   	        });
+   	    	
+   			
+   	    }
+   	
+   	</script>
+   
     
 </body>
 

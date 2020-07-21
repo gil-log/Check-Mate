@@ -114,7 +114,7 @@ cursor:pointer;
                                     <div class="form-group row">
                                         <label for="datePicker" class="col-sm-2 text-right control-label col-form-label">마감일</label>
                                         <div class="col-sm-9">
-                                            <input type="text" class="form-control" id="datePicker">
+                                            <input type="date" class="form-control" id="h_deadline">
                                         </div>
                                     </div>
                                     <div class="form-group row">
@@ -134,13 +134,13 @@ cursor:pointer;
                                 	<!-- <form name="fileForm" action="requestupload1" method="POST" enctype="multipart/form-data"> -->
                                     <div class="card-body">
                                         <label for="cono1" class="col-sm-2 text-right control-label col-form-label">첨부파일</label>
-                                        <!-- <input type="file" name="h_file"/>
-                                        <input type="text" name="src"/> -->
+                                        <input type="file" name="h_file" id="h_file"/>
+                                       <!-- <input type="text" name="src"/> -->
                                     </div>
                                    <!--  </form> -->
                                 </div>
-                                <button class="btn btn-primary" type="submit" id="addHwactionBtn" onclick="addHwaction();">등록</button>
-							    <button class="btn btn-primary" type="submit">취소</button>
+                                <button class="btn btn-primary" type="button" id="addHwactionBtn" onclick="addHwaction();">등록</button>
+							    <button class="btn btn-primary" type="button">취소</button>
                       		
                         </div>
                        
@@ -152,7 +152,7 @@ cursor:pointer;
                  <div style="display:none;">
                  	<input type="number" id="noticeToggle" value="0">
                  </div>
-                 <a class="btn btn-success" href="#" id="noticeWriteBtn">과제 등록</a>
+                 <a class="btn btn-success" id="noticeWriteBtn">과제 등록</a>
                </div>
                 <!-- ============================================================== -->
                 <!-- End Page Content -->
@@ -272,7 +272,7 @@ cursor:pointer;
         $(this).toggleClass('selected');
 
         var h_no = $(this).find("td").eq(0).text();
-        alert(h_no);
+        
         location.href = "homeworkshow?h_no="+h_no;
      
      });
@@ -312,14 +312,16 @@ cursor:pointer;
     		return false;
     	}
     	
-    	const sendVar = new Array(3);
+    	const sendVar = new Array(5);
     	
     	sendVar[0] = $('#h_title').val();
-    	sendVar[1] = $('#h_content').val();
-    	sendVar[2] = $('#h_file').val();
+    	sendVar[1] = $('#h_deadline').val();
+    	sendVar[2] = $('#h_score').val();
+    	sendVar[3] = $('#h_content').val();
+    	sendVar[4] = $('#h_file').val();
     	
     	$.ajax({
-    		url : 'homeworkwrite',
+    		url : 'homeworkadd',
     		type : 'POST',
     		traditional : true,
     		data : {
@@ -329,9 +331,18 @@ cursor:pointer;
     		//Ajax 성공시 호출
     		success : function(msg){
     			alert(msg);
+    			
+    			$('#noticeWriteBtn').text("과제 등록");
+    			hwlisttable();
+    			$("#noticeToggle").val(0);
     			$('#h_title').val("");
+        		$('#h_deadline').val("");
+        		$('#h_score').val("");
         		$('#h_content').val("");
-        		/* $('#h_file').val(""); */
+        		$('#h_file').val("");
+        		$("#addForm").hide();
+                $("#listForm").fadeIn();
+    			
     		},
     		//Ajax 실패시 호출
             error : function(jqXHR, textStatus, errorThrown){
@@ -340,15 +351,12 @@ cursor:pointer;
     	});
     	
     	/* 달력버튼 */
-    	$('#datePicker').datepicker({
+    	/*$('#datePicker').datepicker({
     		format : "yyyy-mm-dd", //달력에서 클릭시 표시할 값 형식
     		language : "kr",
     		todayHighlight : true
-    	});
-    	/* $('#click-btn').on('click', function(){
-    		var date = $('#dateRangePicker').val();
-    		alert(date);
-    	}); */
+    	});*/
+    	
     }
     
    

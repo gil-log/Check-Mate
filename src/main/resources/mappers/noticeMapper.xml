@@ -59,7 +59,7 @@
 	                 		   )
     </insert>
     
-    <!-- 공지 삭제 -->
+    <!-- 공지 삭제  -->
     <delete id="noticeDelete" parameterType="com.checkmate.vo.NoticeVO">
     	DELETE FROM C_NOTICE
     	WHERE N_NO = #{n_no}

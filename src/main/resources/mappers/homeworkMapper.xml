@@ -57,7 +57,7 @@
       
       SELECT H_NO, U_ID, G_NO, H_TITLE, H_DEADLINE, H_DATE
       FROM C_HW
-      WHERE G_NO = #{g_no}
+      WHERE G_NO = #{g_no} AND H_FLAG = 0
       ORDER BY H_NO 
 	</select>
     
@@ -88,25 +88,38 @@
       FROM(
       SELECT H_NO, U_ID, G_NO, H_TITLE
       FROM C_HW
-      WHERE G_NO = #{g_no})
+      WHERE G_NO = #{g_no} )
 	</select>
 	
 	<!--과제등록한거 가져오기(그룹장입장)  -->
 	<select id="homeworkread" resultType="com.checkmate.vo.HomeworkVO" parameterType="com.checkmate.vo.HomeworkVO">	
       SELECT H_NO, G_NO, U_ID, H_TITLE, H_CONTENT, H_FILE, H_DATE, H_FLAG, H_DEADLINE, H_SCORE
       FROM C_HW
-      WHERE H_NO = #{h_no}
+      WHERE H_NO = #{h_no} AND H_FLAG = 0
 	</select>
 	
 	<!-- 제출한 과제 가져오기(학생) -->
 	<select id="read" resultType="com.checkmate.vo.HomeworkVO" parameterType="com.checkmate.vo.HomeworkVO">	
-      SELECT H_NO, G_NO, U_ID, H_TITLE, H_CONTENT, H_FILE, H_DATE, H_FLAG, H_DEADLINE, H_SCORE
+      SELECT H_NO, G_NO, U_ID, H_TITLE, H_CONTENT, H_FILE, H_DATE, H_FLAG, H_SCORE
       FROM C_HW
       WHERE H_NO = #{h_no} AND H_FLAG = 1 AND U_ID = #{u_id}
 	</select>
 	
+	<!-- 과제 삭제(그룹장)-->
+    <delete id="delete" parameterType="com.checkmate.vo.HomeworkVO">
+    	DELETE FROM C_HW
+    	WHERE H_NO = #{h_no} AND H_FLAG = 0
+    </delete>
 	
 	
+	<!-- 개수 세주기 -->
+	<select id="hwCount" resultType="int">
+	  SELECT COUNT(*)
+      FROM(
+      SELECT H_NO, U_ID, G_NO, H_TITLE
+      FROM C_HW
+      WHERE H_NO = #{h_no} AND U_ID = #{u_id} AND H_FLAG = 1)
+	</select>
 	
 	
 	

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.checkmate.dao.HomeworkDAO;
 import com.checkmate.vo.GroupVO;
 import com.checkmate.vo.HomeworkVO;
+import com.checkmate.vo.NoticeVO;
 
 @Service
 public class HomeworkServiceImpl implements HomeworkService {
@@ -48,6 +49,11 @@ public class HomeworkServiceImpl implements HomeworkService {
 	public HomeworkVO homeworkread(int h_no) throws Exception {
 		return dao.homeworkread(h_no);
 	}
+	
+	@Override
+	public void delete(HomeworkVO homeworkVO) throws Exception {
+		dao.delete(homeworkVO);
+	}
 		
 	@Override
 	public List<HomeworkVO> homeworkList(GroupVO groupVO) throws Exception {
@@ -57,6 +63,11 @@ public class HomeworkServiceImpl implements HomeworkService {
 	@Override
 	public int homeworkListAllCount(GroupVO groupVO) throws Exception {
 		return dao.homeworkListAllCount(groupVO);
+	}
+
+	@Override
+	public int hwCount(HomeworkVO homeworkVO) throws Exception {
+		return dao.hwCount(homeworkVO);
 	}
 
 }
