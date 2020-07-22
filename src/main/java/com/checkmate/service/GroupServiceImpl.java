@@ -78,4 +78,9 @@ public class GroupServiceImpl implements GroupService {
 	public void userPlus(GroupVO groupVO) throws Exception {
 		dao.userPlus(groupVO);
 	}
+
+	@Override
+	public void userPlusMailAuth(GroupVO groupVO) throws Exception {
+		dao.userPlusMailAuth(groupVO);
+	}
 }

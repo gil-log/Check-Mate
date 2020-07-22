@@ -54,6 +54,17 @@
 }
 </style> 
 
+<style>
+	/* 로딩이미지 박스 꾸미기 */
+	div#viewLoading {
+		text-align: center;
+		padding-top: 70px;
+		background: #FFFFF0;
+		filter: alpha(opacity=60);
+		opacity: alpha*0.6;
+	}
+</style>
+
 <body>
     <!-- ============================================================== -->
     <!-- Preloader - style you can find in spinners.css -->
@@ -143,11 +154,26 @@
                                             <optgroup label="UserID"></optgroup>
                                         </select>
                                     </div>
+                                    
+                                    
+                                    
+
+	
+	
                            <button type="button" class="btn btn-danger waves-effect waves-light save-category" 
-                                 onclick="userPlus();" id="groupUserPlus">Save</button>
+                                 onclick="userPlus();" id="groupUserPlus">추가</button>
                                                 
                                              
                            </div>
+                           
+                           
+                                                               
+                                    	<div id="viewLoading">
+											<img src="${pageContext.request.contextPath}/resources/checkmateimg/viewLoading.gif" />
+										</div>
+	
+                           
+                           
                         </div>
                   </div>
                         <!-- <div class="modal-footer">
@@ -167,7 +193,7 @@
             <!-- END MODAL -->
 
             <!-- Sales Cards  -->
-            <div class="row" id="groupListDiv" style="margin-left: 5%; margin-right: 5%;">
+            <div class="row" id="groupListDiv"><!--  style="margin-left: 5%;" -->
                <%--    
                     <!-- Column -->
                     <div class="col-md-6 col-lg-2 col-xlg-3">
@@ -284,7 +310,7 @@
                if(groupList[i].g_flag == 1){
                   // 배경 초록색인거가 append 되는거
                   // $('#groupListDiv').append();
-                  $('#groupListDiv').append("<div class='col-md-6 col-lg-2 col-xlg-3'><div class='card card-hover'>" + 
+                  $('#groupListDiv').append("<div class='col-md-6 col-lg-2 col-xlg-3' style='float: none; margin: 0 auto;''><div class='card card-hover'>" + 
                         "<div class='ml-auto'><div class='tetx-right'>" +  
                         "<a class ='groupInfo'href='#' data-toggle='modal' data-target='#add-new-user' data-gno=" + groupList[i].g_no + 
                         " data-gname='" + groupList[i].g_name + "'>" + 
@@ -295,14 +321,14 @@
                   
                } else {
                   // 배경 파란색인거가 append 되는거
-                  $('#groupListDiv').append("<div class='col-md-6 col-lg-2 col-xlg-3'><div class='card card-hover'>" + 
-                        "<div class='ml-auto' style='display:none;'><div class='tetx-right'>" +  
-                        "<a class ='groupInfo'href='#' data-toggle='modal' data-target='#add-new-user' data-gno=" + groupList[i].g_no + 
-                        " data-gname='" + groupList[i].g_name + "'>" + 
-                        "<i class='fa fa-user-plus w-30px m-t-5'></i></a></div></div>" + 
-                        "<div class='box bg-cyan text-center' onclick='gomain(this);'><br>" + 
-                        "<h1 class='font-light text-white'><i class='fas fa-chess-king'></i></h1>" + 
-                        "<h4 class='text-white'>" + groupList[i].g_name + "</h4></div></div></div>");               
+                  $('#groupListDiv').append("<div class='col-md-6 col-lg-2 col-xlg-3' style='float: none; margin: 0 auto;'><div class='card card-hover'>" + 
+                     "<div class='ml-auto' style='display:none;'><div class='tetx-right'>" +  
+                     "<a class ='groupInfo'href='#' data-toggle='modal' data-target='#add-new-user' data-gno=" + groupList[i].g_no + 
+                     " data-gname='" + groupList[i].g_name + "'>" + 
+                     "<i class='fa fa-user-plus w-30px m-t-5'></i></a></div></div>" + 
+                     "<div class='box bg-cyan text-center' onclick='gomain(this);'><br>" + 
+                     "<h1 class='font-light text-white'><i class='fas fa-chess-pawn'></i></h1>" + 
+                     "<h4 class='text-white'>" + groupList[i].g_name + "</h4></div></div></div>");               
                }          
          }
             
@@ -353,6 +379,40 @@
           $('#selectedGname').val(g_name);
       
        });
+       
+       
+       
+       
+       
+       
+		// 페이지가 로딩될 때 'Loading 이미지'를 숨긴다.
+		$('#viewLoading').hide();
+
+		// ajax 실행 및 완료시 'Loading 이미지'의 동작을 컨트롤하자.
+		$('#viewLoading')
+		.ajaxStart(function()
+		{
+			// 로딩이미지의 위치 및 크기조절	
+			$('#viewLoading').css('position', 'absolute');
+			$('#viewLoading').css('left', $('#loadData').offset().left);
+			$('#viewLoading').css('top', $('#loadData').offset().top);
+			$('#viewLoading').css('width', $('#loadData').css('width'));
+			$('#viewLoading').css('height', $('#loadData').css('height'));
+
+			//$(this).show();
+			$(this).fadeIn(500);
+		})
+		.ajaxStop(function()
+		{
+			//$(this).hide();
+			$(this).fadeOut(500);
+		});
+       
+		
+		
+		
+		
+		
     });
     
     function userPlus() {
@@ -401,7 +461,8 @@
              alert("인원추가 통신실패");
        
           }
-    });
+    	});
+       
   
     }         
    </script>

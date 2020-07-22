@@ -24,7 +24,7 @@
 	<select id="GroupList" resultType="com.checkmate.vo.GroupVO" parameterType="com.checkmate.vo.GroupVO">
       SELECT G_NO, U_ID, G_NAME, G_FLAG, U_POINT
       FROM C_GROUP
-      WHERE U_id = #{u_id}
+      WHERE U_id = #{u_id} AND G_FLAG IN(0, 1)
       ORDER BY G_NO DESC
 	</select>
 	
@@ -79,6 +79,12 @@
 	                 		   , 0
 	                 		   )
     </insert>
+    
+    <update id="userPlusMailAuth" parameterType="com.checkmate.vo.GroupVO">
+    	UPDATE C_GROUP SET
+    	G_FLAG = #{g_flag}
+    	WHERE G_NO = #{g_no} AND U_ID = #{u_id}
+    </update>
 	
 	<!-- 그룹에서 3등까지 랭커 찾기 -->
 	<select id="findTopRankList" resultType="com.checkmate.vo.GroupPointVO" parameterType="com.checkmate.vo.GroupVO">
@@ -119,6 +125,7 @@
 		FROM C_GROUP
 		WHERE G_NO = #{g_no} AND G_SOCKET != '0'
 	</select>
+
 
 
 

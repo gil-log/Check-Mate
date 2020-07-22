@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Random;
 
 import javax.inject.Inject;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.checkmate.service.GroupService;
+import com.checkmate.service.UserService;
 import com.checkmate.vo.GroupVO;
 import com.checkmate.vo.UserVO;
 import com.checkmate.vo.WrapperVO;
@@ -31,6 +34,8 @@ public class GroupController {
 
 	@Inject
 	GroupService service;
+	@Inject
+	UserService userService;
 
 	@Inject
 	JavaMailSender mailSender; // 메일 서비스를 사용하기 위해 의존성을 주입함.
@@ -164,52 +169,63 @@ public class GroupController {
 		
 		int gNo = Integer.parseInt(msgSplit[0][0]);
 		String gName = msgSplit[0][1];
-
-		  String tomail = "u_mail"; // 받는사람 이메일
-
-		  String content =
+		String link = "http://localhost:8080/mailAuth?code=";
+	 
+		String setfrom = "checkmatekingbot@gamil.com"; 
 		  
-		  System.getProperty("line.separator")+ //한줄씩 줄간격을 두기위해 작성
-		  
-		  System.getProperty("line.separator")+
-		  
-		  "안녕하세요 Check&Mate입니다."+
-		  
-		  System.getProperty("line.separator")+ //한줄씩 줄간격을 두기위해 작성
-		  
-		  System.getProperty("line.separator")+
-		  
-		  "'" + gName + "'"+"그룹에서 그룹 초대 메일이 도착하였습니다."
-		  
-		  +System.getProperty("line.separator")+
-		  
-		  System.getProperty("line.separator")+
-		  
-		  "승인을 원하시면  아래 링크로 접속하여 주세요" +"dice"+ " 입니다. "
-		  
-		  +System.getProperty("line.separator")+
-		  
-		  System.getProperty("line.separator")+
-		  
-		  "받으신 인증번호를 홈페이지에 입력해 주시면 다음으로 넘어갑니다."; // 내용
-		 
-		  String setfrom = "checkmatekingbot@gamil.com"; 
-		  
-		  String title = "Check&Mate 그룹 초대 신청이 도착했습니다."; // 제목 
+		String title = "Check&Mate 그룹 초대 신청이 도착했습니다."; // 제목 
+		
+		String tomail = ""; // 받는사람 이메일
+		
+		String content = "";
 		
 		Random r = new Random();
         int randomGFlag = 1; //이메일로 받는 인증코드 부분 (난수)
         
-		
-		
+        HttpSession session = request.getSession();
+        
 		for(int i = 0 ; i < userListVO.size(); i++) {
-			service.userPlus(userListVO.get(i));
 			
-			
-			
-			  r = new Random(); randomGFlag = r.nextInt(4589362) + 2;
-			  System.out.println(randomGFlag);
+			r = new Random(); 
+			randomGFlag = r.nextInt(99990) + 2;
+			System.out.println(randomGFlag);
 			 
+			tomail = userService.userMail(userListVO.get(i).getU_id());
+			content = 
+					  System.getProperty("line.separator")+ //한줄씩 줄간격을 두기위해 작성
+					  System.getProperty("line.separator")+
+					  "안녕하세요 Check&Mate입니다."+
+					  System.getProperty("line.separator")+ //한줄씩 줄간격을 두기위해 작성
+					  System.getProperty("line.separator")+
+					  "'" + gName + "'"+"그룹에서 그룹 초대 메일이 도착하였습니다."
+					  +System.getProperty("line.separator")+
+					  System.getProperty("line.separator")+
+					  "승인을 원하시면  아래 링크로 접속하여 주세요"
+					  +System.getProperty("line.separator")+
+					  System.getProperty("line.separator")+
+					  link + randomGFlag; // 내용
+			  
+	        try {
+	            MimeMessage message = mailSender.createMimeMessage();
+	            MimeMessageHelper messageHelper = new MimeMessageHelper(message, true, "UTF-8");
+
+	            messageHelper.setFrom(setfrom); // 보내는사람 생략하면 정상작동을 안함
+	            messageHelper.setTo(tomail); // 받는사람 이메일
+	            messageHelper.setSubject(title); // 메일제목은 생략이 가능하다
+	            messageHelper.setText(content); // 메일 내용
+	            
+	            mailSender.send(message);
+	            
+				userListVO.get(i).setG_flag(randomGFlag);
+				service.userPlus(userListVO.get(i));
+	            
+	            session.setAttribute(Integer.toString(randomGFlag), userListVO.get(i));
+	            
+	        } catch (Exception e) {
+	            System.out.println(e);
+	        }
+			
+			System.out.println("메일 받는 아이디 : " + tomail + "링크 : "+ link + randomGFlag);
 		}
 
 		return "group";

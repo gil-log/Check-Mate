@@ -51,5 +51,10 @@ public class UserDAOImpl implements UserDAO {
 		return sqlSession.selectOne("userMapper.userListCount", groupVO);
 	}
 
+	@Override
+	public String userMail(String u_id) throws Exception {
+		return sqlSession.selectOne("userMapper.userMail", u_id);
+	}
+
 
 }
