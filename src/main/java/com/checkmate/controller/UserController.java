@@ -43,10 +43,11 @@ public class UserController {
 	
 private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 	
-@Inject
-UserService service;
-@Inject
-JavaMailSender mailSender; // 메일 서비스를 사용하기 위해 의존성을 주입함.
+	@Inject
+	UserService service;
+	
+	@Inject
+	JavaMailSender mailSender; // 메일 서비스를 사용하기 위해 의존성을 주입함.
 
 	/* NaverLoginBO */
 	private NaverLoginBO naverLoginBO;
@@ -231,7 +232,6 @@ JavaMailSender mailSender; // 메일 서비스를 사용하기 위해 의존성�
 	        
 	        "받으신 인증번호를 홈페이지에 입력해 주시면 다음으로 넘어갑니다."; // 내용
 			
-
 			logger.info("메일: " + u_mail + "인증 난수 : " + ran);
 
 	        try {

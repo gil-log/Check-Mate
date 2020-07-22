@@ -14,6 +14,9 @@ public interface GroupService {
 	
 	public int GroupListCount(UserVO userVO) throws Exception;
 	
+	//출석 생성시 그룹원들의 attend를 추가하기 위해 그룹원 이름 가져오기!
+	public List<GroupVO> groupMemberList(GroupVO groupVO) throws Exception;
+	
 	// 원하는 그룹의 관리자 찾기
 	public GroupVO findMaster (GroupVO groupVO) throws Exception;
 	

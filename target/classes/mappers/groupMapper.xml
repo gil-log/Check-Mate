@@ -28,6 +28,13 @@
       ORDER BY G_NO DESC
 	</select>
 	
+	<select id="groupMemberList" resultType="com.checkmate.vo.GroupVO" parameterType="com.checkmate.vo.GroupVO">
+      SELECT G_NO, U_ID, G_NAME, G_FLAG, U_POINT
+      FROM C_GROUP
+      WHERE G_NO = #{g_no}
+      ORDER BY G_NO DESC
+	</select>
+	
 	<select id="GroupListCount" resultType="int" parameterType="com.checkmate.vo.GroupVO">
       SELECT COUNT(*)
       FROM(

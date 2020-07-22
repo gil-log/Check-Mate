@@ -71,4 +71,10 @@ public class GroupDAOImpl implements GroupDAO {
 	public void userPlus(GroupVO groupVO) throws Exception {
 		sqlSession.insert("groupMapper.userPlus", groupVO);
 	}
+	
+	@Override
+	//출석 생성시 그룹원들의 attend를 추가하기 위해 그룹원 이름 가져오기!
+	public List<GroupVO> groupMemberList(GroupVO groupVO) throws Exception {
+		return sqlSession.selectList("groupMapper.groupMemberList", groupVO);
+	}
 }

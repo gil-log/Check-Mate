@@ -6,14 +6,9 @@ public class AttendVO {
 	private String u_id;
 	private int g_no;
 	private int a_flag;
-	private String a_deadline;
+	private String a_deadLine;
+	
 
-	public String getA_deadline() {
-		return a_deadline;
-	}
-	public void setA_deadline(String a_deadline) {
-		this.a_deadline = a_deadline;
-	}
 	public String getA_date() {
 		return a_date;
 	}
@@ -38,10 +33,16 @@ public class AttendVO {
 	public void setA_flag(int a_flag) {
 		this.a_flag = a_flag;
 	}
+	public String getA_deadLine() {
+		return a_deadLine;
+	}
+	public void setA_deadLine(String a_deadLine) {
+		this.a_deadLine = a_deadLine;
+	}
 	
 	@Override
 	public String toString() {
-		return "AttendVO [a_date=" + a_date + ", u_id=" + u_id + ", g_no=" + g_no + ", a_flag=" + a_flag
-				+ ", a_deadline=" + a_deadline + "]";
+		return "AttendVO [a_date=" + a_date + ", u_id=" + u_id + ", g_no=" + g_no + 
+						  ", a_flag=" + a_flag + ", a_deadLine=" + a_deadLine + "]";
 	}
 }

@@ -51,4 +51,42 @@ public class HomeworkServiceImpl implements HomeworkService {
 		return dao.hwImpossibleIdList(groupVO);
 	}
 
+	
+	@Override
+	public void homeworkwrite(HomeworkVO homeworkVO) throws Exception {
+		dao.homeworkwrite(homeworkVO);
+	}
+		
+	//과제 제출완료
+	@Override
+	public HomeworkVO read(HomeworkVO homeworkVO) throws Exception {
+		return dao.read(homeworkVO);
+	}
+		
+	//모든 과제 읽어오기(그룹장)
+	@Override
+	public HomeworkVO homeworkread(int h_no) throws Exception {
+		return dao.homeworkread(h_no);
+	}
+	
+	@Override
+	public void delete(HomeworkVO homeworkVO) throws Exception {
+		dao.delete(homeworkVO);
+	}
+		
+	@Override
+	public List<HomeworkVO> homeworkList(GroupVO groupVO) throws Exception {
+		return dao.homeworkList(groupVO);
+	}
+
+	@Override
+	public int homeworkListAllCount(GroupVO groupVO) throws Exception {
+		return dao.homeworkListAllCount(groupVO);
+	}
+
+	@Override
+	public int hwCount(HomeworkVO homeworkVO) throws Exception {
+		return dao.hwCount(homeworkVO);
+	}
+
 }

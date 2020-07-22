@@ -71,7 +71,7 @@
 	   					       	, U_FLAG)
 	   					       
 	                  VALUES(    #{u_id} 
-	                 		   , 0
+	                 		   , #{u_pwd}
 	                 		   , #{u_name}
 	                 		   , #{u_email}
 	                 		   , #{u_flag}

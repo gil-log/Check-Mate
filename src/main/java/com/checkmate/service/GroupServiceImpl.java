@@ -29,6 +29,12 @@ public class GroupServiceImpl implements GroupService {
 	}
 
 	@Override
+	//출석 생성시 그룹원들의 attend를 추가하기 위해 그룹원 이름 가져오기!
+	public List<GroupVO> groupMemberList(GroupVO groupVO) throws Exception {
+		return dao.groupMemberList(groupVO);
+	}
+
+	@Override
 	public int GroupListCount(UserVO userVO) throws Exception {
 		return dao.GroupListCount(userVO);
 	}

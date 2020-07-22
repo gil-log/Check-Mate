@@ -128,21 +128,28 @@ $(function(){
                                         <button class="btn btn-success float-right" name = "submit" id = "submit" type="submit">로그인</button>
                                     </div>
                                 </div>
+                            </div>
+                            
+                            
+                            <!-- 소셜 로그인 -->
+                             <div>
                                 <!-- 네이버 로그인 창으로 이동 -->
                                 <div id="naver_id_login" style="text-align:center">
                                 <a href="${url}">
-                                <img width="360" height="65" src="https://developers.naver.com/doc/review_201802/CK_bEFnWMeEBjXpQ5o8N_20180202_7aot50.png"/>
+                                <img width="380" height="76" src="${pageContext.request.contextPath}/resources/checkmateimg/naverlogin.png"/>
                                 </a>
                                 </div>
                                 
                                 <!-- 카카오 로그인 창으로 이동 -->
                                 <div id="kakao_id_login" style="text-align:center">
                                         <a href="https://kauth.kakao.com/oauth/authorize?client_id=5a5993ff472f844911315cfb05709f5a&redirect_uri=http://localhost:8080/kcallback&response_type=code">
-                                        <img width="360" height="65" src="${pageContext.request.contextPath}/resources/checkmateimg/kakao_login_medium_narrow.png">
+                                        <img width="380" height="76" src="${pageContext.request.contextPath}/resources/checkmateimg/kakaologin.png">
                                         </a>
                                 </div>
-                                
-                            </div>
+                             </div>
+                            
+                            
+                            
                         </div>
                     </c:if>
                     <c:if test="${user != null }">

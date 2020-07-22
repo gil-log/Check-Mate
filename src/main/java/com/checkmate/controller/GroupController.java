@@ -2,6 +2,7 @@ package com.checkmate.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import javax.inject.Inject;
 import javax.servlet.ServletRequest;
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -30,6 +32,9 @@ public class GroupController {
 	@Inject
 	GroupService service;
 
+	@Inject
+	JavaMailSender mailSender; // 메일 서비스를 사용하기 위해 의존성을 주입함.
+	
 	private static final Logger logger = LoggerFactory.getLogger(GroupController.class);
 
 	// 그룹페이지 get
@@ -107,6 +112,8 @@ public class GroupController {
 		System.out.println(groupVO.getU_id());
 		System.out.println(groupVO.getG_no());
 		GroupVO group = service.groupRead(groupVO);
+		
+		System.out.println("세션 설정하는 그룹VO 정보 들" + " gno: "+group.getG_no() + " gname: "+group.getG_name() + " gflag: "+group.getG_flag() + " uid: "+group.getU_id());
 
 		System.out.println(group);
 		session.setAttribute("group", group);
@@ -132,7 +139,7 @@ public class GroupController {
 		List<GroupVO> userListVO = new ArrayList<GroupVO>();
 
 		String[][] msgSplit = new String[size][3];
-
+		
 		for (int i = 0; i < size; i++) {
 
 			msgSplit[i] = ajaxMsg[i].split(",");
@@ -153,8 +160,56 @@ public class GroupController {
 			  
 		}
 		
+		
+		
+		int gNo = Integer.parseInt(msgSplit[0][0]);
+		String gName = msgSplit[0][1];
+
+		  String tomail = "u_mail"; // 받는사람 이메일
+
+		  String content =
+		  
+		  System.getProperty("line.separator")+ //한줄씩 줄간격을 두기위해 작성
+		  
+		  System.getProperty("line.separator")+
+		  
+		  "안녕하세요 Check&Mate입니다."+
+		  
+		  System.getProperty("line.separator")+ //한줄씩 줄간격을 두기위해 작성
+		  
+		  System.getProperty("line.separator")+
+		  
+		  "'" + gName + "'"+"그룹에서 그룹 초대 메일이 도착하였습니다."
+		  
+		  +System.getProperty("line.separator")+
+		  
+		  System.getProperty("line.separator")+
+		  
+		  "승인을 원하시면  아래 링크로 접속하여 주세요" +"dice"+ " 입니다. "
+		  
+		  +System.getProperty("line.separator")+
+		  
+		  System.getProperty("line.separator")+
+		  
+		  "받으신 인증번호를 홈페이지에 입력해 주시면 다음으로 넘어갑니다."; // 내용
+		 
+		  String setfrom = "checkmatekingbot@gamil.com"; 
+		  
+		  String title = "Check&Mate 그룹 초대 신청이 도착했습니다."; // 제목 
+		
+		Random r = new Random();
+        int randomGFlag = 1; //이메일로 받는 인증코드 부분 (난수)
+        
+		
+		
 		for(int i = 0 ; i < userListVO.size(); i++) {
 			service.userPlus(userListVO.get(i));
+			
+			
+			
+			  r = new Random(); randomGFlag = r.nextInt(4589362) + 2;
+			  System.out.println(randomGFlag);
+			 
 		}
 
 		return "group";
