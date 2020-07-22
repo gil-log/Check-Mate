@@ -61,9 +61,7 @@
 			<!-- Container fluid  본문 내용 부분 -->
 			<!-- ============================================================== -->
 			<div class="container-fluid">
-
-				
-				
+	
 				<!-- icon box 시작 -->
 				<div class="row">
 					<div class="col-12">
@@ -73,23 +71,28 @@
 									<h4 class="card-title m-b-0">출석</h4>
 									<div class="ml-auto">
 										<div class="tetx-right">
-
+	
 											
-											<!-- dropdown 추가 시작 -->
-											<a class="nav-link dropdown-toggle text-muted waves-effect waves-dark pro-pic"
-												href="" data-toggle="dropdown" aria-haspopup="true"
-												aria-expanded="false"> 
-												<i class="fa fa-plus w-30px m-t-5" id="attend-switch" ></i>
-											</a>
-											<!-- dropdown 추가 끝 -->
+											<!-- 관리자인 경우 시작 -->
+											<c:if test="${g_flag eq 1}">	
 											
+												<!-- dropdown 추가 시작 -->
+												<a class="nav-link dropdown-toggle text-muted waves-effect waves-dark pro-pic"
+													href="" data-toggle="dropdown" aria-haspopup="true"
+													aria-expanded="false"> 
+													<i class="fa fa-plus w-30px m-t-5" id="attend-switch" ></i>
+												</a>
+												<!-- dropdown 추가 끝 -->
 											
-											
+											</c:if>	
+											<!-- 관리자인 경우 끝 -->
+												
+												
 										</div>
 									</div>
 								</div>
 							</div>
-							
+								
 							<!-- dropdown 추가 시작 -->
 											
 							<div id ="makeAttend" style="display:none">
@@ -97,103 +100,36 @@
 
 								<form id="attendMake" >
 									<select id="timer" class="dropdown-item" name = "time">
+										<option value="3">3분 후</option>
 										<option value="5">5분 후</option>
 										<option value="10">10분 후</option>
-										<option value="15">15분 후</option>
 									</select>
 									<div class="dropdown-item">
 										<input type = "reset" class="btn btn-sm btn-rounded" value="초기화"> 
-										<input type="button" class="btn btn-sm btn-success btn-rounded" onclick="ajaxtest()" value="설정">
+										<input type="button" class="btn btn-sm btn-success btn-rounded" onclick="attendMake()" value="설정">
 									</div>
 								</form>
 							</div>
 							<!-- dropdown 추가 끝 -->
-
-
-
-
+	
 							<!-- 출석현황 네모박스 출력 시작 -->
 							<div class="row" id="attendBox">
-								<c:forEach items="${attendList}" var="attendList">
-									<c:choose>
-										<c:when test="${attendList.a_flag eq 0}">
-											<div class="col-md-6 col-lg-2 col-xlg-3" onclick="attend()">
-												<div class="card card-hover">
-													<div class="box bg-cyan text-center">
-														<h1 class="font-light text-white">
-															<i class="mdi mdi-calendar-check"></i>
-														</h1>
-														<h6 class="text-white"> ${attendList.a_date}</h6>
-														<h6 class="text-white">출석 중</h6>
-													</div>
-												</div>
-											</div>
-										</c:when>
-										
-										<c:when test="${attendList.a_flag eq 1}">
-											<div class="col-md-6 col-lg-2 col-xlg-3">
-												<div class="card card-hover">
-													<div class="box bg-success text-center">
-														<h1 class="font-light text-white">
-															<i class="mdi mdi-calendar-check"></i>
-														</h1>
-														
-														<h6 class="text-white"> ${attendList.a_date}</h6>
-														<h6 class="text-white">출석 완료</h6>
-													</div>
-												</div>
-											</div>
-										</c:when>
-									
-										<c:when test="${attendList.a_flag eq 2}">
-											<div class="col-md-6 col-lg-2 col-xlg-3">
-												<div class="card card-hover">
-													<div class="box bg-warning text-center">
-														<h1 class="font-light text-white">
-															<i class="mdi mdi-calendar-check"></i>
-														</h1>
-														<h6 class="text-white"> ${attendList.a_date}</h6>
-														<h6 class="text-white">지각</h6>
-													</div>
-												</div>
-											</div>
-										</c:when>
-									
-										<c:otherwise>
-											<div class="col-md-6 col-lg-2 col-xlg-3">
-												<div class="card card-hover">
-													<div class="box bg-danger text-center">
-														<h1 class="font-light text-white">
-															<i class="mdi mdi-calendar-check"></i>
-														</h1>
-														<h6 class="text-white"> ${attendList.a_date}</h6>
-														<h6 class="text-white">결석</h6>
-													</div>
-												</div>
-											</div>
-										</c:otherwise>
-									
-									</c:choose>
-									
-								</c:forEach>
 							</div>
-							<!-- 출석현황 네모박스 출력 끝 -->
-							
-							
-							
 						</div>
 					</div>
 				</div>
-			</div>
-			<!-- icon박스 끝 -->
-
-
+				<!-- icon박스 끝 -->
+				
+				
+				
 
 			<!-- 본문을 여기에 넣기 -->
 			<div> ㅎㅇㅎㅇ </div>
-			<div> ${attendList} </div>
+			<div> ${g_flag} </div>
 
-
+			<!-- 관리자용 출석관리 시작
+            <div class="modal fade none-border" id="noticeModal"></div> -->
+            <!-- 관리자용 출석관리 끝 -->
 
 
 
@@ -262,14 +198,14 @@
 		src="${pageContext.request.contextPath}/resources/template/dist/js/pages/chart/chart-page-init.js"></script>
 	
 	
-	<!-- 출석 생성(popup) -->
+	<!-- 팝업 동작 -->
 	<script type="text/javascript">
 	 var toggle = false;
 	 
 	 $('#attend-switch').on("click", function() {
 		toggle = !toggle;
 		if(toggle){
-			alert("까꿍");
+			alert("출석생성 ON");
  			$("#makeAttend").slideDown();
 	 	}
 	 	else{
@@ -278,31 +214,245 @@
 	 });
 	</script>
 	
+	
+	
+	<!-- 출석 리스트 화면 출력 -->
+	<script type="text/javascript">
+		$(document).ready(function() {
+			attendUpdate();
+		});
+
+		//attend에 들어왔을 때 시간비교 후 출석현황 update
+		function attendUpdate(){
+			$.ajax({
+				url : 'attendUpdate', // 전송 URL
+				type : 'GET', // GET or POST 방식
+				traditional : true,
+			
+				//Ajax 성공시 호출 
+				success : function() {
+					attendList();
+				},
+				//Ajax 실패시 호출
+				error : function(request, status, error){
+					alert("오류가 발생하였습니다.");
+					alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+				}
+			});
+		}
+
+		function attendList(){
+			$.ajax({
+				url : 'attendList', // 전송 URL
+				type : 'get', // GET or POST 방식
+				traditional : true,
+				dataType : "JSON", 
+				//Ajax 성공시 호출 
+				success : function(data) {
+					var htmls = "";
+					
+					$(data).each(function(){
+						if(${g_flag} == 1){
+							if(this.a_flag == 0){
+								htmls += "<div class='col-md-6 col-lg-2 col-xlg-3'>";
+								htmls += "<div class='card card-hover'>";
+								htmls += "<div class='box bg-cyan text-center'>";
+								htmls += "<h1 class='font-light text-white'>";
+								htmls += "<i class='mdi mdi-calendar-check'>";
+								htmls += "</i>";
+								htmls += "</h1>";
+								htmls += "<h6 class='text-white'>";
+								htmls += this.a_date;
+								htmls += "</h6>";
+								htmls += "<h6 class='text-white'>";
+								htmls += "출석 중";
+								htmls += "</h6>";
+								htmls += "</div>";
+								htmls += "</div>";
+								htmls += "</div>";
+		 					}
+							else{
+								htmls += "<div class='col-md-6 col-lg-2 col-xlg-3'>";
+								htmls += "<div class='card card-hover'>";
+							//	htmls += "<div class='box bg-danger text-center'>";
+								
+								htmls += "<div class='box bg-danger text-center' onClick = 'attendDetail(\"";
+								htmls += this.a_date;
+							 	htmls += "\")' >";
+							
+								htmls += "<h1 class='font-light text-white'>";
+								htmls += "<i class='mdi mdi-calendar-check'>";
+								htmls += "</i>";
+								htmls += "</h1>";
+								htmls += "<h6 class='text-white'>";
+								htmls += this.a_date;
+								htmls += "</h6>";
+								htmls += "<h6 class='text-white'>";
+								htmls += "출석 마감";
+								htmls += "</h6>";
+								htmls += "</div>";
+								htmls += "</div>";
+								htmls += "</div>";
+							}
+						}
+						else{
+							if(this.a_flag==0){
+								htmls += "<div class='col-md-6 col-lg-2 col-xlg-3' >";
+								htmls += "<div class='card card-hover'>";
+
+								htmls += "<div class='box bg-cyan text-center' onClick = 'attendClick(\"";
+								htmls += this.a_deadLine;
+								htmls += "\")' >";
+								
+								htmls += "<h1 class='font-light text-white'>";
+								htmls += "<i class='mdi mdi-calendar-check'>";
+								htmls += "</i>";
+								htmls += "</h1>";
+								htmls += "<h6 class='text-white'>";
+								htmls += this.a_date;
+								htmls += "</h6>";
+								htmls += "<h6 class='text-white'>";
+								htmls += "출석 중";
+								htmls += "</h6>";
+								htmls += "</div>";
+								htmls += "</div>";
+								htmls += "</div>";
+							}
+							else if(this.a_flag==1){
+								htmls += "<div class='col-md-6 col-lg-2 col-xlg-3'>";
+								htmls += "<div class='card card-hover'>";
+								htmls += "<div class='box bg-success text-center'>";
+								htmls += "<h1 class='font-light text-white'>";
+								htmls += "<i class='mdi mdi-calendar-check'>";
+								htmls += "</i>";
+								htmls += "</h1>";
+								htmls += "<h6 class='text-white'>";
+								htmls += this.a_date;
+								htmls += "</h6>";
+								htmls += "<h6 class='text-white'>";
+								htmls += "출석 완료";
+								htmls += "</h6>";
+								htmls += "</div>";
+								htmls += "</div>";
+								htmls += "</div>";
+							}
+							else if(this.a_flag==2){
+								htmls += "<div class='col-md-6 col-lg-2 col-xlg-3'>";
+								htmls += "<div class='card card-hover'>";
+								htmls += "<div class='box bg-warning text-center'>";
+								htmls += "<h1 class='font-light text-white'>";
+								htmls += "<i class='mdi mdi-calendar-check'>";
+								htmls += "</i>";
+								htmls += "</h1>";
+								htmls += "<h6 class='text-white'>";
+								htmls += this.a_date;
+								htmls += "</h6>";
+								htmls += "<h6 class='text-white'>";
+								htmls += "지각";
+								htmls += "</h6>";
+								htmls += "</div>";
+								htmls += "</div>";
+								htmls += "</div>";
+							}
+							else{
+								htmls += "<div class='col-md-6 col-lg-2 col-xlg-3'>";
+								htmls += "<div class='card card-hover'>";
+								htmls += "<div class='box bg-danger text-center'>";
+								htmls += "<h1 class='font-light text-white'>";
+								htmls += "<i class='mdi mdi-calendar-check'>";
+								htmls += "</i>";
+								htmls += "</h1>";
+								htmls += "<h6 class='text-white'>";
+								htmls += this.a_date;
+								htmls += "</h6>";
+								htmls += "<h6 class='text-white'>";
+								htmls += "결석";
+								htmls += "</h6>";
+								htmls += "</div>";
+								htmls += "</div>";
+								htmls += "</div>";
+							}
+						}
+						
+					});
+					$('#attendBox').html(htmls);
+				},
+				//Ajax 실패시 호출
+				error : function(request, status, error){
+					alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+				}
+			});
+		}
+		
+	</script>
+	
+	
+	
 	<!-- 출석 생성 동작 -->
 	<script type="text/javascript">
-		function ajaxtest() {
-			var time= jQuery("#attendMake").serialize();
+
+		var limitTime, date, deadLine;
 	
-			alert(time);
+		function attendMake() {
+			alert("attendMake에 도착했다.");
+			var time= jQuery("#attendMake").serialize().split("=");
+			limitTime = time[1];
 			
 			$.ajax({
 				url : 'attendMake', // 전송 URL
 				type : 'POST', // GET or POST 방식
 				traditional : true,
 				data : {
-					test : time	// 보내고자 하는 data 변수 설정
+					limitTime : time[1]	// 보내고자 하는 data 변수 설정
 				},
 				//Ajax 성공시 호출 
 				success : function(data) {
-					alert("생성이 완료되었습니다.");
-					$('#attendBox').append("<div class='col-md-6 col-lg-2 col-xlg-3'><div class='card card-hover'><div class='box bg-cyan text-center'><h1 class='font-light text-white'><i class='mdi mdi-calendar-check'></i></h1><h6 class='text-white'>"
-											 + data.a_date + "</h6><h6 class='text-white'>출석 중</h6></div></div></div>");
+					alert("출석이 생성되었습니다.");
+			 		$("#makeAttend").slideUp();
+			 		
+ 					attendList();
+					
+ 					deadLine = data.a_deadLine;
+					date = data.a_date;
+
+					attendTimer();
+			 		
 				},
 				//Ajax 실패시 호출
 				error : function(jqXHR, textStatus, errorThrown) {
-					alert("생성이 실패하였습니다.");
-					console.log("jqXHR : " + jqXHR + "textStatus : "
-							+ textStatus + "errorThrown : " + errorThrown);
+					alert("오류가 발생하였습니다.");
+					alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+				}
+			});
+		}
+		
+		<!-- timer 함수 -->
+		function attendTimer() {
+			alert("attendTimer에 도착했다.")
+			setTimeout(function(){attendClose()} , limitTime * 60000); //밀리세컨드 -->limitTime으로 바꿔라
+		}
+		
+		<!-- attendClose 함수-->
+		function attendClose(){
+			alert("문닫자");
+			$.ajax({
+				url : 'attendClose', // 전송 URL
+				type : 'POST', // GET or POST 방식
+				traditional : true,
+				data : {
+					a_date : date,
+					a_deadLine : deadLine
+				},
+				//Ajax 성공시 호출 
+				success : function(data) {
+					alert(data);
+					attendList();
+					
+				},
+				//Ajax 실패시 호출
+				error : function(request, status, error){
+					alert("오류가 발생하였습니다.");
+					alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 				}
 			});
 		}
@@ -311,32 +461,79 @@
 	
 	<!-- 출석버튼 누르는 동작 -->
 	<script type="text/javascript">
-		function attend() {
-			var time= jQuery("#attendInsert").serialize();
-	
-			alert(time);
+		function attendClick(deadLine) {
+			var result = confirm("출석체크를 하시겠습니까?");
+			if(result){
+				$.ajax({
+					url : 'attendClick', // 전송 URL
+					type : 'POST', // GET or POST 방식
+					traditional : true,
+					data : {
+						deadLine : deadLine	// 보내고자 하는 data 변수 설정
+					},
+					//Ajax 성공시 호출 
+					success : function(msg) {
+						alert(msg);
+						attendList();
+					},
+					//Ajax 실패시 호출
+					error : function(request, status, error){
+						alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+					}
+				});
+			}
+		}
+		function attendDetail(date) {
+			alert("출석 명단을 확인해보자.");
 			
 			$.ajax({
-				url : 'attendInsert', // 전송 URL
-				type : 'POST', // GET or POST 방식
+				url : 'attendManage', // 전송 URL
+				type : 'GET', // GET or POST 방식
 				traditional : true,
 				data : {
-					test : time	// 보내고자 하는 data 변수 설정
+					a_date : date	// 보내고자 하는 data 변수 설정
 				},
 				//Ajax 성공시 호출 
 				success : function(data) {
-					alert("생성이 완료되었습니다.");
-					$('#attendBox').append("<div class='col-md-6 col-lg-2 col-xlg-3'><div class='card card-hover'><div class='box bg-cyan text-center'><h1 class='font-light text-white'><i class='mdi mdi-calendar-check'></i></h1><h6 class='text-white'>"
-											 + data.a_date + "</h6><h6 class='text-white'>출석 중</h6></div></div></div>");
+					var htmls = "";
+					
+					$(data).each(function(){
+						
+						htmls += "<div class='modal-dialog'>";
+						htmls += "<div class='modal-content'>";
+						htmls += "<div class='modal-header'>";
+						htmls += "<h4 class='modal-title'><strong> <a id='modal_n_title'>출석현황</a></strong></h4>";
+			
+						htmls += "<button type='button' class='close' data-dismiss='modal' aria-hidden='true'>zzz</button>";
+						htmls += "</div>";
+						htmls += "<div class='modal-body'>";
+						htmls += "<form>";
+						htmls += "<div class='row'>";
+						htmls += "<div class='col-md-12'>";
+						htmls += "<label class='control-label'>" + this.a_date+ "</label>";
+						htmls += "<textarea class='form-control form-white' id='modal_n_content' readonly>여기에 내용 들어갈겅미 </textarea>";
+						htmls += "</div>";
+						htmls += "</div>";
+						htmls += "</form>";
+						htmls += "</div>";		
+						htmls += "<div class='modal-footer'>";
+						htmls += "<button type='button' class='btn btn-danger waves-effect waves-light save-category' id='modalDel' onclick='noticeDelete();'>삭제</button>";
+						htmls += "<button type='button' class='btn btn-secondary waves-effect' data-dismiss='modal'>닫기</button>";
+						htmls += "</div>";
+						htmls += "</div>";
+						htmls += "</div>";
+						htmls += "</div>";
+					});
+
+					$('#noticeModal').modal();
 				},
 				//Ajax 실패시 호출
-				error : function(jqXHR, textStatus, errorThrown) {
-					alert("생성이 실패하였습니다.");
-					console.log("jqXHR : " + jqXHR + "textStatus : "
-							+ textStatus + "errorThrown : " + errorThrown);
+				error : function(request, status, error){
+					alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 				}
 			});
 		}
+
 	</script>
 	
 	
@@ -361,7 +558,7 @@
 						+ textStatus + "errorThrown : " + errorThrown);
 			}
 		});
-	}
+	})
 	</script>
 	
 	

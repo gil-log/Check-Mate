@@ -40,7 +40,8 @@ public class InformationController {
 		logger.info("/notice_get");
 		
 		int n_no = noticeVO.getN_no();
-
+		logger.info("n_noL " + n_no);
+		
 		if (n_no == 0) {
 			HttpSession session = request.getSession();
 

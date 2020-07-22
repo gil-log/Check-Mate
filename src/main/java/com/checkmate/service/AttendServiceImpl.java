@@ -7,7 +7,6 @@ import javax.inject.Inject;
 import org.springframework.stereotype.Service;
 
 import com.checkmate.dao.AttendDAO;
-import com.checkmate.vo.AttendListVO;
 import com.checkmate.vo.AttendVO;
 import com.checkmate.vo.GroupVO;
 
@@ -19,8 +18,8 @@ public class AttendServiceImpl implements AttendService {
 	
 	@Override
 	//출석현황 리스트 출력
-	public List<AttendListVO> attendList(AttendVO attendVO) throws Exception {
-		return dao.attendList(attendVO);
+	public List<AttendVO> attendList(GroupVO groupVO) throws Exception {
+		return dao.attendList(groupVO);
 	}
 
 	@Override
@@ -30,10 +29,51 @@ public class AttendServiceImpl implements AttendService {
 	}
 
 	@Override
-	//추가한 출석 불러오기
-	public AttendVO attendLast(AttendVO attendVO) throws Exception {
-		return dao.attendLast(attendVO);
+	//출석 생성시 그룹원들의 attend를 추가하기 위해 그룹원 이름 가져오기!
+	public List<GroupVO> groupMemberList(GroupVO groupVO) throws Exception {
+		return dao.groupMemberList(groupVO);
 	}
+	
+	@Override
+	//추가한 출석 불러오기
+	public AttendVO attendLast(GroupVO groupVO) throws Exception {
+		return dao.attendLast(groupVO);
+	}
+
+	//출석가능 시간이 지났을 때(관리자)
+	public void attendClose(AttendVO attendVO) throws Exception {
+		dao.attendClose(attendVO);
+	}
+
+	@Override
+	//출석상태 update
+	public void attendUpdate(GroupVO groupVO) throws Exception {
+		dao.attendUpdate(groupVO);
+	}
+
+	@Override
+	//출석체크 버튼을 누른경우
+	public void attendClick(AttendVO attendVO) throws Exception {
+		dao.attendClick(attendVO);
+	}
+	
+
+	@Override
+	//선택한 출석정보 불러오기
+	public AttendVO attendSelect(AttendVO attendVO) throws Exception {
+		return dao.attendSelect(attendVO);
+	}
+
+	@Override
+	//출석관리 화면
+	public List<AttendVO> attendManage(AttendVO attendVO) throws Exception {
+		return dao.attendManage(attendVO);
+	}
+		
+		
+	
+	
+	
 	
 	@Override
 	public List<AttendVO> attendListCalendar(AttendVO attendVO) throws Exception {
@@ -49,5 +89,7 @@ public class AttendServiceImpl implements AttendService {
 	public int attendMasterCount(GroupVO groupVO) throws Exception {
 		return dao.attendMasterCount(groupVO);
 	}
+
+
 
 }
