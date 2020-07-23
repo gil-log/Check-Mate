@@ -131,7 +131,7 @@ public class GroupController {
 
 	// 그룹 user 추가
 
-	@RequestMapping(value = "/userPlus", method = RequestMethod.POST)
+	@RequestMapping(value = "/userPlus", method = RequestMethod.POST, produces = "application/text; charset=utf8")
 	@ResponseBody
 	public String postuserPlus(HttpServletRequest request) throws Exception {
 		logger.info("post userPlus");
@@ -184,6 +184,10 @@ public class GroupController {
         
         HttpSession session = request.getSession();
         
+        
+        String msg = "";
+        int msgFlag = 0;
+        
 		for(int i = 0 ; i < userListVO.size(); i++) {
 			
 			r = new Random(); 
@@ -223,12 +227,21 @@ public class GroupController {
 	            
 	        } catch (Exception e) {
 	            System.out.println(e);
+	            msgFlag = 1;
+	            
+	            msg += userListVO.get(i).getU_id()+" ";
 	        }
 			
 			System.out.println("메일 받는 아이디 : " + tomail + "링크 : "+ link + randomGFlag);
 		}
 
-		return "group";
+		if(msgFlag == 0) {
+			return "그룹 초대에 성공 하였습니다.";
+		}
+		else {
+			msg += "님의 초대에 실패하였습니다.";
+			return msg;
+		}
 	}
 
 }

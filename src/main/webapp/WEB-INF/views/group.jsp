@@ -13,7 +13,7 @@
     
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="${pageContext.request.contextPath}/resources/checkmateimg/checkmate_logo.png">
-    <title>Check&Mate - </title>
+    <title>Check&Mate - Group</title>
     
     <!-- Custom CSS -->
     <link href="${pageContext.request.contextPath}/resources/template/assets/libs/flot/css/float-chart.css" rel="stylesheet">
@@ -58,7 +58,6 @@
 	/* 로딩이미지 박스 꾸미기 */
 	div#viewLoading {
 		text-align: center;
-		padding-top: 70px;
 		background: #FFFFF0;
 		filter: alpha(opacity=60);
 		opacity: alpha*0.6;
@@ -147,7 +146,13 @@
                            aria-hidden="true">&times;</button>
                      </div>
                         <div class="modal-body">
+                        
+                                       <div id="viewLoading">
+											<img src="${pageContext.request.contextPath}/resources/checkmateimg/viewLoading.gif" />
+										</div>
+										
                            <div class="form-group row">
+
                                     <label class="col-md-12 m-t-15">추가할 인원의 ID를 입력하세요.</label><br>                                                                    
                                     <div class="col-md-9">
                                         <select class="select2 form-control m-t-15" multiple="multiple" style="height: 36px;width: 100%;" id="userListSelect">                                     
@@ -165,15 +170,6 @@
                                                 
                                              
                            </div>
-                           
-                           
-                                                               
-                                    	<div id="viewLoading">
-											<img src="${pageContext.request.contextPath}/resources/checkmateimg/viewLoading.gif" />
-										</div>
-	
-                           
-                           
                         </div>
                   </div>
                         <!-- <div class="modal-footer">
@@ -290,6 +286,19 @@
        // group.jsp가 실행되면 밑에 그룹 리스트 뿌려주는 ajax 함수 실행되도록
        groupList();
        
+       
+       
+		// 페이지가 로딩될 때 'Loading 이미지'를 숨긴다.
+		$('#viewLoading').hide();
+
+		
+		$(document).ajaxStart(function(){
+			$('#viewLoading').show();
+		});
+		$(document).ajaxStop(function(){
+			$('#viewLoading').hide();
+		});
+
     });
        
     function groupList(){
@@ -379,40 +388,6 @@
           $('#selectedGname').val(g_name);
       
        });
-       
-       
-       
-       
-       
-       
-		// 페이지가 로딩될 때 'Loading 이미지'를 숨긴다.
-		$('#viewLoading').hide();
-
-		// ajax 실행 및 완료시 'Loading 이미지'의 동작을 컨트롤하자.
-		$('#viewLoading')
-		.ajaxStart(function()
-		{
-			// 로딩이미지의 위치 및 크기조절	
-			$('#viewLoading').css('position', 'absolute');
-			$('#viewLoading').css('left', $('#loadData').offset().left);
-			$('#viewLoading').css('top', $('#loadData').offset().top);
-			$('#viewLoading').css('width', $('#loadData').css('width'));
-			$('#viewLoading').css('height', $('#loadData').css('height'));
-
-			//$(this).show();
-			$(this).fadeIn(500);
-		})
-		.ajaxStop(function()
-		{
-			//$(this).hide();
-			$(this).fadeOut(500);
-		});
-       
-		
-		
-		
-		
-		
     });
     
     function userPlus() {
@@ -456,7 +431,7 @@
           },
           success : function(data){
              $('#add-new-user').modal('hide');
-             alert("인원추가 성공");
+             alert(data);
           }, error: function(request, status, error){
              alert("인원추가 통신실패");
        

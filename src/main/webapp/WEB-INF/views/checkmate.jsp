@@ -75,6 +75,14 @@ $(function(){
 });
 </script>
 
+<style>
+.btnss {
+    -webkit-box-flex: 1;
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+    padding: 4.25rem;
+}
+</style>
 </head>
 
 <body>
@@ -153,10 +161,21 @@ $(function(){
                         </div>
                     </c:if>
                     <c:if test="${user != null }">
-						<div>
-						<h3>${user.u_id}님 방문을 환영 합니다.</h3>
-						<button id="logoutBtn" type="button">로그아웃</button>
-						</div>
+                    
+                      <div>
+            			<div style="text-align: center;">
+            				<h3 style="color: #D1BA09;">${user.u_id}님 방문을 환영 합니다.</h3>
+            			</div>
+            			<div class="btnss">
+            				<button class="btn btn-success"
+            				id="groupBtn" type="button"><i class="fa fa-chess m-r-5"></i> 그룹선택</button>
+                        	<button class="btn btn-danger"
+                        	id="logoutBtn" type="button"><i class="fa fa-lock-open m-r-5"></i> 로그아웃</button>               
+                        </div>
+                                    
+            		</div>
+                    
+                    
 					</c:if> 
 					
 					   <%-- <!-- 로그인에 실패할경우  -->
@@ -399,6 +418,9 @@ $(function(){
     });
     $("#logoutBtn").on("click", function(){
 		location.href="logout";
+	});
+    $("#groupBtn").on("click", function(){
+		location.href="group";
 	});
     </script>
 

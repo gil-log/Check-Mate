@@ -172,24 +172,24 @@
 															data-class="bg-primary">
 															<i class="fa fa-chess-queen text-warning m-r-10">1위.</i>
 															<a class="m-r-10" id="rank1"></a>
-															<a style="float: right;" id="rankOne">test1</a>
+															<a style="float: right;" id="rankOne"></a>
 														</div>
 														<div class="m-b-20"
 															data-class="bg-success" id="rank2div">
 															<i class="fa fa-chess-bishop text-danger m-r-10"> 2위.</i>
 															<a class="m-r-10" id="rank2"></a>
-															<a style="float: right;" id="rankTwo">test2</a>
+															<a style="float: right;" id="rankTwo"></a>
 														</div>
 														<div class="m-b-20" data-class="bg-danger" id="rank3div">
 															<i class="fa fa-chess-rook text-primary m-r-10"> 3위.</i>
 															<a class="m-r-10" id="rank3"></a>
-															<a style="float: right;" id="rankThree">test3</a>
+															<a style="float: right;" id="rankThree"></a>
 														</div>
 														<hr>
 														<h4 class="alert-heading text-center">내 순위</h4>
 															<i class="fa fa-chess-king text-dark m-r-10" id="myRanking"></i>
 															<a class="m-r-10" id="rank4"></a>
-															<a style="float: right;" id="myRank">test1</a>
+															<a style="float: right;" id="myRank"></a>
 														<hr>
 
 														</div>

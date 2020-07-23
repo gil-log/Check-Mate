@@ -110,8 +110,8 @@
 	FROM C_GROUP
 	WHERE G_NO = #{g_no} AND G_FLAG = 0
 	ORDER BY U_POINT DESC
-	)) G, C_GROUP C
-	WHERE G.U_ID = C.U_ID AND G.U_ID = #{u_id}
+	)) G
+	WHERE  G.U_ID = #{u_id}
 	</select>
 
 	<update id="socketConnection" parameterType="com.checkmate.vo.GroupVO">
