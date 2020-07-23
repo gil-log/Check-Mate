@@ -175,7 +175,8 @@ private static final Logger logger = LoggerFactory.getLogger(UserController.clas
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
 	public String logout(HttpSession session) throws Exception{
 		
-		session.invalidate();
+		session.removeAttribute("group");
+		session.removeAttribute("user");
 		
 		return "redirect:checkmate";
 	}

@@ -243,8 +243,8 @@
     
     <script type="text/javascript">
 
-		let sock = new SockJS('http://localhost:8080/cm/chat/');
-	
+		let sock = new SockJS('http://localhost:8080/chat/');
+		
     	sock.onmessage = onMessage;
     	sock.onclose = onClose;
     	
@@ -360,8 +360,6 @@
                 		$("#chatList").children().last().focus();
                 		
             		}
-
-
             		}
     		
     	}
