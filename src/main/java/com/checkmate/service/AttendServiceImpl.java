@@ -61,8 +61,8 @@ public class AttendServiceImpl implements AttendService {
 
 	@Override
 	//출석관리 화면
-	public List<AttendVO> attendManage(AttendVO attendVO) throws Exception {
-		return dao.attendManage(attendVO);
+	public List<AttendListVO> attendDetail(AttendVO attendVO) throws Exception {
+		return dao.attendDetail(attendVO);
 	}
 	
 	@Override

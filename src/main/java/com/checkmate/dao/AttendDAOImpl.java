@@ -65,8 +65,8 @@ public class AttendDAOImpl implements AttendDAO {
 		
 	@Override
 	//출석관리 화면
-	public List<AttendVO> attendManage(AttendVO attendVO) throws Exception {
-		return sqlSession.selectList("attendMapper.attendManage", attendVO);
+	public List<AttendListVO> attendDetail(AttendVO attendVO) throws Exception {
+		return sqlSession.selectList("attendMapper.attendDetail", attendVO);
 	}
 	
 	@Override

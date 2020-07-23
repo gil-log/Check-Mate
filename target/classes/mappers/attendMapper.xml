@@ -82,11 +82,15 @@
 	</select>
 	
 	<!-- 출석관리리스트를 불러오는 경우  -->
-	<select id="attendManage" resultType="com.checkmate.vo.AttendVO" parameterType="com.checkmate.vo.GroupVO">
-		SELECT A_DATE, G_NO, U_ID, A_FLAG, A_DEADLINE
-		FROM   C_ATTEND
-		WHERE  G_NO = #{g_no}
-		AND	   A_DATE = TO_DATE(#{a_date},'YYYY-MM-DD HH24:MI:SS')
+	<select id="attendDetail" resultType="com.checkmate.vo.AttendListVO" parameterType="com.checkmate.vo.GroupVO">
+		SELECT A.A_DATE, A.G_NO, A.U_ID, A.A_FLAG, A.A_DEADLINE, U.U_NAME
+		FROM   C_ATTEND A, C_USER U, C_GROUP G
+		WHERE  A.G_NO =  #{g_no}
+		AND    A.U_ID = U.U_ID
+		AND    A.G_NO = G.G_NO
+		AND    G.U_ID = U.U_ID
+		AND    G.G_FLAG = 0
+		AND	   A.A_DATE = TO_DATE(#{a_date},'YYYY-MM-DD HH24:MI:SS')
 	</select>
 	
 	<!-- calendar 용 attend flag 별로 list 뽑기 -->

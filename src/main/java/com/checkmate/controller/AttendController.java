@@ -4,20 +4,31 @@ package com.checkmate.controller;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+
+import org.json.simple.JSONArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import com.checkmate.service.AttendService;
 import com.checkmate.service.GroupService;
+import com.checkmate.vo.AttendListVO;
 import com.checkmate.vo.AttendVO;
 import com.checkmate.vo.GroupVO;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+
+import net.sf.json.JSON;
 
 @Controller
 public class AttendController {
@@ -172,11 +183,11 @@ public class AttendController {
   	}
 	
 	//출석관리 화면으로 이동(수정중)
-	@RequestMapping(value = "/attendManage", method = RequestMethod.GET, produces = "application/json; charset=utf8")
+	@RequestMapping(value = "/attendDetail", method = RequestMethod.GET, produces = "application/json; charset=utf8")
 	@ResponseBody
 	public Object attendDetailget(HttpServletRequest request) throws Exception {
            
-		logger.info("/attendManage_get");
+		logger.info("/attendDetail_get");
 		
 		//세션으로 u_id, g_no 받아와서 사용
 		HttpSession session = request.getSession();
@@ -187,13 +198,45 @@ public class AttendController {
 		attendVO.setG_no(groupVO.getG_no());
 		attendVO.setA_date(a_date);
 		
-		//너희 출석안해? 너네 다 결석.
-		List<AttendVO> attendManage = attendService.attendManage(attendVO);
-		logger.info("attendManage: " + attendManage);
+		List<AttendListVO> attendDetail = attendService.attendDetail(attendVO);
+		logger.info("attendDetail: " + attendDetail);
 		
-		return attendManage;
+		return attendDetail;
 		
   	}
+	
+	@RequestMapping(value = "/attendManage", method = RequestMethod.POST, produces = "application/text; charset=utf8")
+	@ResponseBody
+	public Object attendManagePOST(HttpServletRequest request, @RequestBody List<Map> modifiedData) throws Exception {
+           
+		logger.info("/attendManage_POST");
+		
+		//세션으로 u_id, g_no 받아와서 사용
+		HttpSession session = request.getSession();
+		GroupVO groupVO = (GroupVO)session.getAttribute("group");
+		String a_date = request.getParameter("a_date");
+		//String [] modifiedDataArr = request.getParameter("modifiedData");
+//		String modifiedData =  request.getParameter("modifiedData")
+		
+		logger.info((String)modifiedData.get(0).get("name"));
+		logger.info("length: " + modifiedData.size());
+		
+		for(int i=0; i<modifiedData.size(); i++) {
+			//logger.info("전송된 데이터는 과연!!! : " + modifiedData.get(i).split("value:"));
+		}
+		
+//		AttendVO attendVO = new AttendVO();
+//		attendVO.setG_no(groupVO.getG_no());
+//		attendVO.setA_date(a_date);
+//		
+//		List<AttendListVO> attendManage = attendService.attendManage(attendVO);
+//		logger.info("attendManage: " + attendManage);
+//		
+		String msg = "ㅎㅇㅎㅇ";
+		return msg;
+		
+  	}
+	
 	
 	
 	

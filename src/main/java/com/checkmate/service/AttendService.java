@@ -31,7 +31,7 @@ public interface AttendService {
 	public AttendVO attendSelect(AttendVO attendVO) throws Exception;
 	
 	//출석관리 화면
-	public List<AttendVO> attendManage(AttendVO attendVO) throws Exception;
+	public List<AttendListVO> attendDetail(AttendVO attendVO) throws Exception;
 	
 	//calendar용 출석 리스트
 	public List<AttendVO> attendListCalendar(AttendVO attendVO) throws Exception;
