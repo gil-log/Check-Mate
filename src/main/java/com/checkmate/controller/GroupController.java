@@ -191,7 +191,7 @@ public class GroupController {
 		for(int i = 0 ; i < userListVO.size(); i++) {
 			
 			r = new Random(); 
-			randomGFlag = r.nextInt(99990) + 2;
+			randomGFlag = r.nextInt(99990) + 5;
 			System.out.println(randomGFlag);
 			 
 			tomail = userService.userMail(userListVO.get(i).getU_id());

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <html>
 <body>
         <!-- ============================================================== -->
@@ -23,6 +24,9 @@
                             </ul>
                         </li>
                         <!-- 출결관리 끝 -->
+                        <c:if test="${group.g_flag == 1}">
+                        	<li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="management" aria-expanded="false"><i class="mdi mdi-wrench"></i><span class="hide-menu">그룹 관리</span></a></li>
+                        </c:if>
                     </ul>
                 </nav>
                 <!-- End Sidebar navigation -->

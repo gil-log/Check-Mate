@@ -191,4 +191,11 @@ public class HomeworkController {
 		msg = "과제제출이 완료되었습니다.";
 		return msg;
 	}
+	
+	@RequestMapping(value = "/homeworkview", method = RequestMethod.GET)
+	public String homeworkviewget(HttpServletRequest request, Model model) throws Exception {
+		logger.info("homeworkview_get");
+
+		return "homeworkview";
+	}
 }
