@@ -102,6 +102,88 @@ public class GroupController {
 		}
 
 	}
+	
+	
+	
+	
+	//초대현황
+		@RequestMapping(value = "/groupCheck", method = RequestMethod.GET)
+		@ResponseBody
+		public Object groupCheckajaxget(HttpServletRequest request, @ModelAttribute GroupVO groupVO) throws Exception {
+
+			logger.info("/groupCheck_get");
+
+			int g_no = groupVO.getG_no();
+
+			if (g_no == 0) {
+				HttpSession session = request.getSession();
+
+				UserVO userVO = (UserVO) session.getAttribute("user");
+
+				logger.info(userVO.getU_id());
+
+				int groupListCount = service.GroupListCount(userVO);
+				List<GroupVO> groupCheck = service.groupCheck(userVO);
+
+				for (int i = 0; i < groupCheck.size(); i++) {
+					System.out.println(i + "번째" + "G_name : " + groupCheck.get(i).getG_name());
+					System.out.println(i + "번째" + "G_flag : " + groupCheck.get(i).getG_flag());
+					
+				}
+
+				WrapperVO rtnVO = new WrapperVO();
+				rtnVO.setAaData(groupCheck);
+				rtnVO.setiTotalDisplayRecords(groupListCount);
+				rtnVO.setiTotalRecords(groupListCount);
+				/* System.out.println(groupList); */
+
+				return rtnVO;
+			} else {
+
+				GroupVO group = service.groupRead(groupVO);
+
+				return group;
+			}
+
+		}
+		
+		// 초대 yes
+		@RequestMapping(value = "/groupYes", method = RequestMethod.GET, produces = "application/text; charset=utf8")
+		@ResponseBody
+		public Object groupYesajaxdelete(HttpServletRequest request, @ModelAttribute GroupVO groupVO) throws Exception {
+
+			logger.info("/groupYes_update");
+
+			HttpSession session = request.getSession();
+
+			UserVO userVO = (UserVO) session.getAttribute("user");
+
+			groupVO.setU_id(userVO.getU_id());
+			System.out.println(groupVO.getU_id());
+			System.out.println(groupVO.getG_no());
+			service.groupYes(groupVO);
+
+			String url = "group";
+			return url;
+		}
+
+		// 초대 no
+		@RequestMapping(value = "/groupNo", method = RequestMethod.GET, produces = "application/text; charset=utf8")
+		@ResponseBody
+		public Object groupNoajaxdelete(HttpServletRequest request, @ModelAttribute GroupVO groupVO) throws Exception {
+
+			logger.info("/groupNo_delete");
+
+			HttpSession session = request.getSession();
+			UserVO userVO = (UserVO) session.getAttribute("user");
+
+			groupVO.setU_id(userVO.getU_id());
+			service.groupNo(groupVO);
+
+			String msg = "삭제 되었습니다.";
+			return msg;
+	}
+	
 
 	// 그룹 조회
 	@RequestMapping(value = "/groupRead", method = RequestMethod.GET)

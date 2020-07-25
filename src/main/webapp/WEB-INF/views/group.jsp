@@ -35,22 +35,11 @@
 
 </head>
 <style>
-/* .rows {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -ms-flex-wrap: wrap;
-    flex-wrap: wrap;
-    margin-right: -10px;
-    margin-left: 80%;
-    width: 10%;
-} */
-
 .card-bodys {
     -webkit-box-flex: 1;
     -ms-flex: 1 1 auto;
     flex: 1 1 auto;
-    padding: 4.25rem;
+    padding: 2.25rem;
 }
 </style> 
 
@@ -88,17 +77,47 @@
                   height="200" width="200" alt="logo" /></span>
             </div>
 
-            <div class="row">
-            <div class="col-lg-9"></div>            
-               <div class="card-bodys">
-                  <a href="javascript:void(0)" data-toggle="modal"
+
+
+				<div class="row">			
+				<div class="card-bodys">
+				<a href="javascript:void(0)" data-toggle="modal"
                      data-target="#add-new-event"
-                     class="btn m-t-20 btn-info btn-block waves-effect waves-light">
+                     class="btn btn-success margin-5" style="float: right; background-color: #2255a4;
+    border-color: #2255a4; margin-right:40px;">
                      <i class="ti-plus"></i> 그룹 생성하기
                   </a>
+			 
+					<button type="button" class="btn btn-success margin-5"
+						data-toggle="modal" data-target="#Modal1" style="float: right; background-color: #c12a2a;
+    border-color: #c12a2a; margin-right:10px;" onclick="groupCheck();">초대현황</button>
+				                    
+                  
                </div>
             </div>
-            <!-- Modal Add Category -->
+			<!-- 초대현황 -->
+				<div class="modal fade" id="Modal1" tabindex="-1" role="dialog"
+					aria-labelledby="exampleModalLabel" aria-hidden="true ">
+					<div class="modal-dialog" role="document ">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="exampleModalLabel">초대현황</h5>
+								<button type="button" class="close" data-dismiss="modal"
+									aria-label="Close">
+									<span aria-hidden="true ">&times;</span>
+								</button>
+							</div>
+							<div class="chat-box scrollable" style="height:230px;">
+                                    <!--chat Row 여기에 list가 계속 append 됨-->
+                                    <ul class="chat-list" id='chatList'></ul>
+                            </div>
+							<!-- <div class="modal-body">Here is the text coming you can put
+								also image if you want…</div> -->
+						</div>
+					</div>
+				</div>
+
+				<!-- 그룹생성 -->
             <div class="modal fade none-border" id="add-new-event">
                <div class="modal-dialog">
                   <div class="modal-content">
@@ -132,6 +151,7 @@
                </div>
             </div>
             <!-- END MODAL -->
+            
 
             <!-- 인원추가입니다.  -->
             <!-- Modal Add Category -->
@@ -189,7 +209,7 @@
             <!-- END MODAL -->
 
             <!-- Sales Cards  -->
-            <div class="row" id="groupListDiv"><!--  style="margin-left: 5%;" -->
+            <div class="row" id="groupListDiv" style="margin-left: 5%; margin-right: 5%;"><!--  style="margin-left: 5%;" -->
                <%--    
                     <!-- Column -->
                     <div class="col-md-6 col-lg-2 col-xlg-3">
@@ -319,7 +339,7 @@
                if(groupList[i].g_flag == 1){
                   // 배경 초록색인거가 append 되는거
                   // $('#groupListDiv').append();
-                  $('#groupListDiv').append("<div class='col-md-6 col-lg-2 col-xlg-3' style='float: none; margin: 0 auto;''><div class='card card-hover'>" + 
+                  $('#groupListDiv').append("<div class='col-md-6 col-lg-2 col-xlg-3' style='float: none; margin: 0 auto;''><div class='card card-hover' style='border-radius: 10px;'>" + 
                         "<div class='ml-auto'><div class='tetx-right'>" +  
                         "<a class ='groupInfo'href='#' data-toggle='modal' data-target='#add-new-user' data-gno=" + groupList[i].g_no + 
                         " data-gname='" + groupList[i].g_name + "'>" + 
@@ -330,12 +350,12 @@
                   
                } else {
                   // 배경 파란색인거가 append 되는거
-                  $('#groupListDiv').append("<div class='col-md-6 col-lg-2 col-xlg-3' style='float: none; margin: 0 auto;'><div class='card card-hover'>" + 
+                  $('#groupListDiv').append("<div class='col-md-6 col-lg-2 col-xlg-3' style='float: none; margin: 0 auto;'><div class='card card-hover' style='border-radius: 12px;'>" + 
                      "<div class='ml-auto' style='display:none;'><div class='tetx-right'>" +  
                      "<a class ='groupInfo'href='#' data-toggle='modal' data-target='#add-new-user' data-gno=" + groupList[i].g_no + 
                      " data-gname='" + groupList[i].g_name + "'>" + 
                      "<i class='fa fa-user-plus w-30px m-t-5'></i></a></div></div>" + 
-                     "<div class='box bg-cyan text-center' onclick='gomain(this);'><br>" + 
+                     "<div class='box bg-cyan text-center' style='border-radius: 12px;' onclick='gomain(this);'><br>" + 
                      "<h1 class='font-light text-white'><i class='fas fa-chess-pawn'></i></h1>" + 
                      "<h4 class='text-white'>" + groupList[i].g_name + "</h4></div></div></div>");               
                }          
@@ -482,6 +502,77 @@
     
    
    </script>
+   
+   
+     <script>
+  function groupCheck() {
+	  $("#chatList").empty();
+	  $.ajax({
+          url : "groupCheck",
+          type: "GET",
+          data : {"g_no" : 0},
+          dataType: "json",
+          success : function(data){
+        	  const groupCheck = data.aaData;
+        	  var size = groupCheck.length;
+        	  
+        	  for(var i = 0; i < size; i++){
+        		  var html = '<li class="chat-item" tabindex ="-1">';      		  
+        		  html += '<div style="color: #343a40; margin-left:20px;">'+ groupCheck[i].g_name;
+        		  html += '<a class="gNo" style="display:none;">'+groupCheck[i].g_no+'</a>';
+        		  html += '<button type="button" class="btn btn-success margin-5" style="float: right; background-color: #2255a4; border-color: #2255a4; margin-right:10px;" onclick="groupNo(this);">삭제</button>';
+        		  html += '<button type="button" class="btn btn-success margin-5" style="float: right; background-color: #c12a2a; border-color: #c12a2a; margin-right:10px;" onclick="groupYes(this);">수락</button></div></li>';
+        		  $("#chatList").append(html);}
+        	  
+        	  }, error: function(request, status, error){
+               }
+            });
+  }
+          
+            
+  
+  
+  </script>
+   
+   
+      <script>		
+	function groupYes(thisVal) {
+		var g_no = $(thisVal).prev().prev().text();
+		g_no *= 1;
+			$.ajax({
+				url : "groupYes",
+				type : "GET",
+				traditional : true,
+				data : {
+					g_no : g_no
+				},
+				success : function(data) {
+					alert("수락완료");
+					location.href="group";
+						}
+					});
+			}
+	</script>
+	
+	<script>		
+	function groupNo(thisVal) {
+		
+		var g_no = $(thisVal).prev().text();
+		g_no *= 1;
+			$.ajax({
+				url : "groupNo",
+				type : "GET",
+				traditional : true,
+				data : {
+					g_no : g_no
+				},
+				success : function(msg) {
+				/* 	alret(msg);	 */
+					$('#Modal1').modal("hide"); 
+						}
+					});
+			}
+	</script>
    
    
    

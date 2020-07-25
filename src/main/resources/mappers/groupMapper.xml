@@ -125,6 +125,30 @@
 		FROM C_GROUP
 		WHERE G_NO = #{g_no} AND G_SOCKET != '0'
 	</select>
+	
+	<!-- 초대현황  -->
+	<select id="groupCheck" resultType="com.checkmate.vo.GroupVO" parameterType="com.checkmate.vo.GroupVO">
+      SELECT G_NO, U_ID, G_NAME, G_FLAG, U_POINT, G_SOCKET
+      FROM C_GROUP
+      WHERE U_id = #{u_id} AND G_FLAG NOT IN(1, 0)
+	</select>
+	
+	<!-- 초대 yes -->
+	<update id="groupYes" parameterType="com.checkmate.vo.GroupVO">
+	UPDATE C_GROUP
+	SET G_FLAG=0
+	WHERE U_id = #{u_id} AND G_NO = #{g_no}
+	</update>
+	
+	<!-- 초대 No -->
+	<delete id="groupNo" parameterType="com.checkmate.vo.GroupVO">
+    	DELETE FROM C_GROUP 
+    	WHERE U_id = #{u_id} AND G_NO = #{g_no}
+    </delete>
+
+
+
+
 
 
 

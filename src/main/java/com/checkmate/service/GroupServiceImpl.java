@@ -24,6 +24,26 @@ public class GroupServiceImpl implements GroupService {
 	}
 
 	@Override
+	//초대현황
+	public List<GroupVO> groupCheck(UserVO userVO) throws Exception {
+		return dao.groupCheck(userVO);
+	}
+	
+	@Override
+	//초대 yes
+	public void groupYes(GroupVO groupVO) throws Exception {
+		dao.groupYes(groupVO);
+		
+	}
+
+	@Override
+	//초대 no
+	public void groupNo(GroupVO groupVO) throws Exception {
+		dao.groupNo(groupVO);
+		
+	}
+	
+	@Override
 	public List<GroupVO> GroupList(UserVO userVO) throws Exception {
 		return dao.GroupList(userVO);
 	}

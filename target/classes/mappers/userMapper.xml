@@ -88,4 +88,12 @@
     	FROM C_USER
     	WHERE U_ID = #{u_id}
     </select>
+    
+    <!-- 아이디체크 -->
+	<select id="userIdCheck" resultType="int">
+		SELECT COUNT(*)
+		FROM C_USER
+		WHERE U_ID = #{u_id}	
+	</select>
+    
 </mapper>

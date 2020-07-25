@@ -25,33 +25,41 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <script type="text/javascript">
-/* 
-$(function(){
-	//아이디 중복체크
-	    $('#u_id').blur(function(){
-	        $.ajax({
-		     type:"POST",
-		     url:"/checkSignup",
-		     data:{
-		            "u_id":$('#u_id').val()
-		     },
-		     success:function(data){	//data : checkSignup에서 넘겨준 결과값
-		            if($.trim(data)=="YES"){
-		               if($('#u_id').val()!=''){ 
-		               	alert("사용가능한 아이디입니다.");
-		               }
-		           	}else{
-		               if($('#u_id').val()!=''){
-		                  alert("중복된 아이디입니다.");
-		                  $('#u_id').val('');
-		                  $('#u_id').focus();
-		               }
-		            }
-		         }
-		    }) 
-	     })
+
+
+function userIdCheck() {
+	
+	
+	var uid_check = $('#uid_ck').val();
+
+	
+	$.ajax({
+		url : "/userIdCheck",
+		type : "POST",
+		dataType : "json",
+		data : {
+			u_id : uid_check
+		},
+		success : function(data) {
+			if (data == 0) {
+				/* $('#uid_ckk').attr("value","Y"); */
+				$('#idCheckMessage').text("사용가능한 아이디 입니다.");
+			} else if (data == 1) {
+				$('#idCheckMessage').text("중복된 아이디입니다. 다른 아이디를 입력해주세요.");
+				$('#uid_ck').focus();
+			}
+		}
 	});
- */
+
+}
+
+
+
+
+
+
+
+ 
 $(function(){ 
 	$("#alert-success").hide(); 
 	$("#alert-danger").hide(); 
@@ -200,8 +208,21 @@ $(function(){
                                     <div class="input-group-prepend">
                                         <span class="input-group-text bg-success text-white"><i class="ti-user"></i></span>
                                     </div>
-                                    <input type="text" name="u_id" class="form-control form-control-lg" id="u_id" placeholder="아이디" required>
+                                    
+                                    	<input type="text" name="u_id"
+											class="form-control form-control-lg" id="uid_ck"
+											placeholder="아이디" required>
+										<button class="btn btn-success float-right"
+											onclick="userIdCheck();" id="uid_ckk">중복확인</button>  <!-- value="N" -->
+											
+											
                                 </div>
+                                
+                                	<div class="text-center text-white" id="idCheckMessage">
+										<span class="text-white"></span>
+									</div>
+									<br>
+                                
                                 <div class="input-group mb-3">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text bg-warning text-white" ><i class="ti-pencil"></i></span>
@@ -415,6 +436,10 @@ $(function(){
     	
         $("#registerform").hide();
         $("#loginform").fadeIn();
+        
+        $("#regFrom")[0].reset();     /*여기 추가했음!!!!  */
+        $("#alert-success").hide();
+		$("#alert-danger").hide();
     });
     $("#logoutBtn").on("click", function(){
 		location.href="logout";

@@ -193,9 +193,11 @@ public class HomeworkController {
 	}
 	
 	@RequestMapping(value = "/homeworkview", method = RequestMethod.GET)
-	public String homeworkviewget(HttpServletRequest request, Model model) throws Exception {
+	public String homeworkviewget(HttpServletRequest request, Model model, HomeworkVO homeworkVO) throws Exception {
 		logger.info("homeworkview_get");
-
+		
+		System.out.println(homeworkVO.getH_no());
+		
 		return "homeworkview";
 	}
 }

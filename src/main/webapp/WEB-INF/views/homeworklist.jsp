@@ -265,7 +265,11 @@ cursor:pointer;
             {data: "u_id"}
         ]
     });
-  	
+
+
+  	 //gil 일반 회원이면 게시글 보는거고 관리자면 제출자들 list 보는곳으로
+  	 if(${group.g_flag == 0}){
+ 	
   	//테이블 row 선택
      $('#listTable tbody').on('click', 'tr', function() {
     	$('.selected').toggleClass('selected');
@@ -275,7 +279,24 @@ cursor:pointer;
         location.href = "homeworkshow?h_no="+h_no;
      
      });
-    
+
+  	 } else if (${group.g_flag == 1}){
+
+  	  	//테이블 row 선택
+  	     $('#listTable tbody').on('click', 'tr', function() {
+  	    	$('.selected').toggleClass('selected');
+  	        $(this).toggleClass('selected');
+  	        var h_no = $(this).find("td").eq(0).text();
+  	        
+  	        location.href = "homeworkview?h_no="+h_no;
+  	     
+  	     });
+
+  	     
+  	  	 }
+
+
+  	 
    }
    </script>
    

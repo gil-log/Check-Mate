@@ -333,7 +333,33 @@
    	            type : 'DELETE',                // GET or POST 방식
    	            traditional : true,
    	            data : {
-   	                h_no : h_no        // 보내고자 하는 data 변수 설정
+   	                h_no : h_no,        // 보내고자 하는 data 변수 설정
+   	                h_flag : 0
+   	            },
+   	            
+   	            //Ajax 성공시 호출 
+   	            success : function(msg){
+   	            	alert(msg);
+   	            	location.href = "homeworklist"; 
+   	            },
+   	         
+   	            //Ajax 실패시 호출
+   	            error : function(jqXHR, textStatus, errorThrown){
+   	                console.log("jqXHR : " +jqXHR +"textStatus : " + textStatus + "errorThrown : " + errorThrown);
+   	            }
+   	        });
+   	    }
+
+   		//그룹장이 과제 삭제
+   		function deleteSubmitHw() {
+   			var h_no = ${homework.h_no};
+   	        $.ajax({
+   	            url : 'homeworkadd',                    // 전송 URL
+   	            type : 'DELETE',                // GET or POST 방식
+   	            traditional : true,
+   	            data : {
+   	                h_no : h_no,        // 보내고자 하는 data 변수 설정
+   	                h_flag : 1
    	            },
    	            
    	            //Ajax 성공시 호출 

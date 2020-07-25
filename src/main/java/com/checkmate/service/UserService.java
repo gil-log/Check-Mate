@@ -28,4 +28,6 @@ public interface UserService {
 	// 유저 메일 가져오기
 	public String userMail(String u_id) throws Exception;
 
+	// id 체크
+	public int userIdCheck(UserVO userVO) throws Exception;
 }

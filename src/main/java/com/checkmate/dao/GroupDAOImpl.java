@@ -21,6 +21,24 @@ public class GroupDAOImpl implements GroupDAO {
 	public void GroupCreate(GroupVO groupVO) throws Exception {
 		sqlSession.insert("groupMapper.GroupCreate", groupVO);
 	}
+	
+	@Override
+	//초대현황
+	public List<GroupVO> groupCheck(UserVO userVO) throws Exception {
+		return sqlSession.selectList("groupMapper.groupCheck", userVO);
+	}
+	
+	@Override
+	//초대 yes
+	public void groupYes(GroupVO groupVO) throws Exception {
+		sqlSession.update("groupMapper.groupYes", groupVO);
+	}
+	
+	@Override
+	//초대 no
+	public void groupNo(GroupVO groupVO) throws Exception {
+		sqlSession.delete("groupMapper.groupNo", groupVO);
+	}
 
 	@Override
 	public List<GroupVO> GroupList(UserVO userVO) throws Exception {

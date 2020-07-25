@@ -188,7 +188,7 @@ private static final Logger logger = LoggerFactory.getLogger(UserController.clas
 		
 		service.register(vo);
 		
-		return "checkmate";
+		return "redirect:checkmate";
 	}
 	
 	// 그룹 추가 하고 메일로 인증 url 보낸곳 매핑 되는 곳
@@ -284,6 +284,14 @@ private static final Logger logger = LoggerFactory.getLogger(UserController.clas
 		}
 		
 		return msg;
+	}
+	
+	//id Check
+	@RequestMapping(value="/userIdCheck", method = RequestMethod.POST)
+	@ResponseBody
+	public int userIdCheck(UserVO userVO) throws Exception {
+		int result = service.userIdCheck(userVO);
+		return result;
 	}
 	
 	//로그인 성공,실패시 갈곳

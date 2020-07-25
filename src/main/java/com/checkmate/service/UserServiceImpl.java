@@ -57,5 +57,12 @@ public class UserServiceImpl implements UserService {
 		return dao.userMail(u_id);
 	}
 	
+	@Override
+	// id 체크
+	public int userIdCheck(UserVO userVO) throws Exception {
+		int result = dao.userIdCheck(userVO);
+		return result;
+	}
+	
 
 }

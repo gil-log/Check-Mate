@@ -17,6 +17,15 @@ public interface GroupDAO {
 	//출석 생성시 그룹원들의 attend를 추가하기 위해 그룹원 이름 가져오기!
 	public List<GroupVO> groupMemberList(GroupVO groupVO) throws Exception;
 	
+	//초대현황
+	public List<GroupVO> groupCheck(UserVO userVO) throws Exception;
+	
+	//초대 yes
+	public void groupYes(GroupVO groupVO) throws Exception;
+	
+	//초대 no
+	public void groupNo(GroupVO groupVO) throws Exception;
+	
 	//그룹 총 개수
 	public int GroupListCount(UserVO userVO) throws Exception;
 	

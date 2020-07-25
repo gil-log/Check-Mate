@@ -30,4 +30,7 @@ public interface UserDAO {
 	
 	// 유저 메일 가져오기
 	public String userMail(String u_id) throws Exception;
+	
+	//ID체크
+	public int userIdCheck(UserVO userVO) throws Exception;
 }

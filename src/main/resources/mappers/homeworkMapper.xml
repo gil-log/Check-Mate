@@ -153,7 +153,7 @@
 	<!-- 과제 삭제(그룹장)-->
     <delete id="delete" parameterType="com.checkmate.vo.HomeworkVO">
     	DELETE FROM C_HW
-    	WHERE H_NO = #{h_no} AND H_FLAG = 0
+    	WHERE H_NO = #{h_no} AND H_FLAG = #{h_flag}
     </delete>
 	
 	<!-- 개수 세주기 -->
