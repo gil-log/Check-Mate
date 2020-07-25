@@ -65,6 +65,15 @@ public class AttendServiceImpl implements AttendService {
 		return dao.attendDetail(attendVO);
 	}
 	
+
+	@Override
+	//관리자가 출석현황을 수정한 경우
+	public void attendManage(AttendVO attendVO) throws Exception {
+		dao.attendManage(attendVO);
+	}
+	
+	
+	
 	@Override
 	public List<AttendVO> attendListCalendar(AttendVO attendVO) throws Exception {
 		return dao.attendListCalendar(attendVO);
@@ -79,5 +88,6 @@ public class AttendServiceImpl implements AttendService {
 	public int attendMasterCount(GroupVO groupVO) throws Exception {
 		return dao.attendMasterCount(groupVO);
 	}
+
 
 }

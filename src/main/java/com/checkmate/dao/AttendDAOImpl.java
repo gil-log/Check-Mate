@@ -70,6 +70,14 @@ public class AttendDAOImpl implements AttendDAO {
 	}
 	
 	@Override
+	//관리자가 출석현황을 수정한 경우
+	public void attendManage(AttendVO attendVO) throws Exception {
+		sqlSession.update("attendMapper.attendManage", attendVO);
+	}
+	
+	
+	
+	@Override
 	public List<AttendVO> attendListCalendar(AttendVO attendVO) throws Exception {
 		return sqlSession.selectList("attendMapper.attendListCalendar", attendVO);
 	}
@@ -83,5 +91,4 @@ public class AttendDAOImpl implements AttendDAO {
 	public int attendMasterCount(GroupVO groupVO) throws Exception {
 		return sqlSession.selectOne("attendMapper.attendMasterCount", groupVO);
 	}
-
 }

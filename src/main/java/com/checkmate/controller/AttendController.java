@@ -54,19 +54,20 @@ public class AttendController {
 		AttendVO attendLast = attendService.attendLast(groupVO);
 		return "attend";
 	}
-	
+	/*
 	//attend화면 들어왔을 때 현재 시간과의 비교를 통해 attendUpdate
 	@RequestMapping(value = "/attendUpdate", method = RequestMethod.GET, produces = "application/json; charset=utf8")
 	@ResponseBody
-	public void attendUpdatpost(HttpServletRequest request, Model model) throws Exception {
-		logger.info("attendList_get");
+	public void attendUpdatget(HttpServletRequest request, Model model) throws Exception {
+		logger.info("attendUpdate_get");
 		
 		//세션으로 u_id, g_no 받아와서 사용
 		HttpSession session = request.getSession();
 		GroupVO groupVO = (GroupVO)session.getAttribute("group");
 
+		attendService.attendUpdate(groupVO);
 	}
-	
+	*/
 	
 	//attendList를 가져오는 부분
 	@RequestMapping(value = "/attendList", method = RequestMethod.GET, produces = "application/json; charset=utf8")
@@ -77,14 +78,11 @@ public class AttendController {
 		//세션으로 u_id, g_no 받아와서 사용
 		HttpSession session = request.getSession();
 		GroupVO groupVO = (GroupVO)session.getAttribute("group");
-		
-		attendService.attendUpdate(groupVO);	
+
+		//list를 화면에 나타낼 때 시간비교 후 출석현황 update
+		attendService.attendUpdate(groupVO);
 		List<AttendVO> attendList = attendService.attendList(groupVO);
-		
-		logger.info("attendList: " + attendList);
-
 		return attendList;
-
 	}
 	
 	//새로운 출석 생성
@@ -92,11 +90,9 @@ public class AttendController {
 	@ResponseBody
 	public Object attendMaketpost(HttpServletRequest request, Model model) throws Exception {
            
-		logger.info("/attendMake_post");
+		logger.info("attendMake_post");
 
 		String limitTime = request.getParameter("limitTime");
-		logger.info("ㅎㅇㅎㅇ limitTime: " + limitTime);
-		model.addAttribute("limitTime", limitTime);	
 		
 		//세션으로 u_id, g_no 받아와서 사용
 		HttpSession session = request.getSession();
@@ -124,7 +120,7 @@ public class AttendController {
 	@ResponseBody
 	public Object attendClosepost(HttpServletRequest request) throws Exception {
            
-		logger.info("/attendClose_post");
+		logger.info("attendClose_post");
 		
 		//세션으로 u_id, g_no 받아와서 사용
 		HttpSession session = request.getSession();
@@ -140,8 +136,9 @@ public class AttendController {
 		//너희 출석안해? 너네 다 결석.
 		List<GroupVO> memberList = groupService.groupMemberList(groupVO);
 		for(int i=0; i<memberList.size(); i++) {
+			
 			attendVO.setU_id(memberList.get(i).getU_id());		
-			//출석 추가
+//			출석 추가
 			attendService.attendClose(attendVO);
 		}
 		
@@ -154,7 +151,7 @@ public class AttendController {
 	@ResponseBody
 	public Object attendCheckpost(HttpServletRequest request) throws Exception {
         String msg = ""; 
-		logger.info("/attendCheck_post");
+		logger.info("attendClick_post");
 		
 		//세션으로 u_id, g_no 받아와서 사용
 		HttpSession session = request.getSession();
@@ -162,7 +159,6 @@ public class AttendController {
 		
 		AttendVO attendVO = new AttendVO();
 		String deadLine= request.getParameter("deadLine");
-		logger.info("deadLine: " + deadLine);
 		
 		attendVO.setG_no(groupVO.getG_no());
 		attendVO.setU_id(groupVO.getU_id());
@@ -187,7 +183,7 @@ public class AttendController {
 	@ResponseBody
 	public Object attendDetailget(HttpServletRequest request) throws Exception {
            
-		logger.info("/attendDetail_get");
+		logger.info("attendDetail_get");
 		
 		//세션으로 u_id, g_no 받아와서 사용
 		HttpSession session = request.getSession();
@@ -199,7 +195,6 @@ public class AttendController {
 		attendVO.setA_date(a_date);
 		
 		List<AttendListVO> attendDetail = attendService.attendDetail(attendVO);
-		logger.info("attendDetail: " + attendDetail);
 		
 		return attendDetail;
 		
@@ -207,32 +202,29 @@ public class AttendController {
 	
 	@RequestMapping(value = "/attendManage", method = RequestMethod.POST, produces = "application/text; charset=utf8")
 	@ResponseBody
-	public Object attendManagePOST(HttpServletRequest request, @RequestBody List<Map> modifiedData) throws Exception {
+	public Object attendManagePOST(HttpServletRequest request) throws Exception {
            
-		logger.info("/attendManage_POST");
+		logger.info("attendManage_POST");
 		
 		//세션으로 u_id, g_no 받아와서 사용
 		HttpSession session = request.getSession();
 		GroupVO groupVO = (GroupVO)session.getAttribute("group");
 		String a_date = request.getParameter("a_date");
-		//String [] modifiedDataArr = request.getParameter("modifiedData");
-//		String modifiedData =  request.getParameter("modifiedData")
+		String [] modifiedArr = request.getParameterValues("modifiedArr");
 		
-		logger.info((String)modifiedData.get(0).get("name"));
-		logger.info("length: " + modifiedData.size());
-		
-		for(int i=0; i<modifiedData.size(); i++) {
-			//logger.info("전송된 데이터는 과연!!! : " + modifiedData.get(i).split("value:"));
+		AttendVO attendVO = new AttendVO();
+		attendVO.setG_no(groupVO.getG_no());
+		attendVO.setA_date(a_date);
+
+		for(int i=0; i<modifiedArr.length; i++) {
+				
+			attendVO.setU_id(modifiedArr[i++]);
+			attendVO.setA_flag(Integer.parseInt(modifiedArr[i]));
+			
+			attendService.attendManage(attendVO);
 		}
 		
-//		AttendVO attendVO = new AttendVO();
-//		attendVO.setG_no(groupVO.getG_no());
-//		attendVO.setA_date(a_date);
-//		
-//		List<AttendListVO> attendManage = attendService.attendManage(attendVO);
-//		logger.info("attendManage: " + attendManage);
-//		
-		String msg = "ㅎㅇㅎㅇ";
+		String msg = "수정이 완료되었습니다.";
 		return msg;
 		
   	}

@@ -124,8 +124,6 @@
 				
 
 			<!-- 본문을 여기에 넣기 -->
-			<div> ㅎㅇㅎㅇ </div>
-			<div> ${g_flag} </div>
 
 			<!-- 관리자용 출석관리 modal 시작-->
             <div class="modal fade none-border" id="noticeModal">
@@ -237,7 +235,6 @@
 	 $('#attend-switch').on("click", function() {
 		toggle = !toggle;
 		if(toggle){
-			alert("출석생성 ON");
  			$("#makeAttend").slideDown();
 	 	}
 	 	else{
@@ -251,10 +248,11 @@
 	<!-- 출석 리스트 화면 출력 -->
 	<script type="text/javascript">
 		$(document).ready(function() {
-			attendUpdate();
+			attendList();
 			$('#modalDel').hide();
 		});
-		//attend에 들어왔을 때 시간비교 후 출석현황 update
+
+		/*
 		function attendUpdate(){
 			$.ajax({
 				url : 'attendUpdate', // 전송 URL
@@ -272,12 +270,13 @@
 				}
 			});
 		}
+		*/
+		
 		function attendList(){
 			$.ajax({
 				url : 'attendList', // 전송 URL
 				type : 'get', // GET or POST 방식
 				traditional : true,
-				dataType : "JSON", 
 				//Ajax 성공시 호출 
 				success : function(data) {
 					var htmls = "";
@@ -422,7 +421,6 @@
 		var limitTime, date, deadLine;
 	
 		function attendMake() {
-			alert("attendMake에 도착했다.");
 			var time= jQuery("#attendMake").serialize().split("=");
 			limitTime = time[1];
 			
@@ -455,13 +453,11 @@
 		
 		<!-- timer 함수 -->
 		function attendTimer() {
-			alert("attendTimer에 도착했다.")
 			setTimeout(function(){attendClose()} , limitTime * 60000); //밀리세컨드 -->limitTime으로 바꿔라
 		}
 		
 		<!-- attendClose 함수-->
 		function attendClose(){
-			alert("문닫자");
 			$.ajax({
 				url : 'attendClose', // 전송 URL
 				type : 'POST', // GET or POST 방식
@@ -488,7 +484,6 @@
 	
 	<!-- 출석버튼 누르는 동작 -->
 	<script type="text/javascript">
-
 		var a_date = "";
 	
 		function attendClick(deadLine) {
@@ -569,25 +564,26 @@
 		}
 
 		function attendManage() {
-			var modifiedData= $("#attendManage").serializeArray();
-			console.log(modifiedData);
-			alert("몇시: " + a_date);
+			var modifiedData= $("#attendManage").serializeArray();	
+			var modifiedArr = [];
 
-			
+			for(var i=0; i<modifiedData.length; i++){
+				modifiedArr.push(modifiedData[i].value); 
+			}
+
 			$.ajax({
 				url : 'attendManage', // 전송 URL
 				type : 'POST', // GET or POST 방식
 				traditional : true,
 				data : { // 보내고자 하는 data 변수 설정
-					modifiedData : modifiedData,
+					modifiedArr : modifiedArr,
 					a_date : a_date	
 				},
-				dataType: 'json',
 				//Ajax 성공시 호출 
 				success : function(data) {
-					alert("data: " + data);
-					$('#noticeModal').hide();
-					alert("수정이 완료되었습니다.");
+					alert(data);
+					$('#noticeModal').modal("hide");
+					attendList();
 				},
 				//Ajax 실패시 호출
 				error : function(request, status, error){

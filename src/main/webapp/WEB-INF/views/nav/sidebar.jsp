@@ -16,12 +16,7 @@
                         <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="homeworklist" aria-expanded="false"><i class="mdi mdi-owl"></i><span class="hide-menu">숙제</span></a></li>
                         
                         <!-- 출결관리 사이드 시작-->
-                        <li class="sidebar-item"> <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-face"></i><span class="hide-menu">출석</span></a>
-                            <ul aria-expanded="false" class="collapse  first-level">
-                                <li class="sidebar-item"><a href="attend" class="sidebar-link"><i class="mdi mdi-emoticon"></i><span class="hide-menu"> 출석체크 </span></a></li>
-                                <li class="sidebar-item"><a href="출석관리 controller 호출하자꾸나" class="sidebar-link"><i class="mdi mdi-emoticon-cool"></i><span class="hide-menu"> 출석관리 </span></a></li>
-                            </ul>
-                        </li>
+                        <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="attend" aria-expanded="false"><i class="mdi mdi-emoticon"></i><span class="hide-menu">출석</span></a></li>
                         <!-- 출결관리 끝 -->
                     </ul>
                 </nav>
