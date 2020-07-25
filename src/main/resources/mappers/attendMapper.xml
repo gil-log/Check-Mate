@@ -19,14 +19,6 @@
 		VALUES(SYSDATE, #{u_id}, #{g_no}, 0, SYSDATE + #{a_deadLine}/24/60)	
 	</insert>
 	
-	<!-- 관리자가 출석생성하는 경우
-	<insert id="attendInsert" parameterType="com.checkmate.vo.AttendVO">
-		INSERT INTO C_ATTEND (A_DATE, U_ID, G_NO, A_FLAG)
-		VALUES(SYSDATE + #{a_date}/24/60, #{u_id}, #{g_no}, 0)	
-	</insert>
-	-->
-	
-	
 	<!-- 추가된 출석을 불러오는 경우  -->
 	<select id="attendLast" resultType="com.checkmate.vo.AttendVO" parameterType="com.checkmate.vo.GroupVO">
 		SELECT ROWNUM, A.A_FLAG, A.A_DATE, A.U_ID, A.G_NO, A.A_DEADLINE
@@ -53,10 +45,9 @@
 		<![CDATA[
 		Update C_ATTEND
 		SET    A_FLAG = 3
-		WHERE  U_ID = #{u_id}
+		WHERE  G_NO = #{g_no}
+		AND    A_FLAG = 0
 		AND	   A_DEADLINE < SYSDATE
-		AND	   G_NO = #{g_no}
-		AND	   A_FLAG = 0
 		]]>
 	</update>
 	
@@ -66,9 +57,9 @@
 		Update C_ATTEND
 		SET    A_FLAG = 1
 		WHERE  U_ID = #{u_id}
+		AND	   G_NO = #{g_no}
 		AND    A_DEADLINE = TO_DATE(#{a_deadLine},'YYYY-MM-DD HH24:MI:SS')
 		AND	   A_DEADLINE > SYSDATE
-		AND	   G_NO = #{g_no}
 		]]>
 	</update>
 	
@@ -82,12 +73,27 @@
 	</select>
 	
 	<!-- 출석관리리스트를 불러오는 경우  -->
-	<select id="attendManage" resultType="com.checkmate.vo.AttendVO" parameterType="com.checkmate.vo.GroupVO">
-		SELECT A_DATE, G_NO, U_ID, A_FLAG, A_DEADLINE
-		FROM   C_ATTEND
-		WHERE  G_NO = #{g_no}
-		AND	   A_DATE = TO_DATE(#{a_date},'YYYY-MM-DD HH24:MI:SS')
+	<select id="attendDetail" resultType="com.checkmate.vo.AttendListVO" parameterType="com.checkmate.vo.GroupVO">
+		SELECT A.A_DATE, A.G_NO, A.U_ID, A.A_FLAG, A.A_DEADLINE, U.U_NAME
+		FROM   C_ATTEND A, C_USER U, C_GROUP G
+		WHERE  A.G_NO =  #{g_no}
+		AND    A.U_ID = U.U_ID
+		AND    A.G_NO = G.G_NO
+		AND    G.U_ID = U.U_ID
+		AND    G.G_FLAG = 0
+		AND	   A.A_DATE = TO_DATE(#{a_date},'YYYY-MM-DD HH24:MI:SS')
 	</select>
+	
+	<!-- 관리자가 출석현황을 수정한 경우 -->
+	<update id="attendManage" parameterType="com.checkmate.vo.AttendVO">
+		Update C_ATTEND
+		SET    A_FLAG = #{a_flag}
+		WHERE  U_ID = #{u_id}
+		AND	   G_NO = #{g_no}
+		AND    A_DATE = TO_DATE(#{a_date},'YYYY-MM-DD HH24:MI:SS')
+	</update>
+	
+	
 	
 	<!-- calendar 용 attend flag 별로 list 뽑기 -->
 	<select id="attendListCalendar" resultType="com.checkmate.vo.AttendVO" parameterType="com.checkmate.vo.AttendVO">

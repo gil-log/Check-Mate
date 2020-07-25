@@ -89,4 +89,14 @@ public class HomeworkServiceImpl implements HomeworkService {
 		return dao.hwCount(homeworkVO);
 	}
 
+	@Override
+	public List<HomeworkVO> hwCompleteList(HomeworkVO homeworkVO) throws Exception {
+		return dao.hwCompleteList(homeworkVO);
+	}
+
+	@Override
+	public HomeworkVO hwView(HomeworkVO homeworkVO) throws Exception {
+		return dao.hwView(homeworkVO);
+	}
+
 }

@@ -92,4 +92,14 @@ public class HomeworkDAOImpl implements HomeworkDAO{
 		return sqlSession.selectOne("homeworkMapper.hwCount", homeworkVO);
 	}
 
+	@Override
+	public List<HomeworkVO> hwCompleteList(HomeworkVO homeworkVO) throws Exception {
+		return sqlSession.selectList("homeworkMapper.hwCompleteList", homeworkVO);
+	}
+
+	@Override
+	public HomeworkVO hwView(HomeworkVO homeworkVO) throws Exception {
+		return sqlSession.selectOne("homeworkMapper.hwView", homeworkVO);
+	}
+
 }

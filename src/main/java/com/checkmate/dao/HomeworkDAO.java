@@ -45,4 +45,11 @@ public interface HomeworkDAO {
 	
 	// 해당 개수 0 인지 1 인지 세기
 	public int hwCount(HomeworkVO homeworkVO) throws Exception;
+	
+	// 해당 h_no에 제출한 사람들 리스트
+	public List<HomeworkVO> hwCompleteList(HomeworkVO homeworkVO) throws Exception;
+	
+	// h_no u_id에 해당하는 숙제 정보 가져오기
+	public HomeworkVO hwView(HomeworkVO homeworkVO) throws Exception;
+	
 }

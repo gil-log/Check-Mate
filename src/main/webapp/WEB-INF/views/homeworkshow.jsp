@@ -90,7 +90,7 @@
                                     <div class="form-group row">
                                         <label for="h_score" class="col-sm-2 text-right control-label col-form-label">배점</label>
                                         <div class="col-sm-9">
-                                            <input type="number" class="form-control" value="${homework.h_score}" readonly>
+                                            <input type="number" class="form-control" id="hwScore" value="${homework.h_score}" readonly>
                                         </div>
                                     </div>
                                     <div class="form-group row">
@@ -284,12 +284,12 @@
    	    		return false;
    	    	}
    	    	
-   	    	const sendVar = new Array(4);
+   	    	const sendVar = new Array(5);
    	    	sendVar[0] = $('#sub_title').val();
    	    	sendVar[1] = $('#sub_content').val();
    	    	sendVar[2] = $('#sub_file').val();
    	    	sendVar[3] = $('#sub_no').val();
-   	    	
+   	    	sendVar[4] = $('#hwScore').val();
    	    	
    	    	$.ajax({
    	    		url : 'homeworkshow',

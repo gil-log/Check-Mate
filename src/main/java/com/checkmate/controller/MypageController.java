@@ -303,6 +303,7 @@ public class MypageController {
 		
 		System.out.println("홈워크 퍼센트 : " + hwPercent);
 		
+		
 		// 내가 제출기한 놓쳐서 미제출한 과제들 개수 세주고 그거 만큼 점수에서 차감
 		List<HomeworkVO> myHwImpossibleIdList = homeworkService.hwImpossibleIdList(groupVO);
 		
@@ -444,10 +445,6 @@ public class MypageController {
 				map.put("myRank", myRank);
 			}
 		}
-		
-		
-		
-		
 		
 		// 출석 관련
 		map.put("attendOne", myAttendCountOne);

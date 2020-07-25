@@ -1,6 +1,8 @@
 package com.checkmate.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -119,6 +121,12 @@ public class HomeworkController {
 		
 		service.delete(homeworkVO);
 		
+		//관리자가 숙제를 삭제했을경우 그 숙제를 제출한 사용자 자료를 일괄 삭제한다(myPage연동이랑 가비지값 처리 위해)
+		if(homeworkVO.getH_flag()==0) {
+			homeworkVO.setH_flag(1);
+			service.delete(homeworkVO);
+		}
+		
 		String msg = "삭제 되었습니다.";
 		return msg;
 	}
@@ -179,6 +187,7 @@ public class HomeworkController {
 		homeworkVO.setH_content(homework[1]);
 		homeworkVO.setH_file(homework[2]);
 		homeworkVO.setH_no(Integer.parseInt(homework[3]));
+		homeworkVO.setH_score(Integer.parseInt(homework[4]));
 		
 		HttpSession session = request.getSession();
 		
@@ -196,8 +205,27 @@ public class HomeworkController {
 	public String homeworkviewget(HttpServletRequest request, Model model, HomeworkVO homeworkVO) throws Exception {
 		logger.info("homeworkview_get");
 		
+		List<HomeworkVO> hwCompleteList = service.hwCompleteList(homeworkVO);
+		
+		model.addAttribute("hwCompleteList", hwCompleteList);
+		
 		System.out.println(homeworkVO.getH_no());
 		
 		return "homeworkview";
+	}
+	
+	// 과제 세부 항목 보기(학생들)
+	@RequestMapping(value = "/homework", method = RequestMethod.GET)
+	@ResponseBody
+	public Object homeworkget(HttpServletRequest request, @ModelAttribute HomeworkVO homeworkVO) throws Exception{
+		logger.info("/homework_get-ajax");
+
+		HomeworkVO hwView = service.hwView(homeworkVO);
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		map.put("hwView", hwView);
+		
+		return map;
 	}
 }

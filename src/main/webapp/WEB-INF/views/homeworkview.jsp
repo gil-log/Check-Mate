@@ -60,28 +60,142 @@
             <div class="container-fluid">
 
 
+
+                <div style="float: right;">
+                					<button type="button" class="btn btn-success margin-5" style="float: right; background-color: #c12a2a;
+    border-color: #c12a2a; margin-right:10px;" onclick="deleteHw();">숙제삭제</button>
+                </div>
+                
 				<!-- 본문을 여기에 넣기 -->
                 <div class="row el-element-overlay">
                 
                 
-                
+                <c:forEach items="${hwCompleteList}" var="hwComplete">
                     <div class="col-lg-3 col-md-6">
                         <div class="card">
                             <div class="el-card-item">
                                 <div class="el-card-avatar el-overlay-1"> <img src="${pageContext.request.contextPath}/resources/template/assets/images/big/img1.jpg" alt="user" />
                                     <div class="el-overlay">
                                         <ul class="list-style-none el-info">
-                                            <li class="el-item"><a class="btn default btn-outline image-popup-vertical-fit el-link" href="${pageContext.request.contextPath}/resources/template/assets/images/big/img1.jpg"><i class="mdi mdi-magnify-plus"></i></a></li>
-                                            <li class="el-item"><a class="btn default btn-outline el-link" href="javascript:void(0);"><i class="mdi mdi-link"></i></a></li>
+                                            <li class="el-item"><a class="btn default btn-outline el-link" data-toggle="modal" data-target="#Modal1" data-hno="${hwComplete.h_no}" data-uid="${hwComplete.u_id}" onclick="hwView(this);"><i class="mdi mdi-link"></i></a></li>
                                         </ul>
                                     </div>
                                 </div>
                                 <div class="el-card-content">
-                                    <h4 class="m-b-0">Project title</h4> <span class="text-muted">subtitle of project</span>
+                                    <h4 class="m-b-0">${hwComplete.h_title}</h4> <span class="text-muted">${hwComplete.u_id}</span>
                                 </div>
                             </div>
                         </div>
                     </div>
+                </c:forEach>    
+                    
+                    
+                    
+                 <div class="modal fade" id="Modal1" tabindex="-1" role="dialog"
+					aria-labelledby="exampleModalLabel" aria-hidden="true ">
+					<div class="modal-dialog" role="document ">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="exampleModalLabel">과제</h5>
+								<button type="button" class="close" data-dismiss="modal"
+									aria-label="Close">
+									<span aria-hidden="true ">&times;</span>
+								</button>
+							</div>
+							
+							
+							
+							
+							
+							   <div class="card-body">
+                                    <div class="form-group row">
+                                        <label for="h_title" class="col-sm-2 text-right control-label col-form-label">제목</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" id = "modalTitle" value="" readonly>
+                                        </div>
+                                    </div>
+                                   
+                                    <div class="form-group row">
+                                        <label for="h_date" class="col-sm-2 text-right control-label col-form-label">제출일</label>
+                                        <div class="col-sm-9">
+                                            <input type="date" class="form-control" id = "modalDate" value="" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="h_score" class="col-sm-2 text-right control-label col-form-label">배점</label>
+                                        <div class="col-sm-9">
+                                            <input type="number" class="form-control" id= "modalScore" value="" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="h_content" class="col-sm-2 text-right control-label col-form-label">과제설명</label>
+                                        <div class="col-sm-9">
+                                            <textarea class="form-control" rows="6" id="modalContent" cols="60" readonly></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                    	<label for="file" class="col-sm-2 text-right control-label col-form-label">첨부파일</label>
+                                        <div class="col-sm-9">
+                                        	<input type="file" class="form-control" id="sub_file" name="h_file" placeholder="File include Here">
+                                        </div>
+                                    </div>
+                                </div>
+							
+							
+							
+							
+							
+							
+							
+							
+							
+							
+							
+
+                            
+                            
+							<!-- <div class="modal-body">Here is the text coming you can put
+								also image if you want…</div> -->
+						</div>
+					</div>
+				</div>
+                    
+                    
+                    
+                    
+
+   
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
                     
                     
                     
@@ -89,6 +203,7 @@
                     
                     
                 </div>
+                
 
 			</div>
             <!-- footer -->
@@ -141,6 +256,62 @@
     <script src="${pageContext.request.contextPath}/resources/template/assets/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js"></script>
     <script src="${pageContext.request.contextPath}/resources/template/assets/extra-libs/sparkline/sparkline.js"></script>
 
+	<script>
+		function hwView(thisVal){
+
+			var h_no = $(thisVal).data("hno");
+
+			var u_id = $(thisVal).data("uid");
+
+ 
+ 		       $.ajax({
+		           url : "homework",
+		           type: "GET",
+		           traditional : true,
+		           data : {
+			           h_no : h_no,
+			           u_id : u_id
+			           },
+		           success : function(data){
+
+		        	   $("#modalTitle").val(data.hwView.h_title);
+		        	   $("#modalDate").val(data.hwView.h_date);
+		        	   $("#modalScore").val(data.hwView.h_score);
+		        	   $("#modalContent").val(data.hwView.h_content);
+		        	   //$("#sub_file").val(data.hwView.h_file);
+		             
+		           }, error: function(request, status, error){
+		              alert("통신실패");
+		           }
+		        });
+			}
+
+
+   		//그룹장이 과제 삭제
+   		function deleteHw() {
+   			var h_no = ${hwCompleteList[0].h_no};
+ 	        $.ajax({
+   	            url : 'homeworkadd',                    // 전송 URL
+   	            type : 'DELETE',                // GET or POST 방식
+   	            traditional : true,
+   	            data : {
+   	                h_no : h_no,        // 보내고자 하는 data 변수 설정
+   	                h_flag : 0
+   	            },
+   	            
+   	            //Ajax 성공시 호출 
+   	            success : function(msg){
+   	            	alert(msg);
+   	            	location.href = "homeworklist"; 
+   	            },
+   	         
+   	            //Ajax 실패시 호출
+   	            error : function(jqXHR, textStatus, errorThrown){
+   	                console.log("jqXHR : " +jqXHR +"textStatus : " + textStatus + "errorThrown : " + errorThrown);
+   	            }
+   	        });
+   	    }
+	</script>
 </body>
 
 </html>

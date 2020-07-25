@@ -48,7 +48,7 @@
 						, #{h_file}
 						, SYSDATE
 						, 1
-						, 0
+						, #{h_score}
 						 )
     </insert>
     
@@ -165,9 +165,17 @@
       WHERE H_NO = #{h_no} AND U_ID = #{u_id} AND H_FLAG = 1)
 	</select>
 	
+	<select id="hwCompleteList" resultType="com.checkmate.vo.HomeworkVO">
+		SELECT H_NO, U_ID, G_NO, H_TITLE, H_CONTENT, H_DATE, H_FLAG, H_DEADLINE, H_SCORE, H_FILE
+		FROM C_HW
+		WHERE H_NO = #{h_no} AND H_FLAG = 1
+	</select>
 	
-	
-	
+	<select id="hwView" resultType="com.checkmate.vo.HomeworkVO">
+		SELECT H_NO, U_ID, G_NO, H_TITLE, H_CONTENT, TO_CHAR(H_DATE,'YYYY-MM-DD'), H_FLAG, H_DEADLINE, H_SCORE, H_FILE
+		FROM C_HW
+		WHERE H_NO = #{h_no} AND U_ID = #{u_id}
+	</select>
 	
 
 <!-- 	

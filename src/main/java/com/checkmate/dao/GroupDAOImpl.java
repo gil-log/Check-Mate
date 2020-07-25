@@ -100,4 +100,9 @@ public class GroupDAOImpl implements GroupDAO {
 	public void userPlusMailAuth(GroupVO groupVO) throws Exception {
 		sqlSession.update("groupMapper.userPlusMailAuth", groupVO);
 	}
+
+	@Override
+	public void groupLock(GroupVO groupVO) throws Exception {
+		sqlSession.update("groupMapper.groupLock", groupVO);
+	}
 }

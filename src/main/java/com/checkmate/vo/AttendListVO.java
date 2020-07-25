@@ -6,7 +6,7 @@ public class AttendListVO {
 	private String u_id;
 	private int g_no;
 	private int a_flag;
-	private int g_flag;
+	private String u_name;
 	
 	public String getA_date() {
 		return a_date;
@@ -32,15 +32,16 @@ public class AttendListVO {
 	public void setA_flag(int a_flag) {
 		this.a_flag = a_flag;
 	}
-	public int getG_flag() {
-		return g_flag;
+	public String getU_name() {
+		return u_name;
 	}
-	public void setG_flag(int g_flag) {
-		this.g_flag = g_flag;
+	public void setU_name(String u_name) {
+		this.u_name = u_name;
 	}
+
 	@Override
 	public String toString() {
 		return "AttendListVO [a_date=" + a_date + ", u_id=" + u_id + ", g_no=" + g_no 
-					 + ", a_flag=" + a_flag + ", g_flag=" + g_flag + "]";
+					 + ", a_flag=" + a_flag + ", u_name=" + u_name + "]";
 	}
 }

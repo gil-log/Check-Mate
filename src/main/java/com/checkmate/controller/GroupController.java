@@ -325,5 +325,23 @@ public class GroupController {
 			return msg;
 		}
 	}
+	
+	// 그룹 폐쇄
+	@RequestMapping(value = "/grouplock", method = RequestMethod.GET)
+	public String grouplock(HttpServletRequest request) throws Exception {
+		logger.info("grouplock");
+		
+		HttpSession session = request.getSession();
+
+		GroupVO groupVO = (GroupVO) session.getAttribute("group");
+		
+		groupVO.setG_flag(0);
+		service.groupLock(groupVO);
+		
+		groupVO.setG_flag(1);
+		service.groupLock(groupVO);
+		
+		return "redirect:group";
+	}
 
 }

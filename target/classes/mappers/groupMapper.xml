@@ -130,7 +130,7 @@
 	<select id="groupCheck" resultType="com.checkmate.vo.GroupVO" parameterType="com.checkmate.vo.GroupVO">
       SELECT G_NO, U_ID, G_NAME, G_FLAG, U_POINT, G_SOCKET
       FROM C_GROUP
-      WHERE U_id = #{u_id} AND G_FLAG NOT IN(1, 0)
+      WHERE U_id = #{u_id} AND G_FLAG NOT IN(1, 0, 2, 3)
 	</select>
 	
 	<!-- 초대 yes -->
@@ -147,6 +147,12 @@
     </delete>
 
 
+	<!-- 그룹닫기 g_flag 2 == 폐쇄된 그룹 사용자  g_flag 3 == 폐쇄된 그룹 관리자-->
+	<update id="groupLock" parameterType="com.checkmate.vo.GroupVO">
+		update C_GROUP
+		SET G_FLAG = #{g_flag} + 2
+		WHERE G_NO = #{g_no} AND G_FLAG = #{g_flag}
+	</update>
 
 
 
