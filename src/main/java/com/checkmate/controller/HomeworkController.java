@@ -1,6 +1,9 @@
 package com.checkmate.controller;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -8,17 +11,19 @@ import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.checkmate.service.HomeworkService;
 import com.checkmate.vo.GroupVO;
 import com.checkmate.vo.HomeworkVO;
-import com.checkmate.vo.NoticeVO;
 import com.checkmate.vo.WrapperVO;
 
 @Controller
@@ -31,6 +36,16 @@ public class HomeworkController {
 	@RequestMapping(value = "/homeworklist", method = RequestMethod.GET)
 	public String hwlistget(HttpServletRequest request) throws Exception {
 		logger.info("/homework-list");
+		return "homeworklist";
+
+	}
+	
+	@RequestMapping(value = "/homeworklist", method = RequestMethod.POST)
+	public String hwlistpost(HttpServletRequest request) throws Exception {
+		logger.info("/homework-list_post");
+		
+		System.out.println("말도안돼진짜");
+		
 		return "homeworklist";
 
 	}
@@ -74,42 +89,43 @@ public class HomeworkController {
 
 	}
 	
+
 	//과제 등록post (그룹장)
-	@RequestMapping(value = "/homeworkadd", method = RequestMethod.POST, produces = "application/text; charset=utf8")
-	@ResponseBody
-	public Object hwaddpost(HttpServletRequest request) throws Exception {
-	        
-		logger.info("/homeworkadd_post");
+		@RequestMapping(value = "/homeworkadd", method = RequestMethod.POST, produces = "application/text; charset=utf8")
+		@ResponseBody
+		public Object hwaddpost(HttpServletRequest request) throws Exception {
+		        
+			logger.info("/homeworkadd_post");
 
-		String[] homework = request.getParameterValues("homework");
-		
-		HomeworkVO homeworkVO = new HomeworkVO();
-		
-		homeworkVO.setH_title(homework[0]);
-		homeworkVO.setH_deadline(homework[1]);
-		homeworkVO.setH_score(Integer.parseInt(homework[2]));
-		homeworkVO.setH_content(homework[3]);
-		homeworkVO.setH_file(homework[4]);
-
-		logger.info("제목 : " + homework[0] + ", 내용 : " + homework[3]);
-		
-		HttpSession session = request.getSession();
-		
-		GroupVO groupVO = (GroupVO) session.getAttribute("group");
-
-		String msg = "";
-		
-		if(groupVO.getG_flag()!=1) {
-			msg = "관리자만 과제를 등록 할 수 있습니다.";
-		} else {
-			homeworkVO.setU_id(groupVO.getU_id());
-			homeworkVO.setG_no(groupVO.getG_no());
+			String[] homework = request.getParameterValues("homework");
 			
-			service.write(homeworkVO);
-			msg = "과제가 생성 되었습니다!";
+			HomeworkVO homeworkVO = new HomeworkVO();
+			
+			homeworkVO.setH_title(homework[0]);
+			homeworkVO.setH_deadline(homework[1]);
+			homeworkVO.setH_score(Integer.parseInt(homework[2]));
+			homeworkVO.setH_content(homework[3]);
+		    homeworkVO.setH_file(homework[4]);
+
+			logger.info("제목 : " + homework[0] + ", 내용 : " + homework[3]);
+			
+			HttpSession session = request.getSession();
+			
+			GroupVO groupVO = (GroupVO) session.getAttribute("group");
+
+			String msg = "";
+			
+			if(groupVO.getG_flag()!=1) {
+				msg = "관리자만 과제를 등록 할 수 있습니다.";
+			} else {
+				homeworkVO.setU_id(groupVO.getU_id());
+				homeworkVO.setG_no(groupVO.getG_no());
+				
+				service.write(homeworkVO);
+				msg = "과제가 생성 되었습니다!";
+			}
+			return msg;
 		}
-		return msg;
-	}
 	
 	//과제 삭제(그룹장)
 	@RequestMapping(value = "/homeworkadd", method = RequestMethod.DELETE, produces = "application/text; charset=utf8")
@@ -121,6 +137,43 @@ public class HomeworkController {
 		
 		String msg = "삭제 되었습니다.";
 		return msg;
+	}
+	
+	//파일 업로드
+	@RequestMapping(value = "/fileadd", method = RequestMethod.POST, produces = "application/text; charset=utf8", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	@ResponseBody
+	public Object fileaddpost(MultipartHttpServletRequest request) throws Exception {
+	        
+		logger.info("/fileadd_post");
+		
+        //file upload
+       
+        MultipartFile file = request.getFile("h_file");
+       
+        String path = "C:\\Users\\USER\\Desktop\\upload\\"; 
+        String safeFile ="";
+        String originFileName = file.getOriginalFilename();
+
+		if(file!=null) {
+			logger.info("파라미터명 "+file.getName());
+			logger.info("파일크기 "+file.getSize());
+			logger.info("파일 존재유무 "+file.isEmpty());
+			logger.info("파일 이름 "+originFileName);
+			
+			
+			/* safeFile = path + System.currentTimeMillis()+originFileName; */
+			safeFile = UUID.randomUUID().toString().replaceAll("-", "")+originFileName;
+			
+			try {
+				file.transferTo(new File(path+safeFile));
+				logger.info("여길봐!! : "+(path+safeFile));
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+	
+		
+		return (path+safeFile);
 	}
 	
 	
@@ -137,8 +190,12 @@ public class HomeworkController {
 		model.addAttribute("homework", service.homeworkread(h_no));
 		//과제 제출 폼도 여기있음
 		
-		String myId = groupVO.getU_id();
+		String myId = groupVO.getU_id(); //로그인한 유저 아이디값
+										//그래야 밑에 숙제 제출가능
+										//위에 user(관리자가 올린 과제)랑 다름
 		
+		logger.info(myId);
+
 		HomeworkVO myhwVO = new HomeworkVO();
 		
 		myhwVO.setG_no(groupVO.getG_no());

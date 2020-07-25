@@ -103,6 +103,7 @@
                                 <div class="border-top">
                                     <div class="card-body">
                                         <label for="h_file" class="col-sm-2 text-right control-label col-form-label">첨부파일</label>
+                                        ${homework.h_file}
                                     </div>
                                 </div>
                                 <button class="btn btn-primary" type="button" id="updateHwBtn" onclick="updateHw();">수정</button>
@@ -262,8 +263,6 @@
 				$('#deleteHwBtn').show();
 			}
 			
-			
-			
 			if(${myHwCount} == 1){ //숙제제출했으면, h_flag = 1
 				$('#submitForm').hide();
 				$('#completeForm').show();
@@ -271,8 +270,6 @@
 				$('#submitForm').show();
 				$('#completeForm').hide();
 			}
-			
-			
 			
 	  	 });
 		
@@ -319,8 +316,6 @@
    	        		
    	        		
    	        		
-   	        		
-   	        		
    	        		$("#completeForm").show();
    	    			
    	    		},
@@ -334,7 +329,6 @@
    		//그룹장이 과제 삭제
    		function deleteHw() {
    			var h_no = ${homework.h_no};
-
    	        $.ajax({
    	            url : 'homeworkadd',                    // 전송 URL
    	            type : 'DELETE',                // GET or POST 방식
@@ -346,7 +340,7 @@
    	            //Ajax 성공시 호출 
    	            success : function(msg){
    	            	alert(msg);
-   	            	location.href = "homeworklist; 
+   	            	location.href = "homeworklist"; 
    	            },
    	         
    	            //Ajax 실패시 호출
@@ -354,13 +348,10 @@
    	                console.log("jqXHR : " +jqXHR +"textStatus : " + textStatus + "errorThrown : " + errorThrown);
    	            }
    	        });
-   	    	
-   			
    	    }
    	
    	</script>
    
     
 </body>
-
 </html>

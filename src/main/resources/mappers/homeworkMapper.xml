@@ -99,7 +99,7 @@
 	</select>
 	
 	<!-- 제출한 과제 가져오기(학생) -->
-	<select id="read" resultType="com.checkmate.vo.HomeworkVO" parameterType="com.checkmate.vo.HomeworkVO">	
+	<select id="read" parameterType="com.checkmate.vo.HomeworkVO">	
       SELECT H_NO, G_NO, U_ID, H_TITLE, H_CONTENT, H_FILE, H_DATE, H_FLAG, H_SCORE
       FROM C_HW
       WHERE H_NO = #{h_no} AND H_FLAG = 1 AND U_ID = #{u_id}
@@ -107,7 +107,15 @@
 	
 	<!-- 과제 삭제(그룹장)-->
     <delete id="delete" parameterType="com.checkmate.vo.HomeworkVO">
-    	DELETE FROM C_HW
+    	UPDATE C_HW 
+    	SET H_FLAG = 2 
+    	WHERE H_NO = #{h_no}
+    </delete>
+    
+    <!-- 과제 삭제(학생)-->
+    <delete id="homeworkdelete" parameterType="com.checkmate.vo.HomeworkVO">
+    	UPDATE C_HW 
+    	SET H_FLAG = 2 
     	WHERE H_NO = #{h_no} AND H_FLAG = 0
     </delete>
 	

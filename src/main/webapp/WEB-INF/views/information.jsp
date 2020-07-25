@@ -207,7 +207,7 @@
     <script src="${pageContext.request.contextPath}/resources/template/dist/js/pages/chart/chart-page-init.js"></script>
 
 	<script type="text/javascript">
-    $(document).ready(function() {
+    $(document).ready(function(){
 
         $("#plusForm").hide();
 		$('#noticeWriteBtn').hide();
