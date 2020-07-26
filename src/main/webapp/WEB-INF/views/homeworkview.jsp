@@ -118,7 +118,7 @@
                                     <div class="form-group row">
                                         <label for="h_date" class="col-sm-2 text-right control-label col-form-label">제출일</label>
                                         <div class="col-sm-9">
-                                            <input type="date" class="form-control" id = "modalDate" value="" readonly>
+                                            <input type="text" class="form-control" id = "modalDate" value="" readonly>
                                         </div>
                                     </div>
                                     <div class="form-group row">
@@ -133,10 +133,19 @@
                                             <textarea class="form-control" rows="6" id="modalContent" cols="60" readonly></textarea>
                                         </div>
                                     </div>
+                                    
+                                    
                                     <div class="form-group row">
-                                    	<label for="file" class="col-sm-2 text-right control-label col-form-label">첨부파일</label>
+                                    
+                                    
+                                    	<form id="frm" action="fileDown" method="post" enctype="multipart/form-data">
+                                			<input type="hidden" id = "fileFrm" name="fileName" value="">
+                                		</form>
                                         <div class="col-sm-9">
-                                        	<input type="file" class="form-control" id="sub_file" name="h_file" placeholder="File include Here">
+                                        
+                                        <label for="fileA" class="col-sm-2 text-right control-label col-form-label">첨부파일</label>
+                                        <a href="#" id="fileA" onclick="document.getElementById('frm').submit();"></a>
+                                        
                                         </div>
                                     </div>
                                 </div>
@@ -249,7 +258,7 @@
     <script src="${pageContext.request.contextPath}/resources/template/assets/libs/flot.tooltip/js/jquery.flot.tooltip.min.js"></script>
     <script src="${pageContext.request.contextPath}/resources/template/dist/js/pages/chart/chart-page-init.js"></script>
 
-	  <!-- this page js -->
+	<!-- this page js -->
     <script src="${pageContext.request.contextPath}/resources/template/assets/libs/magnific-popup/dist/jquery.magnific-popup.min.js"></script>
     <script src="${pageContext.request.contextPath}/resources/template/assets/libs/magnific-popup/meg.init.js"></script>
     <!-- slimscrollbar scrollbar JavaScript -->
@@ -278,7 +287,8 @@
 		        	   $("#modalDate").val(data.hwView.h_date);
 		        	   $("#modalScore").val(data.hwView.h_score);
 		        	   $("#modalContent").val(data.hwView.h_content);
-		        	   //$("#sub_file").val(data.hwView.h_file);
+		        	   $("#fileFrm").val(data.hwView.h_file);
+		        	   $("#fileA").text(data.hwView.h_file);
 		             
 		           }, error: function(request, status, error){
 		              alert("통신실패");

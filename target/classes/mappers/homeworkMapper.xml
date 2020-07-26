@@ -48,7 +48,7 @@
 						, #{h_file}
 						, SYSDATE
 						, 1
-						, 0
+						, #{h_score}
 						 )
     </insert>
     

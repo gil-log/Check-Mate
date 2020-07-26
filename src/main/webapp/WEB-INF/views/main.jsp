@@ -117,7 +117,7 @@
                                 <h4 class="card-title m-b-0">숙제</h4>
                                      <div class="ml-auto">
                                         <div class="tetx-right">
-                                        <a href="homework" data-toggle="tooltip" data-placement="top" title="" data-original-title="더보기">
+                                        <a href="homeworklist" data-toggle="tooltip" data-placement="top" title="" data-original-title="더보기">
                                                 <i class="fa fa-plus w-30px m-t-5"></i>
                                                  </a>
                                         </div>

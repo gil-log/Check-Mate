@@ -1,5 +1,7 @@
 package com.checkmate.controller;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -268,8 +270,11 @@ public class HomeworkController {
 			
 		} else {
 
+			HomeworkVO readVO = service.read(myhwVO);
+			readVO.setH_file(readVO.getH_file().substring(readVO.getH_file().lastIndexOf("\\")+1));
+			
 			model.addAttribute("myHwCount", 1);
-			model.addAttribute("complete", service.read(myhwVO));
+			model.addAttribute("complete", readVO);
 		}
 		
 		
@@ -279,7 +284,7 @@ public class HomeworkController {
 	}
 	
 	// 과제 작성(학생들)
-	@RequestMapping(value = "/homeworkshow", method = RequestMethod.POST)
+	@RequestMapping(value = "/homeworkshow", method = RequestMethod.POST, produces = "application/text; charset=utf8")
 	@ResponseBody
 	public Object homeworkpost(HttpServletRequest request) throws Exception{
 		logger.info("/homeworkwrite_post");
@@ -293,7 +298,7 @@ public class HomeworkController {
 		homeworkVO.setH_content(homework[1]);
 		homeworkVO.setH_file(homework[2]);
 		homeworkVO.setH_no(Integer.parseInt(homework[3]));
-		
+		homeworkVO.setH_score(Integer.parseInt(homework[4]));
 		
 		HttpSession session = request.getSession();
 		
@@ -332,6 +337,8 @@ public class HomeworkController {
 				if(MSIE) {
 					//브라우저가 IE일 경우 저장될 파일 이름
 					fileNameToSave = URLEncoder.encode(UTF8FileName, "UTF8").replace("\\+", " ");
+					
+					
 				}else {
 					//브라우저가 IE가 아닐 경우 저장될 파일 이름
 					fileNameToSave = new String(UTF8FileName.getBytes("UTF-8"), "8859_1");
@@ -347,7 +354,6 @@ public class HomeworkController {
 				  String filePathAndName = realPath + UTF8FileNameAndPath;
 				  logger.info("여기확인"+filePathAndName);
 			        File file = new File(filePathAndName);
-			         
 			        // 버퍼 크기 설정
 			        byte bytestream[] = new byte[2048000];
 			     
@@ -357,17 +363,25 @@ public class HomeworkController {
 			            try {
 				            OutputStream bos = response.getOutputStream();
 				            FileInputStream fis = new FileInputStream(file);
+				           
+				            
+				            
 				            
 				            int read = 0;
-				            logger.info(""+fis.read(bytestream));     
+				            logger.info("fis : "+fis.read(bytestream));   
+
+				            
 				            while ((read = fis.read(bytestream)) != -1){
 				                bos.write(bytestream , 0, read);
 				            }
+				            
 				            fis.close();
 				            bos.close();
 			            }catch(FileNotFoundException ex) {
 			            	System.out.println("FileNotFoundException");
 			            }
+			        } else {
+			        	logger.info("진짜머냐");
 			        }
 			}
 			return null;
@@ -393,6 +407,8 @@ public class HomeworkController {
 		logger.info("/homework_get-ajax");
 
 		HomeworkVO hwView = service.hwView(homeworkVO);
+		
+		hwView.setH_file(hwView.getH_file().substring(hwView.getH_file().lastIndexOf("\\")+1));
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 		

@@ -239,7 +239,6 @@ cursor:pointer;
         lengthMenu : [ [ 10, 25, 50, -1 ], [ 10, 25, 50, "All" ] ],
         bAutoWidth: false,
         processing: true,
-        order: [[2, 'desc']], // asc 또는 desc
         ordering: true,
         serverSide: false,
         searching: true,
