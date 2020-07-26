@@ -95,20 +95,19 @@ cursor:pointer;
                         </div>
                  </div>
                 
-                
                 <!-- 과제 작성 폼(관리자)-->
             
                 <div class="row">
                     <div class="col-md-8 offset-md-2">
-                       <div id="addForm">
+                       <div>
                         <div class="card">
-                        	<!-- <form class="form-horizontal"> -->
+                        	<form id="addForm" method="post" enctype="multipart/form-data">
                                 <div class="card-body">
                                     <h4 class="card-title">과제등록</h4>
                                     <div class="form-group row">
                                         <label for="h_title" class="col-sm-2 text-right control-label col-form-label">제목</label>
                                         <div class="col-sm-9">
-                                            <input type="text" class="form-control" id="h_title" name="h_title" placeholder="제목을 입력하세요.">
+                                           <input type="text" class="form-control" id="h_title" name="h_title" placeholder="제목을 입력하세요.">
                                         </div>
                                     </div>
                                     <div class="form-group row">
@@ -129,22 +128,21 @@ cursor:pointer;
                                             <textarea class="form-control" rows="6" cols="60" id="h_content" name="h_content" autocomplete="off"></textarea>
                                         </div>
                                     </div>
-                                </div>
+                                </div><!-- card-body끝 -->
                                 <div class="border-top">
-                                	<!-- <form name="fileForm" action="requestupload1" method="POST" enctype="multipart/form-data"> -->
+                                
                                     <div class="card-body">
                                         <label for="cono1" class="col-sm-2 text-right control-label col-form-label">첨부파일</label>
-                                        <input type="file" name="h_file" id="h_file"/>
-                                       <!-- <input type="text" name="src"/> -->
+                                        <input type="file" name="h_file" id="h_file" onchange="this.select();"/>
+                                     
                                     </div>
-                                   <!--  </form> -->
+       
                                 </div>
-                                <button class="btn btn-primary" type="button" id="addHwactionBtn" onclick="addHwaction();">등록</button>
-							    <button class="btn btn-primary" type="button">취소</button>
-                      		
-                        </div>
-                       
-                    </div>
+                                <button type="submit" class="btn btn-primary" id="addHwactionBtn" onclick="addHwaction();">등록</button>
+							    <button type="button" class="btn btn-primary" >목록으로</button>
+                      		 </form> 
+                        </div><!--div.id card 끝  -->
+                    </div><!--div.id addForm 끝  -->
                 </div>
              </div>
                 
@@ -179,6 +177,7 @@ cursor:pointer;
     <!-- ============================================================== -->
     <!-- All Jquery -->
     <!-- ============================================================== -->
+    <script src="${pageContext.request.contextPath}/resources/template/assets/libs/jquery/dist/jquery.form.js"></script>
     <script src="${pageContext.request.contextPath}/resources/template/assets/libs/jquery/dist/jquery.min.js"></script>
     <!-- Bootstrap tether Core JavaScript -->
     <script src="${pageContext.request.contextPath}/resources/template/assets/libs/popper.js/dist/umd/popper.min.js"></script>
@@ -331,7 +330,8 @@ cursor:pointer;
     		$('#h_content').focus();
     		return false;
     	}
-    	
+
+    	fileUpload();
     	const sendVar = new Array(5);
     	
     	sendVar[0] = $('#h_title').val();
@@ -370,13 +370,34 @@ cursor:pointer;
             }
     	});
     	
-    	/* 달력버튼 */
-    	/*$('#datePicker').datepicker({
-    		format : "yyyy-mm-dd", //달력에서 클릭시 표시할 값 형식
-    		language : "kr",
-    		todayHighlight : true
-    	});*/
     	
+    }
+
+  function fileUpload(){
+    	
+    	var formData = new FormData();
+    	formData.append('h_file',$('#h_file')[0].files[0]);
+    	
+    	$.ajax({
+    		cache : false,
+    		url : 'fileadd',
+    		type : 'post', 
+    		processData : false,
+    		contentType : false,
+    		traditional : true,
+    		data : formData,
+    		success : function(data){
+    			
+    			$("#h_file").val(data);
+    			
+    			console.log(data);
+    			console.log(checkImageType(data));
+    		
+    		},
+    		error : function(xhr, status){
+    			alert(xhr+": "+status+", file error");
+    		}
+    	});
     }
     
    

@@ -147,7 +147,12 @@
                                 <a class="dropdown-item" href="group"><i class="fas fa-chess m-r-5 m-l-5"></i> 그룹 선택</a>
                                 <div class="dropdown-divider"></div>                                
                                 <a class="dropdown-item" href="logout"><i class="fa fa-power-off m-r-5 m-l-5"></i> Logout</a>
-
+                                <!-- 그룹관리 -->
+                                <c:if test="${group.g_flag == 1}">
+                                <div class="dropdown-divider"></div>                                
+                                <a class="dropdown-item" data-toggle="modal" data-target="#ModalGroupLock"><i class="fa fa-lock m-r-5 m-l-5"></i> 그룹 폐쇄</a>
+                                </c:if>
+                                
                             </div>
                         </li>
                         <!-- ============================================================== -->
@@ -160,6 +165,53 @@
         <!-- ============================================================== -->
         <!-- End Topbar header -->
         <!-- ============================================================== -->
+        
+        
+                 <div class="modal fade" id="ModalGroupLock" tabindex="-1" role="dialog"
+					aria-labelledby="exampleModalLabel" aria-hidden="true ">
+					<div class="modal-dialog" role="document ">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="exampleModalLabel">그룹 폐쇄</h5>
+								<button type="button" class="close" data-dismiss="modal"
+									aria-label="Close">
+									<span aria-hidden="true ">&times;</span>
+								</button>
+							</div>
+							
+							
+							
+                        <div class="modal-body">
+                           <div class="row">
+                              <div class="col-md-12" style="text-align: center;">
+                                 <div class="control-label">그룹 폐쇄를 선택하시면 해당 그룹이 폐쇄됩니다.</div>
+                                 <br>
+                                 
+                                 <div class="control-label">계속 하시겠습니까?</div>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="modal-footer">
+                           <button type="submit"
+                              class="btn btn-danger waves-effect waves-light save-category" onclick="groupLock();">폐쇄</button>
+                           <button type="button" class="btn btn-secondary waves-effect"
+                              data-dismiss="modal">취소</button>
+                        </div>
+							
+							
+                            
+                            
+							<!-- <div class="modal-body">Here is the text coming you can put
+								also image if you want…</div> -->
+						</div>
+					</div>
+				</div>
+        
+        <script>
+        function groupLock(){
+            	location.href="grouplock";
+            }
+        </script>
         
 </body>
 </html>

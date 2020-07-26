@@ -52,4 +52,7 @@ public interface HomeworkDAO {
 	// h_no u_id에 해당하는 숙제 정보 가져오기
 	public HomeworkVO hwView(HomeworkVO homeworkVO) throws Exception;
 	
+	//상세페이지에서 file불러오기 하려고
+	public String fileChoice(HomeworkVO homeworkVO) throws Exception;
+	
 }

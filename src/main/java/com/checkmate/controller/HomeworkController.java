@@ -1,26 +1,35 @@
 package com.checkmate.controller;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.OutputStream;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.checkmate.service.HomeworkService;
 import com.checkmate.vo.GroupVO;
 import com.checkmate.vo.HomeworkVO;
-import com.checkmate.vo.NoticeVO;
 import com.checkmate.vo.WrapperVO;
 
 @Controller
@@ -36,7 +45,14 @@ public class HomeworkController {
 		return "homeworklist";
 
 	}
-	
+	@RequestMapping(value = "/homeworklist", method = RequestMethod.POST)
+	public String hwlistpost(HttpServletRequest request) throws Exception {
+		logger.info("/homework-list_post");
+		
+		
+		return "homeworklist";
+
+	}
 	//과제  목록
 	@RequestMapping(value = "/homeworkadd", method = RequestMethod.GET)
 	@ResponseBody
@@ -131,6 +147,81 @@ public class HomeworkController {
 		return msg;
 	}
 	
+
+	//파일 업로드(그룹장)
+	@RequestMapping(value = "/fileadd", method = RequestMethod.POST, produces = "application/text; charset=utf8", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	@ResponseBody
+	public Object fileaddpost(MultipartHttpServletRequest request) throws Exception {
+	        
+		logger.info("/fileadd_post");
+		
+        //file upload
+       
+        MultipartFile file = request.getFile("h_file");
+       
+        String path = "C:\\Users\\"; 
+        String safeFile ="";
+        String originFileName = file.getOriginalFilename();
+
+		if(file!=null) {
+			logger.info("파라미터명 "+file.getName());
+			logger.info("파일크기 "+file.getSize());
+			logger.info("파일 존재유무 "+file.isEmpty());
+			logger.info("파일 이름 "+originFileName);
+			
+			
+			/* safeFile = path + System.currentTimeMillis()+originFileName; */
+			safeFile = UUID.randomUUID().toString().replaceAll("-", "")+originFileName;
+			
+			try {
+				file.transferTo(new File(path+safeFile));
+				logger.info("여길봐!! : "+(path+safeFile));
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+	
+		
+		return (path+safeFile);
+	}
+	
+	//파일업로드(학생용)
+	@RequestMapping(value = "/subfileadd", method = RequestMethod.POST, produces = "application/text; charset=utf8", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	@ResponseBody
+	public Object subfileaddpost(MultipartHttpServletRequest request) throws Exception {
+	        
+		logger.info("/subfileadd_post");
+		
+        //file upload
+       
+        MultipartFile file = request.getFile("sub_file");
+       
+        String path = "C:\\Users\\"; 
+        String safeFile ="";
+        String originFileName = file.getOriginalFilename();
+
+		if(file!=null) {
+			logger.info("파라미터명 "+file.getName());
+			logger.info("파일크기 "+file.getSize());
+			logger.info("파일 존재유무 "+file.isEmpty());
+			logger.info("파일 이름 "+originFileName);
+			
+			
+			/* safeFile = path + System.currentTimeMillis()+originFileName; */
+			safeFile = UUID.randomUUID().toString().replaceAll("-", "")+originFileName;
+			
+			try {
+				file.transferTo(new File(path+safeFile));
+				logger.info("여길봐!! : "+(path+safeFile));
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+	
+		
+		return (path+safeFile);
+	}
+	
 	
 	// 과제 작성 화면(학생들)
 	@RequestMapping(value = "/homeworkshow", method = RequestMethod.GET)
@@ -138,15 +229,31 @@ public class HomeworkController {
 		logger.info("/homeworkshow_get");
 		HttpSession session = request.getSession();
 		GroupVO groupVO = (GroupVO) session.getAttribute("group");
+		
 		//과제상세내용 불러오기
 		int h_no = homeworkVO.getH_no();
 		logger.info(""+h_no);
-		
 		model.addAttribute("homework", service.homeworkread(h_no));
-		//과제 제출 폼도 여기있음
+		//파일이름 가져오기
+		HomeworkVO hwFileVO = new HomeworkVO();
+		hwFileVO.setH_no(h_no);
+		hwFileVO.setG_no(groupVO.getG_no());
 		
-		String myId = groupVO.getU_id();
+		String h_file = service.fileChoice(hwFileVO);
+		 
+		logger.info(""+h_file);
 		
+		String originalFilename = h_file.substring(h_file.lastIndexOf("\\")+1);
+		 
+		model.addAttribute("fileName", originalFilename);
+		//과제 제출폼 관련 코드들은 여기부터
+		
+		String myId = groupVO.getU_id(); //로그인한 유저 아이디값
+										//그래야 밑에 숙제 제출가능
+										//위에 user(관리자가 올린 과제)랑 다름
+		
+		logger.info(myId);
+
 		HomeworkVO myhwVO = new HomeworkVO();
 		
 		myhwVO.setG_no(groupVO.getG_no());
@@ -158,12 +265,11 @@ public class HomeworkController {
 		if (myhwCount == 0 ) {
 			
 			model.addAttribute("myHwCount", 0);
-			System.out.println("0일때 여기임" + myhwCount);
+			
 		} else {
 
 			model.addAttribute("myHwCount", 1);
 			model.addAttribute("complete", service.read(myhwVO));
-			System.out.println("1일때 여기임" + myhwCount);
 		}
 		
 		
@@ -187,7 +293,7 @@ public class HomeworkController {
 		homeworkVO.setH_content(homework[1]);
 		homeworkVO.setH_file(homework[2]);
 		homeworkVO.setH_no(Integer.parseInt(homework[3]));
-		homeworkVO.setH_score(Integer.parseInt(homework[4]));
+		
 		
 		HttpSession session = request.getSession();
 		
@@ -200,6 +306,72 @@ public class HomeworkController {
 		msg = "과제제출이 완료되었습니다.";
 		return msg;
 	}
+	
+	//file down 
+		@RequestMapping(value = "/fileDown", method = RequestMethod.POST)
+		public String fileDown(MultipartHttpServletRequest request, HttpServletResponse response) throws Exception {
+			String realPath = "C:\\Users\\";
+			//파일 이름이 넘어오지 않으면 돌려보내기
+			if(request.getParameter("fileName")==null || "".equals(request.getParameter("fileName"))) {
+				response.sendRedirect("homeworkshow");
+				
+			}else {
+				//파라미터로 받아온 파일 이름
+				String requestFileNameAndPath = request.getParameter("fileName");
+				
+				//한글이름도 찾을 수 있게
+				String UTF8FileNameAndPath = new String(requestFileNameAndPath.getBytes("8859_1"), "UTF-8");
+				//파일이름에서 path는 잘라내고 파일명만 추출
+				String UTF8FileName = UTF8FileNameAndPath.substring(UTF8FileNameAndPath.lastIndexOf("/") + 1).substring(UTF8FileNameAndPath.lastIndexOf(File.separator) + 1);
+				//브라우저가 IE인지 확인할 플래그
+				boolean MSIE = request.getHeader("user-agent").indexOf("MSIE") != -1;
+				
+				//파일 다운로드시 받을 때 저장될 파일명
+				String fileNameToSave = requestFileNameAndPath;
+				//IE, FF 각각 다르게 파일 이름 적용
+				if(MSIE) {
+					//브라우저가 IE일 경우 저장될 파일 이름
+					fileNameToSave = URLEncoder.encode(UTF8FileName, "UTF8").replace("\\+", " ");
+				}else {
+					//브라우저가 IE가 아닐 경우 저장될 파일 이름
+					fileNameToSave = new String(UTF8FileName.getBytes("UTF-8"), "8859_1");
+				}
+				
+				
+				//파일이 바로 실행되지 않고 다운로드가 되게 하기 위해서 컨텐트 타입을 8비트 바이너리로 설정
+				response.setContentType("application/octet-stream");
+				//저장될 파일명 지정
+				response.setHeader("Content-Disposition", "attachment; filename=\"" + fileNameToSave+"\";");
+				
+				//파일 패스 및 파일명 지정
+				  String filePathAndName = realPath + UTF8FileNameAndPath;
+				  logger.info("여기확인"+filePathAndName);
+			        File file = new File(filePathAndName);
+			         
+			        // 버퍼 크기 설정
+			        byte bytestream[] = new byte[2048000];
+			     
+			        // response out에 파일 내용을 출력한다.
+			        if (file.isFile() && file.length() > 0){
+			             
+			            try {
+				            OutputStream bos = response.getOutputStream();
+				            FileInputStream fis = new FileInputStream(file);
+				            
+				            int read = 0;
+				            logger.info(""+fis.read(bytestream));     
+				            while ((read = fis.read(bytestream)) != -1){
+				                bos.write(bytestream , 0, read);
+				            }
+				            fis.close();
+				            bos.close();
+			            }catch(FileNotFoundException ex) {
+			            	System.out.println("FileNotFoundException");
+			            }
+			        }
+			}
+			return null;
+		}
 	
 	@RequestMapping(value = "/homeworkview", method = RequestMethod.GET)
 	public String homeworkviewget(HttpServletRequest request, Model model, HomeworkVO homeworkVO) throws Exception {

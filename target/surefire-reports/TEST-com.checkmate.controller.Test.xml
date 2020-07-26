@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="3" failures="0" name="com.checkmate.controller.Test" time="0.065" errors="0" skipped="0">
+<testsuite tests="3" failures="0" name="com.checkmate.controller.Test" time="0.032" errors="0" skipped="0">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
-    <property name="java.vm.version" value="11.0.6+8-LTS"/>
-    <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk-11.0.6\bin"/>
-    <property name="maven.multiModuleProjectDirectory" value="C:\Users\ProfessorG\git\repository\CheckMate"/>
+    <property name="java.vm.version" value="11.0.7+8-LTS"/>
+    <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk-11.0.7\bin"/>
+    <property name="maven.multiModuleProjectDirectory" value="C:\Users\ProfessorG\git\Check-Mate"/>
     <property name="java.vm.vendor" value="Oracle Corporation"/>
-    <property name="java.vendor.url" value="http://java.oracle.com/"/>
+    <property name="java.vendor.url" value="https://openjdk.java.net/"/>
     <property name="guice.disable.misplaced.annotation.check" value="true"/>
     <property name="path.separator" value=";"/>
     <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM"/>
@@ -15,9 +15,9 @@
     <property name="user.country" value="KR"/>
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
-    <property name="user.dir" value="C:\Users\ProfessorG\git\repository\CheckMate"/>
+    <property name="user.dir" value="C:\Users\ProfessorG\git\Check-Mate"/>
     <property name="java.vm.compressedOopsMode" value="Zero based"/>
-    <property name="java.runtime.version" value="11.0.6+8-LTS"/>
+    <property name="java.runtime.version" value="11.0.7+8-LTS"/>
     <property name="java.awt.graphicsenv" value="sun.awt.Win32GraphicsEnvironment"/>
     <property name="os.arch" value="amd64"/>
     <property name="java.io.tmpdir" value="C:\Users\PROFES~1\AppData\Local\Temp\"/>
@@ -26,10 +26,10 @@
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="user.variant" value=""/>
     <property name="os.name" value="Windows 10"/>
-    <property name="classworlds.conf" value="C:\spring4.6.1\workspace-spring-tool-suite-4-4.6.1.RELEASE\.metadata\.plugins\org.eclipse.m2e.launching\launches\m2conf9855568938587517360.tmp"/>
+    <property name="classworlds.conf" value="C:\Users\ProfessorG\Documents\workspace-spring-tool-suite-4-4.6.1.RELEASE\.metadata\.plugins\org.eclipse.m2e.launching\launches\m2conf224542324625166896.tmp"/>
     <property name="jansi.force" value="true"/>
     <property name="sun.jnu.encoding" value="MS949"/>
-    <property name="java.library.path" value="C:\Program Files\Java\jdk-11.0.6\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;C:/Program Files/Java/jdk-11.0.6/bin/server;C:/Program Files/Java/jdk-11.0.6/bin;C:\Program Files\Java\jdk-11.0.6\bin;C:\app\ProfessorG\product\18.0.0\dbhomeXE\bin;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Apache24\bin;C:\PHP;C:\Program Files (x86)\PuTTY\;C:\WINDOWS\system32\config\systemprofile\.dnx\bin;C:\Program Files\Microsoft DNX\Dnvm\;C:\Program Files\Microsoft SQL Server\130\Tools\Binn\;C:\Program Files\VisualSVN Server\bin;C:\Program Files\Git\cmd;C:\Program Files\Java\jdk-11.0.6\bin;C:\PHP;C:\Apache24\bin;C:\Users\ProfessorG\AppData\Local\Microsoft\WindowsApps;C:\Users\ProfessorG\AppData\Local\GitHubDesktop\bin;C:\Program Files\Bandizip\;C:\Users\ProfessorG\AppData\Local\Microsoft\WindowsApps;;C:\Utility\sts-4.6.1.RELEASE;;."/>
+    <property name="java.library.path" value="C:\Program Files\Java\jdk-11.0.7\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;C:/Program Files/Java/jdk-11.0.7/bin/server;C:/Program Files/Java/jdk-11.0.7/bin;C:\app\ProfessorG\product\18.0.0\dbhomeXE\bin;C:\Program Files\Java\jdk-11.0.7\bin;C:\Program Files (x86)\NAT Service;C:\ProgramData\Oracle\Java\javapath;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\110\Tools\Binn\;C:\Program Files (x86)\Microsoft SQL Server\120\Tools\Binn\;C:\Program Files\Microsoft SQL Server\120\Tools\Binn\;C:\Program Files\Microsoft SQL Server\120\DTS\Binn\;C:\Program Files (x86)\Microsoft SQL Server\120\Tools\Binn\ManagementStudio\;C:\Program Files (x86)\Microsoft SQL Server\120\DTS\Binn\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\Skype\Phone\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files (x86)\PuTTY\;C:\Program Files\Git\cmd;C:\Program Files\dotnet\;C:\Program Files\Microsoft SQL Server\130\Tools\Binn\;C:\app\ProfessorG\product\18.0.0\dbhomeXE\bin;C:\Users\ProfessorG\AppData\Local\Microsoft\WindowsApps;C:\Program Files\Java\jdk-11.0.7\bin;C:\Users\ProfessorG\AppData\Local\GitHubDesktop\bin;C:\CookAndroid\SDK\platform-tools;C:\CookAndroid\SDK\tools;C:\Program Files\Bandizip\;;D:\Utility\sts-4.6.1.RELEASE;;."/>
     <property name="jansi.passthrough" value="true"/>
     <property name="jdk.debug" value="release"/>
     <property name="java.class.version" value="55.0"/>
@@ -42,29 +42,29 @@
     <property name="file.encoding" value="UTF-8"/>
     <property name="java.specification.version" value="11"/>
     <property name="user.name" value="ProfessorG"/>
-    <property name="java.class.path" value="C:\Utility\sts-4.6.1.RELEASE\plugins\org.eclipse.m2e.maven.runtime_1.15.0.20200310-1832\jars\plexus-classworlds-2.6.0.jar"/>
+    <property name="java.class.path" value="D:\Utility\sts-4.6.1.RELEASE\plugins\org.eclipse.m2e.maven.runtime_1.15.0.20200310-1832\jars\plexus-classworlds-2.6.0.jar"/>
     <property name="java.vm.specification.version" value="11"/>
     <property name="sun.arch.data.model" value="64"/>
     <property name="sun.java.command" value="org.codehaus.plexus.classworlds.launcher.Launcher -B install -Dstyle.color=always"/>
-    <property name="java.home" value="C:\Program Files\Java\jdk-11.0.6"/>
+    <property name="java.home" value="C:\Program Files\Java\jdk-11.0.7"/>
     <property name="user.language" value="ko"/>
     <property name="java.specification.vendor" value="Oracle Corporation"/>
     <property name="awt.toolkit" value="sun.awt.windows.WToolkit"/>
     <property name="java.vm.info" value="mixed mode"/>
-    <property name="java.version" value="11.0.6"/>
+    <property name="java.version" value="11.0.7"/>
     <property name="java.vendor" value="Oracle Corporation"/>
-    <property name="maven.home" value="C:\Users\ProfessorG\git\repository\CheckMate\EMBEDDED"/>
+    <property name="maven.home" value="C:\Users\ProfessorG\git\Check-Mate\EMBEDDED"/>
     <property name="style.color" value="always"/>
     <property name="file.separator" value="\"/>
-    <property name="java.version.date" value="2020-01-14"/>
-    <property name="java.vendor.url.bug" value="http://bugreport.java.com/bugreport/"/>
+    <property name="java.version.date" value="2020-04-14"/>
+    <property name="java.vendor.url.bug" value="https://bugreport.java.com/bugreport/"/>
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="sun.cpu.endian" value="little"/>
     <property name="java.vendor.version" value="18.9"/>
     <property name="sun.desktop" value="windows"/>
     <property name="sun.cpu.isalist" value="amd64"/>
   </properties>
-  <testcase classname="com.checkmate.controller.Test" name="sessionTest" time="0.031"/>
-  <testcase classname="com.checkmate.controller.Test" name="test" time="0.032"/>
-  <testcase classname="com.checkmate.controller.Test" name="factoryTest" time="0.002"/>
+  <testcase classname="com.checkmate.controller.Test" name="sessionTest" time="0.019"/>
+  <testcase classname="com.checkmate.controller.Test" name="test" time="0.012"/>
+  <testcase classname="com.checkmate.controller.Test" name="factoryTest" time="0.001"/>
 </testsuite>

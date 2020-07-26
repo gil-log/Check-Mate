@@ -18,6 +18,8 @@
     <!-- Custom CSS -->
     <link href="${pageContext.request.contextPath}/resources/template/assets/libs/flot/css/float-chart.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/resources/template/dist/css/style.min.css" rel="stylesheet">
+  
+  
     <!-- Custom CSS -->
    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -60,12 +62,12 @@
 				<!-- ============================================================== -->
                 <!-- Start Page Content -->
                 <!-- ============================================================== -->
-                 <!-- 과제설명 폼 -->
+                <!-- 과제설명 폼 -->
                 <div class="row">
                     <div class="col-md-8 offset-md-2">
                         <div class="card">
                         	<div id="hwForm">
-                            <form class="form-horizontal">
+                            
                                 <div class="card-body">
                                     <h4 class="card-title">과제</h4>
                                     <div class="form-group row">
@@ -90,7 +92,7 @@
                                     <div class="form-group row">
                                         <label for="h_score" class="col-sm-2 text-right control-label col-form-label">배점</label>
                                         <div class="col-sm-9">
-                                            <input type="number" class="form-control" id="hwScore" value="${homework.h_score}" readonly>
+                                            <input type="number" class="form-control" value="${homework.h_score}" readonly>
                                         </div>
                                     </div>
                                     <div class="form-group row">
@@ -100,15 +102,19 @@
                                         </div>
                                     </div>
                                 </div>
+                                <form id="frm" action="fileDown" method="post" enctype="multipart/form-data">
+                                	<input type="hidden" name="fileName" value="${fileName}">
+                                </form>
                                 <div class="border-top">
                                     <div class="card-body">
                                         <label for="h_file" class="col-sm-2 text-right control-label col-form-label">첨부파일</label>
+                                        <a href="#" onclick="document.getElementById('frm').submit();">${fileName}</a>
+                                       
                                     </div>
                                 </div>
-                                <button class="btn btn-primary" type="button" id="updateHwBtn" onclick="updateHw();">수정</button>
-							    <button class="btn btn-primary" type="button" id="deleteHwBtn" onclick="deleteHw();">삭제</button>
                                 
-                            </form>
+							    <button class="btn btn-primary" type="button" id="deleteHwBtn" onclick="deleteHw();">삭제</button>
+                             
                            </div> 
                         </div>
                        
@@ -119,7 +125,8 @@
                 <div class="row">
                     <div class="col-md-8 offset-md-2">
                         <div class="card">
-                        	<div id="submitForm">
+                        	<form id="submitForm" method="post" enctype="multipart/form-data">
+                        	<div>
                             <div class="card-body">
                                 <h4 class="card-title">과제제출</h4>
                                 <!-- Create the Quill editor container -->
@@ -146,7 +153,7 @@
 									<div class="form-group row">
                                     	<label for="file" class="col-sm-2 text-right control-label col-form-label">첨부파일:</label>
                                         <div class="col-sm-9">
-                                        	<input type="file" class="form-control" id="sub_file" name="h_file" placeholder="File include Here">
+                                        	<input type="file" class="form-control" id="sub_file" name="sub_file" placeholder="File include Here">
                                         </div>
                                     </div>
 							        <button class="btn btn-primary" type="button" id="addSubmitHwBtn" onclick="addSubmitHw();">제출</button>
@@ -154,7 +161,8 @@
 							    
                             </div>
                            </div>
-                        </div>
+                           </form>
+                        </div><!--card div끝  -->
                     </div>
                 </div>
                 
@@ -192,7 +200,7 @@
                                         	<input type="file" class="form-control" id="completeHfile" >${complete.h_file}
                                         </div>
                                     </div>
-							        <button class="btn btn-primary" type="button" id="addSubmitHwBtn" onclick="updateSubmitHw();">수정</button>
+					
 							        <button class="btn btn-primary" type="button" onclick="deleteSubmitHw();">삭제</button>
 							    
                             </div>
@@ -225,6 +233,7 @@
     <!-- ============================================================== -->
     <!-- All Jquery -->
     <!-- ============================================================== -->
+    <script src="${pageContext.request.contextPath}/resources/template/assets/libs/jquery/dist/jquery.form.js"></script>
     <script src="${pageContext.request.contextPath}/resources/template/assets/libs/jquery/dist/jquery.min.js"></script>
     <!-- Bootstrap tether Core JavaScript -->
     <script src="${pageContext.request.contextPath}/resources/template/assets/libs/popper.js/dist/umd/popper.min.js"></script>
@@ -283,13 +292,14 @@
    	    		$('#h_content').focus();
    	    		return false;
    	    	}
+
+   	    	fileUpload();
    	    	
-   	    	const sendVar = new Array(5);
+   	    	const sendVar = new Array(4);
    	    	sendVar[0] = $('#sub_title').val();
    	    	sendVar[1] = $('#sub_content').val();
    	    	sendVar[2] = $('#sub_file').val();
    	    	sendVar[3] = $('#sub_no').val();
-   	    	sendVar[4] = $('#hwScore').val();
    	    	
    	    	$.ajax({
    	    		url : 'homeworkshow',
@@ -301,7 +311,8 @@
    	    		
    	    		//Ajax 성공시 호출
    	    		success : function(msg){
-   	    			
+
+   	    			alert(msg);
    	    			$('#sub_title').val("");
    	        		$('#sub_content').val("");
    	        		$('#sub_file').val("");
@@ -324,6 +335,33 @@
    	            }
    	    	});
    		}
+
+   		function fileUpload(){
+   	     	
+   	     	var formData = new FormData();
+   	     	formData.append('sub_file',$('#sub_file')[0].files[0]);
+   	     	
+   	     	$.ajax({
+   	     		cache : false,
+   	     		url : 'subfileadd',
+   	     		type : 'post', 
+   	     		processData : false,
+   	     		contentType : false,
+   	     		traditional : true,
+   	     		data : formData,
+   	     		success : function(data){
+   	     			
+   	     			$("#sub_file").val(data);
+   	     			
+   	     			console.log(data);
+   	     			console.log(checkImageType(data));
+   	     		
+   	     		},
+   	     		error : function(xhr, status){
+   	     			alert(xhr+": "+status+", file error");
+   	     		}
+   	     	});
+   	     }
    		
    		//그룹장이 과제 삭제
    		function deleteHw() {

@@ -90,7 +90,7 @@
                                     <div class="form-group row">
                                         <label for="h_score" class="col-sm-2 text-right control-label col-form-label">배점</label>
                                         <div class="col-sm-9">
-                                            <input type="number" class="form-control" value="${homework.h_score}" readonly>
+                                            <input type="number" class="form-control" id="hwScore" value="${homework.h_score}" readonly>
                                         </div>
                                     </div>
                                     <div class="form-group row">
@@ -284,12 +284,12 @@
    	    		return false;
    	    	}
    	    	
-   	    	const sendVar = new Array(4);
+   	    	const sendVar = new Array(5);
    	    	sendVar[0] = $('#sub_title').val();
    	    	sendVar[1] = $('#sub_content').val();
    	    	sendVar[2] = $('#sub_file').val();
    	    	sendVar[3] = $('#sub_no').val();
-   	    	
+   	    	sendVar[4] = $('#hwScore').val();
    	    	
    	    	$.ajax({
    	    		url : 'homeworkshow',
@@ -333,7 +333,33 @@
    	            type : 'DELETE',                // GET or POST 방식
    	            traditional : true,
    	            data : {
-   	                h_no : h_no        // 보내고자 하는 data 변수 설정
+   	                h_no : h_no,        // 보내고자 하는 data 변수 설정
+   	                h_flag : 0
+   	            },
+   	            
+   	            //Ajax 성공시 호출 
+   	            success : function(msg){
+   	            	alert(msg);
+   	            	location.href = "homeworklist"; 
+   	            },
+   	         
+   	            //Ajax 실패시 호출
+   	            error : function(jqXHR, textStatus, errorThrown){
+   	                console.log("jqXHR : " +jqXHR +"textStatus : " + textStatus + "errorThrown : " + errorThrown);
+   	            }
+   	        });
+   	    }
+
+   		//그룹장이 과제 삭제
+   		function deleteSubmitHw() {
+   			var h_no = ${homework.h_no};
+   	        $.ajax({
+   	            url : 'homeworkadd',                    // 전송 URL
+   	            type : 'DELETE',                // GET or POST 방식
+   	            traditional : true,
+   	            data : {
+   	                h_no : h_no,        // 보내고자 하는 data 변수 설정
+   	                h_flag : 1
    	            },
    	            
    	            //Ajax 성공시 호출 
