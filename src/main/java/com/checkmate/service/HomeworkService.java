@@ -32,4 +32,7 @@ public interface HomeworkService {
 
 	// 해당 개수 0 인지 1 인지 세기
 	public int hwCount(HomeworkVO homeworkVO) throws Exception;
+	
+	//상세페이지에서 file불러오기 하려고
+	public String fileChoice(HomeworkVO homeworkVO) throws Exception;
 }

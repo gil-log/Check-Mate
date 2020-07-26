@@ -69,5 +69,11 @@ public class HomeworkServiceImpl implements HomeworkService {
 	public int hwCount(HomeworkVO homeworkVO) throws Exception {
 		return dao.hwCount(homeworkVO);
 	}
+	
+	//상세페이지에서 file불러오기 하려고
+	@Override
+	public String fileChoice(HomeworkVO homeworkVO) throws Exception {
+		return dao.fileChoice(homeworkVO);
+	}
 
 }

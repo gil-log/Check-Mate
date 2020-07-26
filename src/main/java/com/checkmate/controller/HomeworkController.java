@@ -1,12 +1,16 @@
 package com.checkmate.controller;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.List;
 import java.util.UUID;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -139,7 +143,7 @@ public class HomeworkController {
 		return msg;
 	}
 	
-	//파일 업로드
+	//파일 업로드(그룹장)
 	@RequestMapping(value = "/fileadd", method = RequestMethod.POST, produces = "application/text; charset=utf8", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	@ResponseBody
 	public Object fileaddpost(MultipartHttpServletRequest request) throws Exception {
@@ -176,6 +180,41 @@ public class HomeworkController {
 		return (path+safeFile);
 	}
 	
+	@RequestMapping(value = "/subfileadd", method = RequestMethod.POST, produces = "application/text; charset=utf8", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	@ResponseBody
+	public Object subfileaddpost(MultipartHttpServletRequest request) throws Exception {
+	        
+		logger.info("/subfileadd_post");
+		
+        //file upload
+       
+        MultipartFile file = request.getFile("sub_file");
+       
+        String path = "C:\\Users\\USER\\Desktop\\upload\\"; 
+        String safeFile ="";
+        String originFileName = file.getOriginalFilename();
+
+		if(file!=null) {
+			logger.info("파라미터명 "+file.getName());
+			logger.info("파일크기 "+file.getSize());
+			logger.info("파일 존재유무 "+file.isEmpty());
+			logger.info("파일 이름 "+originFileName);
+			
+			
+			/* safeFile = path + System.currentTimeMillis()+originFileName; */
+			safeFile = UUID.randomUUID().toString().replaceAll("-", "")+originFileName;
+			
+			try {
+				file.transferTo(new File(path+safeFile));
+				logger.info("여길봐!! : "+(path+safeFile));
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+	
+		
+		return (path+safeFile);
+	}
 	
 	// 과제 작성 화면(학생들)
 	@RequestMapping(value = "/homeworkshow", method = RequestMethod.GET)
@@ -183,12 +222,24 @@ public class HomeworkController {
 		logger.info("/homeworkshow_get");
 		HttpSession session = request.getSession();
 		GroupVO groupVO = (GroupVO) session.getAttribute("group");
+		/* MultipartFile file = request.getFile(h_file); */
 		//과제상세내용 불러오기
 		int h_no = homeworkVO.getH_no();
 		logger.info(""+h_no);
-		
 		model.addAttribute("homework", service.homeworkread(h_no));
-		//과제 제출 폼도 여기있음
+		//파일이름 가져오기
+		HomeworkVO hwFileVO = new HomeworkVO();
+		hwFileVO.setH_no(h_no);
+		hwFileVO.setG_no(groupVO.getG_no());
+		
+		String h_file = service.fileChoice(hwFileVO);
+		 
+		logger.info(""+h_file);
+		
+		String originalFilename = h_file.substring(h_file.lastIndexOf("\\")+1);
+		 
+		model.addAttribute("fileName", originalFilename);
+		//과제 제출폼 관련 코드들은 여기부터
 		
 		String myId = groupVO.getU_id(); //로그인한 유저 아이디값
 										//그래야 밑에 숙제 제출가능
@@ -246,5 +297,56 @@ public class HomeworkController {
 		String msg = "";
 		msg = "과제제출이 완료되었습니다.";
 		return msg;
+	}
+	
+	//file down 
+	@RequestMapping(value = "/fileDown", method = RequestMethod.POST)
+	public String fileDown(MultipartHttpServletRequest request, HttpServletResponse response) throws Exception {
+		String realPath = "C:\\Users\\USER\\Desktop\\upload\\";
+		//파일 이름이 넘어오지 않으면 돌려보내기
+		if(request.getParameter("fileName")==null || "".equals(request.getParameter("fileName"))) {
+			response.sendRedirect("homeworkshow");
+			
+		}else {
+			//파라미터로 받아온 파일 이름
+			String requestFileNameAndPath = request.getParameter("fileName");
+			//한글이름도 찾을 수 있게
+			String UTF8FileNameAndPath = new String(requestFileNameAndPath.getBytes("8859_1"), "UTF-8");
+			//파일 다운로드시 받을 때 저장될 파일명
+			String fileNameToSave = requestFileNameAndPath;
+			
+			//파일이 바로 실행되지 않고 다운로드가 되게 하기 위해서 컨텐트 타입을 8비트 바이너리로 설정
+			response.setContentType("application/octet-stream");
+			//저장될 파일명 지정
+			response.setHeader("Content-Disposition", "attachment; filename=\"" + fileNameToSave+"\";");
+			
+			//파일 패스 및 파일명 지정
+			  String filePathAndName = realPath + UTF8FileNameAndPath;
+			  logger.info("여기확인");
+		        File file = new File(filePathAndName);
+		         
+		        // 버퍼 크기 설정
+		        byte bytestream[] = new byte[2048000];
+		     
+		        // response out에 파일 내용을 출력한다.
+		        if (file.isFile() && file.length() > 0){
+		             
+		            try {
+			            OutputStream bos = response.getOutputStream();
+			            FileInputStream fis = new FileInputStream(filePathAndName);
+			            
+			            int read = 0;
+			                 
+			            while ((read = fis.read(bytestream)) != -1){
+			                bos.write(bytestream , 0, read);
+			            }
+			            fis.close();
+			            bos.close();
+		            }catch(FileNotFoundException ex) {
+		            	System.out.println("FileNotFoundException");
+		            }
+		        }
+		}
+		return null;
 	}
 }

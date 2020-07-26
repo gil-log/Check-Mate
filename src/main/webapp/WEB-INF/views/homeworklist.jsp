@@ -374,13 +374,10 @@ cursor:pointer;
     		success : function(data){
     			
     			$("#h_file").val(data);
-    			alert(data);
-    		/* 	var jsonObj = JSON.parse(data); */
-    			/* $('#noticeWriteBtn').text("과제 등록");
     			
-    			$("#noticeToggle").val(0);
-    			$("#addForm").hide();
-                $("#listForm").fadeIn(); */
+    			console.log(data);
+    			console.log(checkImageType(data));
+    		
     		},
     		error : function(xhr, status){
     			alert(xhr+": "+status+", file error");

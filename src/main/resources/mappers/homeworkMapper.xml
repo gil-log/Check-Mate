@@ -129,12 +129,16 @@
       WHERE H_NO = #{h_no} AND U_ID = #{u_id} AND H_FLAG = 1)
 	</select>
 	
+	<!-- 파일 가져오기 -->
+	<select id="fileChoice" parameterType="com.checkmate.vo.HomeworkVO" resultType="String">
+		SELECT H_FILE
+		FROM (
+		SELECT H_NO, G_NO, H_FILE
+		FROM C_HW
+		WHERE H_NO = #{h_no} AND H_FLAG = 0)
+	</select>
 	
-	
-	
-	
-	
-	
+
 	
 	
 	

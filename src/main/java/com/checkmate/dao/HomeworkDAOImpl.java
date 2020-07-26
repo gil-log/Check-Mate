@@ -70,4 +70,10 @@ public class HomeworkDAOImpl implements HomeworkDAO{
 	public int hwCount(HomeworkVO homeworkVO) throws Exception {
 		return sqlSession.selectOne("homeworkMapper.hwCount", homeworkVO);
 	}
+	
+	//상세페이지에서 file불러오기 하려고
+	@Override
+	public String fileChoice(HomeworkVO homeworkVO) throws Exception {
+		return sqlSession.selectOne("homeworkMapper.fileChoice", homeworkVO);
+	}
 }
