@@ -32,6 +32,7 @@
       SELECT G_NO, U_ID, G_NAME, G_FLAG, U_POINT
       FROM C_GROUP
       WHERE G_NO = #{g_no}
+      AND (G_FLAG = 0 OR G_FLAG = 1)
       ORDER BY G_NO DESC
 	</select>
 	
@@ -82,8 +83,8 @@
     
     <update id="userPlusMailAuth" parameterType="com.checkmate.vo.GroupVO">
     	UPDATE C_GROUP SET
-    	G_FLAG = #{g_flag}
-    	WHERE G_NO = #{g_no} AND U_ID = #{u_id}
+    	G_FLAG = 0
+    	WHERE G_FLAG = #{g_flag}
     </update>
 	
 	<!-- 그룹에서 3등까지 랭커 찾기 -->

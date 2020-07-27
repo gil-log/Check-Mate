@@ -79,7 +79,7 @@
       FROM(
       SELECT H_NO, U_ID, G_NO, H_TITLE, H_CONTENT, H_DATE, H_FLAG, H_DEADLINE
       FROM C_HW
-      WHERE H_FLAG = 0 AND G_NO = #{g_no})
+      WHERE H_FLAG = 1 AND G_NO = #{g_no})
 	</select>
 	
 	<!-- 과제 전체 불러오기  -->
@@ -172,9 +172,18 @@
 	</select>
 	
 	<select id="hwView" resultType="com.checkmate.vo.HomeworkVO">
-		SELECT H_NO, U_ID, G_NO, H_TITLE, H_CONTENT, TO_CHAR(H_DATE,'YYYY-MM-DD'), H_FLAG, H_DEADLINE, H_SCORE, H_FILE
+		SELECT H_NO, U_ID, G_NO, H_TITLE, H_CONTENT, TO_CHAR(H_DATE,'YYYY-MM-DD') AS H_DATE, H_FLAG, H_DEADLINE, H_SCORE, H_FILE
 		FROM C_HW
 		WHERE H_NO = #{h_no} AND U_ID = #{u_id}
+	</select>
+	
+	<!-- 파일 가져오기 -->
+	<select id="fileChoice" parameterType="com.checkmate.vo.HomeworkVO" resultType="String">
+		SELECT H_FILE
+		FROM (
+		SELECT H_NO, G_NO, H_FILE
+		FROM C_HW
+		WHERE H_NO = #{h_no} AND H_FLAG = 0)
 	</select>
 	
 

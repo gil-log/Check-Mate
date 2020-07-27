@@ -65,7 +65,7 @@
                     <div class="col-md-8 offset-md-2">
                         <div class="card">
                         	<div id="hwForm">
-                            <form class="form-horizontal">
+                            
                                 <div class="card-body">
                                     <h4 class="card-title">과제</h4>
                                     <div class="form-group row">
@@ -78,13 +78,13 @@
                                     <div class="form-group row">
                                         <label for="h_date" class="col-sm-2 text-right control-label col-form-label">게시일</label>
                                         <div class="col-sm-9">
-                                            <input type="date" class="form-control" value="${homework.h_date}" readonly>
+                                            <input type="text" class="form-control" value="${homework.h_date}" readonly>
                                         </div>
                                     </div>
                                     <div class="form-group row">
                                         <label for="h_deadline" class="col-sm-2 text-right control-label col-form-label">마감일</label>
                                         <div class="col-sm-9">
-                                            <input type="date" class="form-control" value="${homework.h_deadline}" readonly>
+                                            <input type="text" class="form-control" value="${homework.h_deadline}" readonly>
                                         </div>
                                     </div>
                                     <div class="form-group row">
@@ -100,15 +100,19 @@
                                         </div>
                                     </div>
                                 </div>
+                                <form id="frm" action="fileDown" method="post" enctype="multipart/form-data">
+                                	<input type="hidden" name="fileName" value="${fileName}">
+                                </form>
                                 <div class="border-top">
                                     <div class="card-body">
                                         <label for="h_file" class="col-sm-2 text-right control-label col-form-label">첨부파일</label>
+                                        <a href="#" onclick="document.getElementById('frm').submit();">${fileName}</a>
+                                       
                                     </div>
                                 </div>
-                                <button class="btn btn-primary" type="button" id="updateHwBtn" onclick="updateHw();">수정</button>
-							    <button class="btn btn-primary" type="button" id="deleteHwBtn" onclick="deleteHw();">삭제</button>
                                 
-                            </form>
+							    <button class="btn btn-primary" type="button" id="deleteHwBtn" onclick="deleteHw();">삭제</button>
+                             
                            </div> 
                         </div>
                        
@@ -119,7 +123,8 @@
                 <div class="row">
                     <div class="col-md-8 offset-md-2">
                         <div class="card">
-                        	<div id="submitForm">
+                        	<form id="submitForm" method="post" enctype="multipart/form-data">
+                        	<div>
                             <div class="card-body">
                                 <h4 class="card-title">과제제출</h4>
                                 <!-- Create the Quill editor container -->
@@ -146,7 +151,7 @@
 									<div class="form-group row">
                                     	<label for="file" class="col-sm-2 text-right control-label col-form-label">첨부파일:</label>
                                         <div class="col-sm-9">
-                                        	<input type="file" class="form-control" id="sub_file" name="h_file" placeholder="File include Here">
+                                        	<input type="file" class="form-control" id="sub_file" name="sub_file" placeholder="File include Here">
                                         </div>
                                     </div>
 							        <button class="btn btn-primary" type="button" id="addSubmitHwBtn" onclick="addSubmitHw();">제출</button>
@@ -154,7 +159,8 @@
 							    
                             </div>
                            </div>
-                        </div>
+                           </form>
+                        </div><!--card div끝  -->
                     </div>
                 </div>
                 
@@ -169,7 +175,7 @@
             						<div class="form-group row">
 		                            	<label for="fno" class="col-sm-2 text-right control-label col-form-label">번호</label>
 		                                <div class="col-sm-9">
-		                                	<input type="hidden" class="form-control" id="sub_no" value="${homework.h_no }">
+		                                	<input type="text" class="form-control" id="sub_no" value="${homework.h_no } " readonly>
 		                                </div>
 		                            </div>
 		                            
@@ -186,13 +192,17 @@
 							            	<textarea rows="4" class="form-control" id="completeHcontent" readonly>${complete.h_content}</textarea>
 							            </div>
 							        </div>
-									<div class="form-group row">
-                                    	<label for="file" class="col-sm-2 text-right control-label col-form-label">첨부파일:</label>
-                                        <div class="col-sm-9">
-                                        	<input type="file" class="form-control" id="completeHfile" >${complete.h_file}
-                                        </div>
-                                    </div>
-							        <button class="btn btn-primary" type="button" id="addSubmitHwBtn" onclick="updateSubmitHw();">수정</button>
+									
+                                     <form id="frm" action="fileDown" method="post" enctype="multipart/form-data">
+                                		<input type="hidden" name="fileName" value="${complete.h_file}">
+                                	</form>
+                                	<div class="border-top">
+                                    	<div class="card-body">
+                                        	<label for="h_file" class="col-sm-2 text-right control-label col-form-label">첨부파일</label>
+                                        	<a href="#" onclick="document.getElementById('frm').submit();">${complete.h_file}</a>
+                                       
+                                    	</div>
+                                	</div>
 							        <button class="btn btn-primary" type="button" onclick="deleteSubmitHw();">삭제</button>
 							    
                             </div>
@@ -254,8 +264,8 @@
 		$(document).ready(function(){
 			
 			$("#hwForm").show(); //과제 상세 폼 
-			$("#updateHwBtn").hide(); //과제 상세 폼 
-			$("#deleteHwBtn").hide(); //과제 상세 폼 
+			$("#updateHwBtn").hide(); 
+			$("#deleteHwBtn").hide(); 
 			
 			if(${group.g_flag} == 1){ //관리자일 경우
 				$('#updateHwBtn').show();
@@ -284,6 +294,9 @@
    	    		return false;
    	    	}
    	    	
+   	    	
+   	    	fileUpload();
+   	    	
    	    	const sendVar = new Array(5);
    	    	sendVar[0] = $('#sub_title').val();
    	    	sendVar[1] = $('#sub_content').val();
@@ -295,13 +308,14 @@
    	    		url : 'homeworkshow',
    	    		type : 'POST',
    	    		traditional : true,
+
    	    		data : {
    	    			homework : sendVar //보내고자 하는 data 변수 설정
    	    		},
    	    		
    	    		//Ajax 성공시 호출
    	    		success : function(msg){
-   	    			
+   	    			alert(msg);
    	    			$('#sub_title').val("");
    	        		$('#sub_content').val("");
    	        		$('#sub_file').val("");
@@ -316,6 +330,7 @@
    	        		
    	        		
    	        		$("#completeForm").show();
+   	        		
    	    			
    	    		},
    	    		//Ajax 실패시 호출
@@ -325,6 +340,32 @@
    	    	});
    		}
    		
+   	 function fileUpload(){
+     	
+     	var formData = new FormData();
+     	formData.append('sub_file',$('#sub_file')[0].files[0]);
+     	
+     	$.ajax({
+     		cache : false,
+     		url : 'subfileadd',
+     		type : 'post', 
+     		processData : false,
+     		contentType : false,
+     		traditional : true,
+     		data : formData,
+     		success : function(data){
+     			
+     			$("#sub_file").val(data);
+     			
+     			console.log(data);
+     			console.log(checkImageType(data));
+     		
+     		},
+     		error : function(xhr, status){
+     			alert(xhr+": "+status+", file error");
+     		}
+     	});
+     }
    		//그룹장이 과제 삭제
    		function deleteHw() {
    			var h_no = ${homework.h_no};
@@ -333,8 +374,7 @@
    	            type : 'DELETE',                // GET or POST 방식
    	            traditional : true,
    	            data : {
-   	                h_no : h_no,        // 보내고자 하는 data 변수 설정
-   	                h_flag : 0
+   	                h_no : h_no        // 보내고자 하는 data 변수 설정
    	            },
    	            
    	            //Ajax 성공시 호출 

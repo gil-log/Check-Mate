@@ -195,9 +195,10 @@ private static final Logger logger = LoggerFactory.getLogger(UserController.clas
 	@RequestMapping(value = "/mailAuth", method = RequestMethod.GET)
 	public String mailAuth(HttpSession session, int code) throws Exception{
 		
-		GroupVO mailUserVO = (GroupVO) session.getAttribute(Integer.toString(code));
+		GroupVO mailUserVO = new GroupVO();
 		
-		mailUserVO.setG_flag(0);
+		mailUserVO.setG_flag(code);
+		
 		groupService.userPlusMailAuth(mailUserVO);
 		
 		return "redirect:checkmate";

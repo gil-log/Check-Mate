@@ -243,7 +243,7 @@
     
     <script type="text/javascript">
 
-		let sock = new SockJS('http://localhost:8080/chat/');
+		let sock = new SockJS('http://checknmate.ml/chat/');
 		
     	sock.onmessage = onMessage;
     	sock.onclose = onClose;
@@ -332,6 +332,11 @@
                 		$("#chatList").append(html);
                 		
                 		$("#chatList").children().last().focus();
+                		
+                		
+                		$("#message").focus();
+                		
+                		
             		} else{
             			
             			var html = '<li class="chat-item" tabindex ="-1">';
@@ -358,6 +363,9 @@
                 		$("#chatList").append(html);
                 		
                 		$("#chatList").children().last().focus();
+                		
+
+                		$("#message").focus();
                 		
             		}
             		}

@@ -251,7 +251,7 @@ public class GroupController {
 		
 		int gNo = Integer.parseInt(msgSplit[0][0]);
 		String gName = msgSplit[0][1];
-		String link = "http://localhost:8080/mailAuth?code=";
+		String link = "http://checknmate.ml/mailAuth?code=";
 	 
 		String setfrom = "checkmatekingbot@gamil.com"; 
 		  
