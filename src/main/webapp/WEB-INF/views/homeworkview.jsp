@@ -74,7 +74,7 @@
                     <div class="col-lg-3 col-md-6">
                         <div class="card">
                             <div class="el-card-item">
-                                <div class="el-card-avatar el-overlay-1"> <img src="${pageContext.request.contextPath}/resources/template/assets/images/big/img1.jpg" alt="user" />
+                                <div class="el-card-avatar el-overlay-1"> <img src="${pageContext.request.contextPath}/resources/checkmateimg/chessknight.png" alt="user" />
                                     <div class="el-overlay">
                                         <ul class="list-style-none el-info">
                                             <li class="el-item"><a class="btn default btn-outline el-link" data-toggle="modal" data-target="#Modal1" data-hno="${hwComplete.h_no}" data-uid="${hwComplete.u_id}" onclick="hwView(this);"><i class="mdi mdi-link"></i></a></li>
