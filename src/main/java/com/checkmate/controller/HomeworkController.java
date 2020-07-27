@@ -150,79 +150,84 @@ public class HomeworkController {
 	}
 	
 
-	//파일 업로드(그룹장)
-	@RequestMapping(value = "/fileadd", method = RequestMethod.POST, produces = "application/text; charset=utf8", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-	@ResponseBody
-	public Object fileaddpost(MultipartHttpServletRequest request) throws Exception {
-	        
-		logger.info("/fileadd_post");
-		
-        //file upload
-       
-        MultipartFile file = request.getFile("h_file");
-       
-        String path = "C:\\Users\\"; 
-        String safeFile ="";
-        String originFileName = file.getOriginalFilename();
+	   //파일 업로드(그룹장)
+	   @RequestMapping(value = "/fileadd", method = RequestMethod.POST, produces = "application/text; charset=utf8", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	   @ResponseBody
+	   public Object fileaddpost(MultipartHttpServletRequest request) throws Exception {
+	           
+	      logger.info("/fileadd_post");
+	      
+	        //file upload
+	       
+	        MultipartFile file = request.getFile("h_file");
+	       
+	        String path = "C:\\Users\\USER\\Desktop\\upload\\"; 
+	        String safeFile ="";
+	        String originFileName = file.getOriginalFilename();
 
-		if(file!=null) {
-			logger.info("파라미터명 "+file.getName());
-			logger.info("파일크기 "+file.getSize());
-			logger.info("파일 존재유무 "+file.isEmpty());
-			logger.info("파일 이름 "+originFileName);
-			
-			
-			/* safeFile = path + System.currentTimeMillis()+originFileName; */
-			safeFile = UUID.randomUUID().toString().replaceAll("-", "")+originFileName;
-			
-			try {
-				file.transferTo(new File(path+safeFile));
-				logger.info("여길봐!! : "+(path+safeFile));
-			}catch(Exception e) {
-				e.printStackTrace();
-			}
-		}
-	
-		
-		return (path+safeFile);
-	}
-	
-	//파일업로드(학생용)
-	@RequestMapping(value = "/subfileadd", method = RequestMethod.POST, produces = "application/text; charset=utf8", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-	@ResponseBody
-	public Object subfileaddpost(MultipartHttpServletRequest request) throws Exception {
-	        
-		logger.info("/subfileadd_post");
-		
-        //file upload
-       
-        MultipartFile file = request.getFile("sub_file");
-       
-        String path = "C:\\Users\\"; 
-        String safeFile ="";
-        String originFileName = file.getOriginalFilename();
+	      if(file!=null) {
+	         logger.info("파라미터명 "+file.getName());
+	         logger.info("파일크기 "+file.getSize());
+	         logger.info("파일 존재유무 "+file.isEmpty());
+	         logger.info("파일 이름 "+originFileName);
+	         
+	         
+	         /* safeFile = path + System.currentTimeMillis()+originFileName; */
+	         /*
+	          * safeFile = UUID.randomUUID().toString().replaceAll("-", "")+originFileName;
+	          */
+	         
+	         safeFile =originFileName;
+	         
+	         try {
+	            file.transferTo(new File(path+safeFile));
+	            logger.info("여길봐!! : "+(path+safeFile));
+	         }catch(Exception e) {
+	            e.printStackTrace();
+	         }
+	      }
+	   
+	      
+	      return (path+safeFile);
+	   }
 
-		if(file!=null) {
-			logger.info("파라미터명 "+file.getName());
-			logger.info("파일크기 "+file.getSize());
-			logger.info("파일 존재유무 "+file.isEmpty());
-			logger.info("파일 이름 "+originFileName);
-			
-			
-			/* safeFile = path + System.currentTimeMillis()+originFileName; */
-			safeFile = UUID.randomUUID().toString().replaceAll("-", "")+originFileName;
-			
-			try {
-				file.transferTo(new File(path+safeFile));
-				logger.info("여길봐!! : "+(path+safeFile));
-			}catch(Exception e) {
-				e.printStackTrace();
-			}
-		}
 	
-		
-		return (path+safeFile);
-	}
+	   @RequestMapping(value = "/subfileadd", method = RequestMethod.POST, produces = "application/text; charset=utf8", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	   @ResponseBody
+	   public Object subfileaddpost(MultipartHttpServletRequest request) throws Exception {
+	           
+	      logger.info("/subfileadd_post");
+	      
+	        //file upload
+	       
+	        MultipartFile file = request.getFile("sub_file");
+	       
+	        String path = "C:\\Users\\USER\\Desktop\\upload\\"; 
+	        String safeFile ="";
+	        String originFileName = file.getOriginalFilename();
+
+	      if(file!=null) {
+	         logger.info("파라미터명 "+file.getName());
+	         logger.info("파일크기 "+file.getSize());
+	         logger.info("파일 존재유무 "+file.isEmpty());
+	         logger.info("파일 이름 "+originFileName);
+	         
+	         
+	         /* safeFile = path + System.currentTimeMillis()+originFileName; */
+	         safeFile =originFileName;
+	         
+	         try {
+	            file.transferTo(new File(path+safeFile));
+	            logger.info("여길봐!! : "+(path+safeFile));
+	         }catch(Exception e) {
+	            e.printStackTrace();
+	         }
+	      }
+	   
+	      
+	      return (path+safeFile);
+	   }
+
 	
 	
 	// 과제 작성 화면(학생들)
@@ -312,80 +317,61 @@ public class HomeworkController {
 		return msg;
 	}
 	
-	//file down 
-		@RequestMapping(value = "/fileDown", method = RequestMethod.POST)
-		public String fileDown(MultipartHttpServletRequest request, HttpServletResponse response) throws Exception {
-			String realPath = "C:\\Users\\";
-			//파일 이름이 넘어오지 않으면 돌려보내기
-			if(request.getParameter("fileName")==null || "".equals(request.getParameter("fileName"))) {
-				response.sendRedirect("homeworkshow");
-				
-			}else {
-				//파라미터로 받아온 파일 이름
-				String requestFileNameAndPath = request.getParameter("fileName");
-				
-				//한글이름도 찾을 수 있게
-				String UTF8FileNameAndPath = new String(requestFileNameAndPath.getBytes("8859_1"), "UTF-8");
-				//파일이름에서 path는 잘라내고 파일명만 추출
-				String UTF8FileName = UTF8FileNameAndPath.substring(UTF8FileNameAndPath.lastIndexOf("/") + 1).substring(UTF8FileNameAndPath.lastIndexOf(File.separator) + 1);
-				//브라우저가 IE인지 확인할 플래그
-				boolean MSIE = request.getHeader("user-agent").indexOf("MSIE") != -1;
-				
-				//파일 다운로드시 받을 때 저장될 파일명
-				String fileNameToSave = requestFileNameAndPath;
-				//IE, FF 각각 다르게 파일 이름 적용
-				if(MSIE) {
-					//브라우저가 IE일 경우 저장될 파일 이름
-					fileNameToSave = URLEncoder.encode(UTF8FileName, "UTF8").replace("\\+", " ");
-					
-					
-				}else {
-					//브라우저가 IE가 아닐 경우 저장될 파일 이름
-					fileNameToSave = new String(UTF8FileName.getBytes("UTF-8"), "8859_1");
-				}
-				
-				
-				//파일이 바로 실행되지 않고 다운로드가 되게 하기 위해서 컨텐트 타입을 8비트 바이너리로 설정
-				response.setContentType("application/octet-stream");
-				//저장될 파일명 지정
-				response.setHeader("Content-Disposition", "attachment; filename=\"" + fileNameToSave+"\";");
-				
-				//파일 패스 및 파일명 지정
-				  String filePathAndName = realPath + UTF8FileNameAndPath;
-				  logger.info("여기확인"+filePathAndName);
-			        File file = new File(filePathAndName);
-			        // 버퍼 크기 설정
-			        byte bytestream[] = new byte[2048000];
-			     
-			        // response out에 파일 내용을 출력한다.
-			        if (file.isFile() && file.length() > 0){
-			             
-			            try {
-				            OutputStream bos = response.getOutputStream();
-				            FileInputStream fis = new FileInputStream(file);
-				           
-				            
-				            
-				            
-				            int read = 0;
-				            logger.info("fis : "+fis.read(bytestream));   
+	   //file down 
+	   @RequestMapping(value = "/fileDown", method = RequestMethod.POST)
+	   public String fileDown(MultipartHttpServletRequest request, HttpServletResponse response) throws Exception {
+	      String realPath = "C:\\Users\\USER\\Desktop\\upload\\";
+	      //파일 이름이 넘어오지 않으면 돌려보내기
+	      if(request.getParameter("fileName")==null || "".equals(request.getParameter("fileName"))) {
+	         response.sendRedirect("homeworkshow");
+	         
+	      }else {
+	         //파라미터로 받아온 파일 이름
+	         String requestFileNameAndPath = request.getParameter("fileName");
+	         //한글이름도 찾을 수 있게
+	         String UTF8FileNameAndPath = new String(requestFileNameAndPath.getBytes("8859_1"), "UTF-8");
+	         //파일 다운로드시 받을 때 저장될 파일명
+	         String fileNameToSave = requestFileNameAndPath;
+	         
+	         //파일이 바로 실행되지 않고 다운로드가 되게 하기 위해서 컨텐트 타입을 8비트 바이너리로 설정
+	         response.setContentType("application/octet-stream");
+	         //저장될 파일명 지정
+	         response.setHeader("Content-Disposition", "attachment; filename=\"" + fileNameToSave+"\";");
+	         
+	         
+	         //파일 패스 및 파일명 지정
+	           String filePathAndName = realPath + UTF8FileNameAndPath;
+	           logger.info("여기확인"+filePathAndName);
+	              File file = new File(filePathAndName);
+	               
+	              byte fileByte[] = org.apache.commons.io.FileUtils.readFileToByteArray(file);
+	              response.setContentLength(fileByte.length);
+	              response.getOutputStream().write(fileByte);
+	              response.getOutputStream().flush();
+	              response.getOutputStream().close();
+	             
+	           
+	              
+	              
+	              
+	              // 버퍼 크기 설정
+	            /* byte bytestream[] = new byte[2048000]; */
+	              // response out에 파일 내용을 출력한다.
+	            /*
+	             * if (file.isFile() && file.length() > 0){
+	             * 
+	             * try { OutputStream bos = response.getOutputStream(); FileInputStream fis =
+	             * new FileInputStream(filePathAndName);
+	             * 
+	             * int read = 0; response.setContentLength(fis.read(bytestream)); while ((read =
+	             * fis.read(bytestream)) != -1){ bos.write(bytestream , 0, read); } fis.close();
+	             * bos.close(); }catch(FileNotFoundException ex) {
+	             * System.out.println("FileNotFoundException"); } }
+	             */
+	      }
+	      return null;
+	   }
 
-				            
-				            while ((read = fis.read(bytestream)) != -1){
-				                bos.write(bytestream , 0, read);
-				            }
-				            
-				            fis.close();
-				            bos.close();
-			            }catch(FileNotFoundException ex) {
-			            	System.out.println("FileNotFoundException");
-			            }
-			        } else {
-			        	logger.info("진짜머냐");
-			        }
-			}
-			return null;
-		}
 	
 	@RequestMapping(value = "/homeworkview", method = RequestMethod.GET)
 	public String homeworkviewget(HttpServletRequest request, Model model, HomeworkVO homeworkVO) throws Exception {

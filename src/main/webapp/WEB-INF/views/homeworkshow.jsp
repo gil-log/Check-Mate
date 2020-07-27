@@ -78,13 +78,13 @@
                                     <div class="form-group row">
                                         <label for="h_date" class="col-sm-2 text-right control-label col-form-label">게시일</label>
                                         <div class="col-sm-9">
-                                            <input type="date" class="form-control" value="${homework.h_date}" readonly>
+                                            <input type="text" class="form-control" value="${homework.h_date}" readonly>
                                         </div>
                                     </div>
                                     <div class="form-group row">
                                         <label for="h_deadline" class="col-sm-2 text-right control-label col-form-label">마감일</label>
                                         <div class="col-sm-9">
-                                            <input type="date" class="form-control" value="${homework.h_deadline}" readonly>
+                                            <input type="text" class="form-control" value="${homework.h_deadline}" readonly>
                                         </div>
                                     </div>
                                     <div class="form-group row">

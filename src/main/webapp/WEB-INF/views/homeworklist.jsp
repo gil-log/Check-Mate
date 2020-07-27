@@ -139,7 +139,6 @@ cursor:pointer;
        
                                 </div>
                                 <button type="submit" class="btn btn-primary" id="addHwactionBtn" onclick="addHwaction();">등록</button>
-							    <button type="button" class="btn btn-primary" >목록으로</button>
                       		 </form> 
                         </div><!--div.id card 끝  -->
                     </div><!--div.id addForm 끝  -->
@@ -304,7 +303,7 @@ cursor:pointer;
    
    $('#noticeWriteBtn').on("click", function() {
    	if($("#noticeToggle").val() == 0){
-   		$(this).text("과제 보기");
+   		$(this).text("돌아가기");
    		$("#noticeToggle").val(1);
    		$("#addForm").show();
    		$("#listForm").slideUp();
