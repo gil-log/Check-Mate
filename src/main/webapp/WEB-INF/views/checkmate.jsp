@@ -13,7 +13,7 @@
     <meta name="author" content="">
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="${pageContext.request.contextPath}/resources/checkmateimg/checkmate_logo.png">
-    <title>Check&Mate</title>
+    <title>Check&Mate </title>
     <!-- Custom CSS -->
     <link href="${pageContext.request.contextPath}/resources/template/dist/css/style.min.css" rel="stylesheet">
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
