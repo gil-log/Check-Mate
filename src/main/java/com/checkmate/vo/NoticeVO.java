@@ -1,7 +1,5 @@
 package com.checkmate.vo;
 
-import java.sql.Date;
-
 public class NoticeVO {
 	
 	private int n_no;
@@ -10,7 +8,7 @@ public class NoticeVO {
 	private String n_title;
 	private String n_content;
 	private String n_writer;
-	private Date n_date;
+	private String n_date;
 	private int n_flag;
 	
 	public int getN_no() {
@@ -49,10 +47,10 @@ public class NoticeVO {
 	public void setN_writer(String n_writer) {
 		this.n_writer = n_writer;
 	}
-	public Date getN_date() {
+	public String getN_date() {
 		return n_date;
 	}
-	public void setN_date(Date n_date) {
+	public void setN_date(String n_date) {
 		this.n_date = n_date;
 	}
 	public int getN_flag() {

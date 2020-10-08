@@ -158,7 +158,7 @@ $(function(){
                                 
                                 <!-- 카카오 로그인 창으로 이동 -->
                                 <div id="kakao_id_login" style="text-align:center">
-                                        <a href="https://kauth.kakao.com/oauth/authorize?client_id=5a5993ff472f844911315cfb05709f5a&redirect_uri=http://localhost:8080/kcallback&response_type=code">
+                                        <a href="https://kauth.kakao.com/oauth/authorize?client_id=5a5993ff472f844911315cfb05709f5a&redirect_uri=http://checknmate.ml/kcallback&response_type=code">
                                         <img width="380" height="76" src="${pageContext.request.contextPath}/resources/checkmateimg/kakaologin.png">
                                         </a>
                                 </div>

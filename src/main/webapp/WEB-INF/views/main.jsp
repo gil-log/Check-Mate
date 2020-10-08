@@ -201,7 +201,7 @@
             <!-- footer -->
             <!-- ============================================================== -->
             <footer class="footer text-center">
-                All Rights Reserved by Matrix-admin. Designed and Developed by <a href="https://wrappixel.com">WrapPixel</a>.
+               
             </footer>
             <!-- ============================================================== -->
             <!-- End footer -->
@@ -243,7 +243,7 @@
     
     <script type="text/javascript">
 
-		let sock = new SockJS('http://checknmate.ml/chat/');
+		let sock = new SockJS('http://192.168.0.32:8080/chat/');
 		
     	sock.onmessage = onMessage;
     	sock.onclose = onClose;

@@ -36,7 +36,7 @@ public class KakaoAPI {
             StringBuilder sb = new StringBuilder();
             sb.append("grant_type=authorization_code");
             sb.append("&client_id=5a5993ff472f844911315cfb05709f5a");
-            sb.append("&redirect_uri=http://checknmate.ml/kcallback");
+            sb.append("&redirect_uri=http://192.168.0.32:8080/kcallback");
             sb.append("&code=" + authorize_code);
             bw.write(sb.toString());
             bw.flush();
