@@ -27,4 +27,7 @@ public interface UserDAO {
 	
 	// 그룹 user정보 list 개수 카운트
 	public int userListCount(GroupVO groupVO) throws Exception;
+	
+	// 유저 메일 가져오기
+	public String userMail(String u_id) throws Exception;
 }

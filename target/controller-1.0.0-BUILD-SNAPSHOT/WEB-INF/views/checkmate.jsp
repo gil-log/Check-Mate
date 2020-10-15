@@ -72,15 +72,17 @@ $(function(){
 			}
 		}
 	});
-	
-	$("#submit-r").on("click", function(){
-		window.alert("회원가입에 성공 하였습니다!");
-		    
-		window.close();
-		});
 });
 </script>
 
+<style>
+.btnss {
+    -webkit-box-flex: 1;
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+    padding: 4.25rem;
+}
+</style>
 </head>
 
 <body>
@@ -105,10 +107,10 @@ $(function(){
             <div class="auth-box bg-dark border-top border-secondary">
                 <div id="loginform">
                     <div class="text-center p-t-20 p-b-20">
-                        <span class="db"><img src="${pageContext.request.contextPath}/resources/checkmateimg/logo.png" height="200" width="200" alt="logo" /></span>
+                        <span class="db"><img src="${pageContext.request.contextPath}/resources/checkmateimg/logo_transparent.png" height="200" width="200" alt="logo" /></span>
                     </div>
                     <!-- Form -->
-                    <form class="form-horizontal m-t-20" id="loginform" method="post" action="login">
+                    <form class="form-horizontal m-t-20" id="loginform" method="post" action="loginok">
                     <c:if test="${user == null}">
                         <div class="row p-b-30">
                             <div class="col-12">
@@ -135,13 +137,45 @@ $(function(){
                                     </div>
                                 </div>
                             </div>
+                            
+                            
+                            <!-- 소셜 로그인 -->
+                             <div>
+                                <!-- 네이버 로그인 창으로 이동 -->
+                                <div id="naver_id_login" style="text-align:center">
+                                <a href="${url}">
+                                <img width="380" height="76" src="${pageContext.request.contextPath}/resources/checkmateimg/naverlogin.png"/>
+                                </a>
+                                </div>
+                                
+                                <!-- 카카오 로그인 창으로 이동 -->
+                                <div id="kakao_id_login" style="text-align:center">
+                                        <a href="https://kauth.kakao.com/oauth/authorize?client_id=5a5993ff472f844911315cfb05709f5a&redirect_uri=http://localhost:8080/kcallback&response_type=code">
+                                        <img width="380" height="76" src="${pageContext.request.contextPath}/resources/checkmateimg/kakaologin.png">
+                                        </a>
+                                </div>
+                             </div>
+                            
+                            
+                            
                         </div>
                     </c:if>
                     <c:if test="${user != null }">
-						<div>
-						<h3>${user.u_id}님 방문을 환영 합니다.</h3>
-						<button id="logoutBtn" type="button">로그아웃</button>
-						</div>
+                    
+                      <div>
+            			<div style="text-align: center;">
+            				<h3 style="color: #D1BA09;">${user.u_id}님 방문을 환영 합니다.</h3>
+            			</div>
+            			<div class="btnss">
+            				<button class="btn btn-success"
+            				id="groupBtn" type="button"><i class="fa fa-chess m-r-5"></i> 그룹선택</button>
+                        	<button class="btn btn-danger"
+                        	id="logoutBtn" type="button"><i class="fa fa-lock-open m-r-5"></i> 로그아웃</button>               
+                        </div>
+                                    
+            		</div>
+                    
+                    
 					</c:if> 
 					
 					   <%-- <!-- 로그인에 실패할경우  -->
@@ -384,6 +418,9 @@ $(function(){
     });
     $("#logoutBtn").on("click", function(){
 		location.href="logout";
+	});
+    $("#groupBtn").on("click", function(){
+		location.href="group";
 	});
     </script>
 

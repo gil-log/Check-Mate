@@ -26,6 +26,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.checkmate.api.KakaoAPI;
 import com.checkmate.api.NaverLoginBO;
+import com.checkmate.service.GroupService;
 import com.checkmate.service.UserService;
 import com.checkmate.vo.GroupVO;
 import com.checkmate.vo.NoticeVO;
@@ -45,6 +46,8 @@ private static final Logger logger = LoggerFactory.getLogger(UserController.clas
 	
 	@Inject
 	UserService service;
+	@Inject
+	GroupService groupService;
 	
 	@Inject
 	JavaMailSender mailSender; // 메일 서비스를 사용하기 위해 의존성을 주입함.
@@ -172,7 +175,8 @@ private static final Logger logger = LoggerFactory.getLogger(UserController.clas
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
 	public String logout(HttpSession session) throws Exception{
 		
-		session.invalidate();
+		session.removeAttribute("group");
+		session.removeAttribute("user");
 		
 		return "redirect:checkmate";
 	}
@@ -185,6 +189,18 @@ private static final Logger logger = LoggerFactory.getLogger(UserController.clas
 		service.register(vo);
 		
 		return "checkmate";
+	}
+	
+	// 그룹 추가 하고 메일로 인증 url 보낸곳 매핑 되는 곳
+	@RequestMapping(value = "/mailAuth", method = RequestMethod.GET)
+	public String mailAuth(HttpSession session, int code) throws Exception{
+		
+		GroupVO mailUserVO = (GroupVO) session.getAttribute(Integer.toString(code));
+		
+		mailUserVO.setG_flag(0);
+		groupService.userPlusMailAuth(mailUserVO);
+		
+		return "redirect:checkmate";
 	}
 	
 	//메일인증

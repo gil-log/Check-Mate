@@ -40,4 +40,7 @@ public interface GroupService {
 	
 	//그룹 user 추가 
 	public void userPlus(GroupVO groupVO) throws Exception;
+	
+	//그룹 추가신청 메일온거에서 인증 url 누른사람 g_flag = 0 으로 업데이트 해주기
+	public void userPlusMailAuth(GroupVO groupVO) throws Exception;
 }

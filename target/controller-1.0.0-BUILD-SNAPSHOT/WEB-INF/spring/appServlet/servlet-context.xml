@@ -45,6 +45,11 @@
 	<beans:bean id="alarmHandler" class="com.checkmate.websocket.AlarmHandler"></beans:bean>
 	<!-- 웹 소켓 떄문에 추가 끝 -->
 
+	<!-- NaverLoginBO Class에 대한 Bean설정 추가 -->
+	<beans:bean id="naverLoginBO" class="com.checkmate.api.NaverLoginBO" />
+
+	<!-- KakaoAPI Class에 대한 Bean설정 추가 -->
+	<beans:bean id="KakaoAPI" class="com.checkmate.api.KakaoAPI" />
 
 
 

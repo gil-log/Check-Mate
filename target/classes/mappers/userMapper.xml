@@ -47,7 +47,7 @@
 		
 		(SELECT C.U_ID, C.U_NAME, C.U_EMAIL, C.U_FLAG
 		FROM C_USER C, C_GROUP G
-		WHERE C.U_ID = G.U_ID AND G_NO = #{g_no} AND G_FLAG IN(0, 1))
+		WHERE C.U_ID = G.U_ID AND G_NO = #{g_no})
 	</select>
 	
 	<select id="userListCount" resultType="int">
@@ -81,5 +81,11 @@
     <select id="socialAlreadyChk" resultType="int">
     	SELECT COUNT(*)
     	FROM (SELECT U_ID FROM C_USER WHERE U_ID = #{u_id})
+    </select>
+    
+    <select id="userMail" resultType="String">
+    	SELECT U_EMAIL
+    	FROM C_USER
+    	WHERE U_ID = #{u_id}
     </select>
 </mapper>

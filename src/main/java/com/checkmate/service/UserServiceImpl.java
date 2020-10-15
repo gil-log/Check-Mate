@@ -51,6 +51,11 @@ public class UserServiceImpl implements UserService {
 	public int userListCount(GroupVO groupVO) throws Exception {
 		return dao.userListCount(groupVO);
 	}
+
+	@Override
+	public String userMail(String u_id) throws Exception {
+		return dao.userMail(u_id);
+	}
 	
 
 }

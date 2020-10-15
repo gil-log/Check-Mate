@@ -77,4 +77,9 @@ public class GroupDAOImpl implements GroupDAO {
 	public List<GroupVO> groupMemberList(GroupVO groupVO) throws Exception {
 		return sqlSession.selectList("groupMapper.groupMemberList", groupVO);
 	}
+
+	@Override
+	public void userPlusMailAuth(GroupVO groupVO) throws Exception {
+		sqlSession.update("groupMapper.userPlusMailAuth", groupVO);
+	}
 }

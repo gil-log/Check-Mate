@@ -12,8 +12,8 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <!-- Favicon icon -->
-    <link rel="icon" type="image/png" sizes="16x16" href="${pageContext.request.contextPath}/resources/checkmateimg/favicon.png">
-    <title>Check&Mate</title>
+    <link rel="icon" type="image/png" sizes="16x16" href="${pageContext.request.contextPath}/resources/checkmateimg/checkmate_logo.png">
+    <title>Check&Mate </title>
     <!-- Custom CSS -->
     <link href="${pageContext.request.contextPath}/resources/template/dist/css/style.min.css" rel="stylesheet">
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -75,6 +75,14 @@ $(function(){
 });
 </script>
 
+<style>
+.btnss {
+    -webkit-box-flex: 1;
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+    padding: 4.25rem;
+}
+</style>
 </head>
 
 <body>
@@ -99,7 +107,7 @@ $(function(){
             <div class="auth-box bg-dark border-top border-secondary">
                 <div id="loginform">
                     <div class="text-center p-t-20 p-b-20">
-                        <span class="db"><img src="${pageContext.request.contextPath}/resources/checkmateimg/logo.png" height="200" width="200" alt="logo" /></span>
+                        <span class="db"><img src="${pageContext.request.contextPath}/resources/checkmateimg/logo_transparent.png" height="200" width="200" alt="logo" /></span>
                     </div>
                     <!-- Form -->
                     <form class="form-horizontal m-t-20" id="loginform" method="post" action="loginok">
@@ -153,10 +161,21 @@ $(function(){
                         </div>
                     </c:if>
                     <c:if test="${user != null }">
-						<div>
-						<h3>${user.u_id}님 방문을 환영 합니다.</h3>
-						<button id="logoutBtn" type="button">로그아웃</button>
-						</div>
+                    
+                      <div>
+            			<div style="text-align: center;">
+            				<h3 style="color: #D1BA09;">${user.u_id}님 방문을 환영 합니다.</h3>
+            			</div>
+            			<div class="btnss">
+            				<button class="btn btn-success"
+            				id="groupBtn" type="button"><i class="fa fa-chess m-r-5"></i> 그룹선택</button>
+                        	<button class="btn btn-danger"
+                        	id="logoutBtn" type="button"><i class="fa fa-lock-open m-r-5"></i> 로그아웃</button>               
+                        </div>
+                                    
+            		</div>
+                    
+                    
 					</c:if> 
 					
 					   <%-- <!-- 로그인에 실패할경우  -->
@@ -399,6 +418,9 @@ $(function(){
     });
     $("#logoutBtn").on("click", function(){
 		location.href="logout";
+	});
+    $("#groupBtn").on("click", function(){
+		location.href="group";
 	});
     </script>
 
