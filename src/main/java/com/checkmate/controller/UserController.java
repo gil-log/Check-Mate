@@ -60,11 +60,12 @@ private static final Logger logger = LoggerFactory.getLogger(UserController.clas
 	private void setNaverLoginBO(NaverLoginBO naverLoginBO) {
 		this.naverLoginBO = naverLoginBO;
 	}
-	 
+	
     @Autowired
     private KakaoAPI kakao;
     
-	//첫화면(로그인)
+	//20.10.28 리팩토링을 시작하자.
+    
 	@RequestMapping(value = "/checkmate", method = RequestMethod.GET)
 	public String checkmateget(Model model, HttpSession session) {
 		logger.info("checkmate_get");
@@ -82,6 +83,12 @@ private static final Logger logger = LoggerFactory.getLogger(UserController.clas
 		
 		return "checkmate";
 	}
+	
+	
+	
+	
+	
+	
 	
 	// 네이버 로그인 성공시 callback호출 메소드
 	@RequestMapping(value = "/callback", method = { RequestMethod.GET, RequestMethod.POST })
