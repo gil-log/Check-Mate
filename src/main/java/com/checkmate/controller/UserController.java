@@ -65,7 +65,7 @@ private static final Logger logger = LoggerFactory.getLogger(UserController.clas
     private KakaoAPI kakao;
     
 	//20.10.28 리팩토링을 시작하자.
-    
+    //로그인 화면 부터
 	@RequestMapping(value = "/checkmate", method = RequestMethod.GET)
 	public String checkmateget(Model model, HttpSession session) {
 		logger.info("checkmate_get");
