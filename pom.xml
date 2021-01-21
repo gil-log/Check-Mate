@@ -166,7 +166,7 @@
  		<dependency>
     		<groupId>com.fasterxml.jackson.core</groupId>
     		<artifactId>jackson-databind</artifactId>
-    		<version>2.9.2</version>
+    		<version>2.9.10.7</version>
 		</dependency>
 
 		<!-- json array 사용 위해 라이브러리 추가 -->
